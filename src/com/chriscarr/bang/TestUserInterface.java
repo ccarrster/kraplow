@@ -35,8 +35,14 @@ public class TestUserInterface implements UserInterface {
 
 	@Override
 	public int askOthersCard(Player player, InPlay inPlay) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!inPlay.isEmpty()){
+			return 0;
+		} else if(inPlay.hasGun()){
+			return -2;			
+		} else {
+			return -1;
+		}
+		
 	}
 
 	public boolean respondBeer(Player player, int beers) {

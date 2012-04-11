@@ -1,5 +1,8 @@
 package com.chriscarr.bang;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
 	public static final int SHERIFF = 0;
@@ -61,6 +64,15 @@ public class Player {
 	
 	public int getHealth(){
 		return health;
+	}
+	
+	public static List<Player> getOthers(Player player, List<Player> others){
+		List<Player> othersCopy = new ArrayList<Player>();
+		for(Player otherPlayer : others){
+			othersCopy.add(otherPlayer);
+		}
+		othersCopy.remove(player);
+		return othersCopy;
 	}
 
 }

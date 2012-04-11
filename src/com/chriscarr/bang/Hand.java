@@ -117,4 +117,8 @@ public class Hand {
 		cards.remove(card);
 	}
 
+	public boolean isEmpty() {
+		return cards.isEmpty();
+	}
+
 }

@@ -78,4 +78,8 @@ public class InPlay {
 		}
 		return null;
 	}
+
+	public boolean isEmpty() {
+		return cards.isEmpty();
+	}
 }
