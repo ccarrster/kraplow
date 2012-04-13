@@ -36,9 +36,14 @@ public class TestUserInterfaceNoMiss implements
 	}
 
 	@Override
-	public int askOthersCard(Player player, InPlay inPlay) {
-		// TODO Auto-generated method stub
-		return -1;
+	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
+		if(!inPlay.isEmpty()){
+			return 0;
+		} else if(inPlay.hasGun()){
+			return -2;			
+		} else {
+			return -1;
+		}
 	}
 
 	@Override
@@ -68,8 +73,11 @@ public class TestUserInterfaceNoMiss implements
 
 	@Override
 	public int askPlay(Player player) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(player.getHand().size() > 0){
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 	@Override
@@ -78,4 +86,13 @@ public class TestUserInterfaceNoMiss implements
 		return false;
 	}
 
+	public void printInfo(String info){
+		//do nothing
+	}
+
+	@Override
+	public boolean chooseFromPlayer(Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -30,7 +30,7 @@ public class TestPlayOneUserInterface implements UserInterface {
 	}
 
 	@Override
-	public int askOthersCard(Player player, InPlay inPlay) {
+	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -73,5 +73,13 @@ public class TestPlayOneUserInterface implements UserInterface {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	public void printInfo(String info){
+		//do nothing
+	}
 
+	@Override
+	public boolean chooseFromPlayer(Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

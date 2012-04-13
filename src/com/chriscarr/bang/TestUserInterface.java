@@ -34,7 +34,7 @@ public class TestUserInterface implements UserInterface {
 	}
 
 	@Override
-	public int askOthersCard(Player player, InPlay inPlay) {
+	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
 		if(!inPlay.isEmpty()){
 			return 0;
 		} else if(inPlay.hasGun()){
@@ -87,5 +87,13 @@ public class TestUserInterface implements UserInterface {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	public void printInfo(String info){
+		//do nothing
+	}
 
+	@Override
+	public boolean chooseFromPlayer(Player player) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

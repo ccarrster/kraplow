@@ -13,6 +13,10 @@ public class Hand {
 	}
 	
 	public void add(Object object) {
+		if(object == null){
+			System.out.println("Adding null card to hand");
+			throw new RuntimeException("Adding null card to hand");
+		}
 		cards.add(object);
 	}
 

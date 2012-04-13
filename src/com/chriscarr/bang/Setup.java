@@ -10,11 +10,19 @@ public class Setup {
 	private Deck deck;
 	private List<Player> players;
 	
-	public Setup(int countPlayers){
+	public Setup(int countPlayers, UserInterface userInterface){
 		deck = setupDeck();
 		deck.shuffle();
+		Discard discard = new Discard();
+		deck.setDiscard(discard);
 		players = getPlayers(countPlayers, deck);
 		drawHands(players, deck);
+		Turn turn = new Turn();
+		turn.setDeck(deck);
+		turn.setDiscard(discard);
+		turn.setPlayers(players);
+		turn.setUserInterface(userInterface);
+		turn.setSheriff();
 	}
 	
 	public static Deck setupDeck(){

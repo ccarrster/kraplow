@@ -17,14 +17,17 @@ public interface UserInterface {
 	int chooseGeneralStoreCard(Player player,
 			List<Object> cards);
 
-	int askOthersCard(Player player, InPlay inPlay);
+	int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
 
 	boolean respondBeer(Player player, int beers);
 
 	boolean chooseDiscard(Player player);
+	
+	boolean chooseFromPlayer(Player player);	
 
 	int respondBangMiss(Player otherPlayer, int bangs, int misses, int missesRequired);
 
 	List<Object> chooseTwoDiscardForLife(Player sidKetchum);
-
+	
+	public void printInfo(String info);
 }

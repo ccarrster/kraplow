@@ -2,6 +2,7 @@ package com.chriscarr.bang;
 
 public class Figure {
 
+	
 	public static String CALAMITYJANET = "Calamity Janet";
 	public static String JOURDONNAIS = "Jourdonnais";
 	public static String PAULREGRET = "Paul Regret";
@@ -23,6 +24,7 @@ public class Figure {
 	public static int PLAYBANG = 0;
 	public static int PLAYMISSED = 1;
 	public static int GETSHOT = 2;
+	public static int PLAYONEEACH = 3;
 	
 	private String name;
 	private String description;

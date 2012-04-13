@@ -16,7 +16,7 @@ public class InPlayTest extends TestCase {
 	
 	public void testRemoveGun(){
 		InPlay inPlay = new InPlay();
-		Object gun = new Object();
+		Object gun = new Card();
 		inPlay.setGun(gun);
 		Object removedGun = inPlay.removeGun();
 		assertEquals(removedGun, gun);
@@ -24,7 +24,7 @@ public class InPlayTest extends TestCase {
 	
 	public void testRemovedGun(){
 		InPlay inPlay = new InPlay();
-		Object gun = new Object();
+		Object gun = new Card();
 		inPlay.setGun(gun);
 		inPlay.removeGun();
 		assertFalse(inPlay.hasGun());

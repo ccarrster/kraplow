@@ -24,8 +24,9 @@ public class InPlay {
 		return cards.get(i);
 	}
 
-	public Object remove(int i) {
-		return cards.remove(i);
+	public Object remove(int i) {		
+		Object removed = cards.remove(i);
+		return removed;
 	}
 
 	public int count() {
@@ -34,7 +35,9 @@ public class InPlay {
 
 	public Object removeGun() {
 		Object tempGun = gun;
+		gun = new Card();
 		gun = null;
+		System.out.println("Removing gun: " + tempGun);
 		return tempGun;
 	}
 
@@ -81,5 +84,21 @@ public class InPlay {
 
 	public boolean isEmpty() {
 		return cards.isEmpty();
+	}
+
+	public int size() {
+		return cards.size();
+	}
+
+	public Object get(int i) {
+		return cards.get(i);
+	}
+
+	public String getGunName() {
+		if(hasGun()){
+			return ((Card)gun).getName();
+		} else {
+			return "Colt .45";
+		}
 	}
 }

@@ -119,4 +119,50 @@ public class Card {
 		}
 		return false;
 	}
+	
+	public static String suitToString(int suit){
+		if(suit == HEARTS){
+			return "Hearts";
+		} else if(suit == CLUBS){
+			return "Clubs";
+		} else if(suit == SPADES){
+			return "Spades";
+		} else if(suit == DIAMONDS){
+			return "Diamonds";
+		} else {
+			throw new RuntimeException("Invalid Suit");
+		}
+	}
+	
+	public static String valueToString(int value){
+		if(value == VALUE2){
+			return "2";
+		} else if(value == VALUE3){
+			return "3";
+		} else if(value == VALUE4){
+			return "4";
+		} else if(value == VALUE5){
+			return "5";
+		} else if(value == VALUE6){
+			return "6";
+		} else if(value == VALUE7){
+			return "7";
+		} else if(value == VALUE8){
+			return "8";
+		} else if(value == VALUE9){
+			return "9";
+		} else if(value == VALUE10){
+			return "10";
+		} else if(value == VALUEJ){
+			return "J";
+		} else if(value == VALUEQ){
+			return "Q";
+		} else if(value == VALUEK){
+			return "K";
+		} else if(value == VALUEA){
+			return "A";
+		} else {
+			throw new RuntimeException("Invalid value");
+		}
+	}
 }
