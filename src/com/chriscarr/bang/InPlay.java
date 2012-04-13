@@ -37,7 +37,6 @@ public class InPlay {
 		Object tempGun = gun;
 		gun = new Card();
 		gun = null;
-		System.out.println("Removing gun: " + tempGun);
 		return tempGun;
 	}
 

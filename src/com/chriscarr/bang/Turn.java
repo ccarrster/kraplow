@@ -54,8 +54,9 @@ public class Turn {
 	private void turnLoop(Player currentPlayer){
 		if(isDynamiteExplode()){
 			Player explodePlayer = currentPlayer;
-			damagePlayer(explodePlayer, 3, null);
-		} else {
+			userInterface.printInfo("Dynamite Exploded on " + explodePlayer.getFigure().getName());
+			damagePlayer(explodePlayer, 3, null);			
+		} else {			
 			passDynamite();
 		}
 		if(!isInJail() && players.contains(currentPlayer)){
@@ -445,6 +446,7 @@ public class Turn {
 			Object dynamiteCard = currentInPlay.removeDynamite();
 			Player nextPlayer = getNextPlayer(currentPlayer);
 			InPlay nextInPlay = nextPlayer.getInPlay();
+			userInterface.printInfo("Dynamite Passed to " + nextPlayer.getFigure().getName());
 			nextInPlay.add(dynamiteCard);
 		}
 	}
@@ -474,7 +476,13 @@ public class Turn {
 			Object jailCard = currentInPlay.removeJail();
 			discard.add(jailCard);
 			Card drawn = (Card)draw(currentPlayer);
-			return drawn.getSuit() != Card.HEARTS;
+			boolean inJail =  drawn.getSuit() != Card.HEARTS;
+			if(inJail){
+				userInterface.printInfo(currentPlayer.getFigure().getName() + " stays in jail");
+			} else {
+				userInterface.printInfo(currentPlayer.getFigure().getName() + " breaks out of jail");
+			}
+			return inJail;
 		}
 		return false;
 	}
@@ -543,7 +551,7 @@ public class Turn {
 			deadDiscardAll(player, players, discard);
 			if(isGameOver(players)){
 				winner = getWinners(players);
-				System.out.println(winner);
+				userInterface.printInfo("Winners are " + winner);
 			}
 		}		
 	}
@@ -622,14 +630,16 @@ public class Turn {
 	
 	public static void discardTwoCardsForLife(Player player, UserInterface userInterface){
 		if(Figure.SIDKETCHUM.equals(player.getFigure().getName())){
-			Hand hand = player.getHand();			
-			List<Object> cardsToDiscard = userInterface.chooseTwoDiscardForLife(player);
-			if(cardsToDiscard.size() % 2 == 0){
-				for(Object card : cardsToDiscard){
-					hand.remove(card);
+			Hand hand = player.getHand();
+			if(hand.size() >= 2){
+				List<Object> cardsToDiscard = userInterface.chooseTwoDiscardForLife(player);
+				if(cardsToDiscard.size() % 2 == 0){
+					for(Object card : cardsToDiscard){
+						hand.remove(card);
+					}
+					player.setHealth(player.getHealth() + (cardsToDiscard.size() / 2));
 				}
-				player.setHealth(player.getHealth() + (cardsToDiscard.size() / 2));
-			}
+				}
 		}
 	}
 	

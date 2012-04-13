@@ -13,10 +13,6 @@ public class Hand {
 	}
 	
 	public void add(Object object) {
-		if(object == null){
-			System.out.println("Adding null card to hand");
-			throw new RuntimeException("Adding null card to hand");
-		}
 		cards.add(object);
 	}
 
@@ -49,11 +45,11 @@ public class Hand {
 	public Object removeBang() {		
 		for(Object card : cards){
 			if(((Card)card).getName().equals(Card.CARDBANG)){
-				Object removedCard = cards.remove(card); 
+				cards.remove(card); 
 				if(cards.isEmpty()){
 					emptyListener.handleEmptyHand();
 				}
-				return removedCard;
+				return card;
 			}
 		}
 		return null;
@@ -72,11 +68,11 @@ public class Hand {
 	public Object removeMiss() {
 		for(Object card : cards){
 			if(((Card)card).getName().equals(Card.CARDMISSED)){
-				Object removedCard = cards.remove(card); 
+				cards.remove(card); 
 				if(cards.isEmpty()){
 					emptyListener.handleEmptyHand();
 				}
-				return removedCard;
+				return card;
 			}
 		}
 		return null;
@@ -103,11 +99,11 @@ public class Hand {
 	public Object removeBeer() {
 		for(Object card : cards){
 			if(((Card)card).getName().equals(Card.CARDBEER)){
-				Object removedCard = cards.remove(card); 
+				cards.remove(card); 
 				if(cards.isEmpty()){
 					emptyListener.handleEmptyHand();
 				}
-				return removedCard;
+				return card;
 			}
 		}
 		return null;

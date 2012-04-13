@@ -808,6 +808,7 @@ public class TurnTest extends TestCase{
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().add(new Card(Card.CARDDYNAMITE, Card.CLUBS, Card.VALUE9, Card.TYPEITEM));
 		assertTrue(sheriff.getInPlay().hasItem(Card.CARDDYNAMITE));
+		turn.setUserInterface(new TestUserInterface());
 		turn.passDynamite();
 		assertFalse(sheriff.getInPlay().hasItem(Card.CARDDYNAMITE));
 		Player nextPlayer = turn.getNextPlayer(turn.getCurrentPlayer());
