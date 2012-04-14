@@ -8,7 +8,7 @@ public interface UserInterface {
 
 	int askPlay(Player player);
 
-	int askPlayer(Player player, List<Player> otherPlayers);
+	int askPlayer(Player player, List<String> otherPlayers);
 
 	boolean respondBang(Player player, int bangs);
 
@@ -25,9 +25,9 @@ public interface UserInterface {
 	
 	boolean chooseFromPlayer(Player player);	
 
-	int respondBangMiss(Player otherPlayer, int bangs, int misses, int missesRequired);
+	int respondBangMiss(Player player, int bangs, int misses, int missesRequired);
 
-	List<Object> chooseTwoDiscardForLife(Player sidKetchum);
+	List<Object> chooseTwoDiscardForLife(Player player);
 	
 	public void printInfo(String info);
 

@@ -97,12 +97,12 @@ public class ManualUserInterface implements UserInterface {
 	}
 
 	@Override
-	public int askPlayer(Player player, List<Player> otherPlayers) {
+	public int askPlayer(Player player, List<String> otherPlayers) {
 		System.out.println(player.getFigure().getName());
 		System.out.println("Choose Player");
 		int handSize = otherPlayers.size();
 		for(int i = 0; i < handSize; i++){
-			System.out.println(i + ") " + printPublicPlayer(otherPlayers.get(i)));
+			System.out.println(i + ") " + otherPlayers.get(i));
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);

@@ -131,7 +131,7 @@ public class Turn {
 			if(chosenFromPlayer){				
 				int chosenPlayerIndex = -1;
 				while(chosenPlayerIndex < 0 || chosenPlayerIndex > otherPlayers.size() - 1){
-					chosenPlayerIndex = userInterface.askPlayer(player, otherPlayers);
+					chosenPlayerIndex = userInterface.askPlayer(player, getPlayersNames(otherPlayers));
 				}
 				Player chosenPlayer = otherPlayers.get(chosenPlayerIndex);
 				Object randomCard = chosenPlayer.getHand().removeRandom();			
@@ -210,7 +210,7 @@ public class Turn {
 					hand.remove(card);
 					int chosenPlayer = -1;
 					while(chosenPlayer < 0 || chosenPlayer > others.size() - 1){
-						chosenPlayer = userInterface.askPlayer(currentPlayer, others);
+						chosenPlayer = userInterface.askPlayer(currentPlayer, getPlayersNames(others));
 					}
 					others.get(chosenPlayer).getInPlay().add(playedCard);
 				}
@@ -363,7 +363,7 @@ public class Turn {
 				List<Player> others = Player.getOthers(currentPlayer, players);
 				int playerIndex = -1;
 				while(playerIndex < 0 || playerIndex > players.size() - 1){
-					playerIndex = userInterface.askPlayer(currentPlayer, others);
+					playerIndex = userInterface.askPlayer(currentPlayer, getPlayersNames(others));
 				}
 				Player other = others.get(playerIndex);
 				boolean currentCalamityJanet = false;
@@ -444,7 +444,7 @@ public class Turn {
 				List<Player> others = removeFromOthers(currentPlayer, players);
 				int otherIndex = -1;
 				while(otherIndex < 0 || otherIndex > others.size() - 1){
-					otherIndex = userInterface.askPlayer(currentPlayer, others);
+					otherIndex = userInterface.askPlayer(currentPlayer, getPlayersNames(others));
 				}
 				Player otherPlayer = others.get(otherIndex);
 				int chosenCard = -3;
@@ -463,7 +463,7 @@ public class Turn {
 				others = removeFromOthers(currentPlayer, others);
 				int otherIndex = -1;
 				while(otherIndex < 0 || otherIndex > others.size() - 1){
-					otherIndex = userInterface.askPlayer(currentPlayer, others);
+					otherIndex = userInterface.askPlayer(currentPlayer, getPlayersNames(others));
 				}
 				Player otherPlayer = others.get(otherIndex);
 				int chosenCard = -3;
@@ -482,7 +482,7 @@ public class Turn {
 				List<Player> others = getPlayersWithinRange(currentPlayer, players, currentPlayer.getInPlay().getGunRange());
 				int otherIndex = -1;
 				while(otherIndex < 0 || otherIndex > others.size() - 1){
-					otherIndex = userInterface.askPlayer(currentPlayer, others);
+					otherIndex = userInterface.askPlayer(currentPlayer, getPlayersNames(others));
 				}
 				Player otherPlayer = others.get(otherIndex);
 				int missesRequired = 1;
@@ -865,5 +865,13 @@ public class Turn {
 			}
 		}
 		return playersWithCards;
+	}
+	
+	public static List<String> getPlayersNames(List<Player> players){
+		List<String> names = new ArrayList<String>();
+		for(Player player : players){
+			names.add(player.getFigure().getName());
+		}
+		return names;
 	}
 }

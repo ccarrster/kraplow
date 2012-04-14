@@ -27,7 +27,7 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack implements
 	}
 
 	@Override
-	public int askPlayer(Player player, List<Player> otherPlayers) {
+	public int askPlayer(Player player, List<String> otherPlayers) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -112,4 +112,5 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack implements
 		// TODO Auto-generated method stub
 		return 1;
 	}
+
 }
