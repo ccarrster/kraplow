@@ -58,7 +58,7 @@ public class TestUserInterfaceBangBackTwice implements
 	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
 			int missesRequired) {
 		// TODO Auto-generated method stub
-		return 1;
+		return Figure.PLAYBANG;
 	}
 
 	@Override
@@ -86,5 +86,17 @@ public class TestUserInterfaceBangBackTwice implements
 	public boolean chooseFromPlayer(Player player) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int chooseDrawCard(Player player, List<Object> cards) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int chooseCardToPutBack(Player player, List<Object> cards) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

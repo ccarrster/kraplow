@@ -54,7 +54,15 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack implements
 	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
 			int missesRequired) {
 		// TODO Auto-generated method stub
-		return 0;
+		Hand hand = otherPlayer.getHand();
+		if(hand.countBangs() > 0){
+			return Figure.PLAYBANG;
+		} else if(hand.countMisses() > 0){
+			return Figure.PLAYMISSED;
+		} else {
+			return Figure.GETSHOT;
+		}
+		
 	}
 
 	@Override
@@ -85,5 +93,23 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack implements
 	public boolean chooseFromPlayer(Player player) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+
+	@Override
+	public int chooseDrawCard(Player player, List<Object> cards) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+
+	@Override
+	public int chooseCardToPutBack(Player player, List<Object> cards) {
+		// TODO Auto-generated method stub
+		return 1;
 	}
 }

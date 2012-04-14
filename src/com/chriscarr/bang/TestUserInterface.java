@@ -96,4 +96,16 @@ public class TestUserInterface implements UserInterface {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	@Override
+	public int chooseDrawCard(Player player, List<Object> cards) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int chooseCardToPutBack(Player player, List<Object> cards) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

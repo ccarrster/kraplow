@@ -360,4 +360,50 @@ public class ManualUserInterface implements UserInterface {
 		}
 	}
 
+	@Override
+	public int chooseDrawCard(Player player, List<Object> cards) {
+		System.out.println(player.getFigure().getName());
+		System.out.println("Choose Draw Card to keep");
+		int handSize = cards.size();
+		for(int i = 0; i < handSize; i++){
+			System.out.println(i + ") " + ((Card)cards.get(i)).getName());
+		}
+		InputStreamReader converter = new InputStreamReader(System.in);
+		BufferedReader in = new BufferedReader(converter);
+		while (true){
+			try {
+				String line = in.readLine();
+				int cardNumber = Integer.parseInt(line);
+				if(cardNumber >= 0 && cardNumber < handSize){
+					return cardNumber;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public int chooseCardToPutBack(Player player, List<Object> cards) {
+		System.out.println(player.getFigure().getName());
+		System.out.println("Choose card put back");
+		int handSize = cards.size();
+		for(int i = 0; i < handSize; i++){
+			System.out.println(i + ") " + ((Card)cards.get(i)).getName());
+		}
+		InputStreamReader converter = new InputStreamReader(System.in);
+		BufferedReader in = new BufferedReader(converter);
+		while (true){
+			try {
+				String line = in.readLine();
+				int cardNumber = Integer.parseInt(line);
+				if(cardNumber >= 0 && cardNumber < handSize){
+					return cardNumber;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

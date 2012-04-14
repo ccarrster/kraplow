@@ -52,5 +52,43 @@ public class Figure {
 			return 4;
 		}
 	}
+	
+	public static String getSpecialAbilityText(String name){
+		if(name.equals(CALAMITYJANET)){
+			return "Bangs can be misses and misses can be bangs";
+		} else if(name.equals(JOURDONNAIS)){
+			return "Has a barrel at all times";
+		} else if(name.equals(PAULREGRET)){
+			return "Has a mustang at all times";
+		} else if(name.equals(KITCARLSON)){
+			return "Draws 3 cards, returns 1 to deck";
+		} else if(name.equals(BARTCASSIDY)){
+			return "When damaged draws from the deck";
+		} else if(name.equals(JESSEJONES)){
+			return "Can draw first card from other player or deck";
+		} else if(name.equals(PEDRORAMIREZ)){
+			return "Can draw first card from discard";
+		} else if(name.equals(ELGRINGO)){
+			return "Draws a card from the hand of the player that damaged him";
+		} else if(name.equals(ROSEDOOLAN)){
+			return "Has an Appaloosa at all times";
+		} else if(name.equals(SUZYLAFAYETTE)){
+			return "Draws a card when hand is empty";
+		} else if(name.equals(BLACKJACK)){
+			return "Shows second draw card, if Diamond or Heart, draws another card";
+		} else if(name.equals(SIDKETCHUM)){
+			return "Can discard 2 cards to gain 1 life";
+		} else if(name.equals(SLABTHEKILLER)){
+			return "2 misses required to cancel his bangs";
+		} else if(name.equals(LUCKYDUKE)){
+			return "Chooses between 2 drawn cards instead of 1";
+		} else if(name.equals(VULTURESAM)){
+			return "Takes dead players cards";
+		} else if(name.equals(WILLYTHEKID)){
+			return "Not restricted to 1 bang";
+		} else {
+			throw new RuntimeException("Invalid player name");
+		}
+	}
 
 }

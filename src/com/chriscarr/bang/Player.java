@@ -75,4 +75,18 @@ public class Player {
 		return othersCopy;
 	}
 
+	public static String roleToString(int role) {
+		if(role == SHERIFF){
+			return "Sheriff";
+		} else if(role == OUTLAW){
+			return "Outlaw";
+		} else if(role == DEPUTY){
+			return "Deputy";
+		} else if(role == RENEGADE){
+			return "Renegade";
+		} else { 
+			throw new RuntimeException("Invalid Role");
+		}
+	}
+
 }

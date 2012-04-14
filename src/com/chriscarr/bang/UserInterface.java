@@ -30,4 +30,8 @@ public interface UserInterface {
 	List<Object> chooseTwoDiscardForLife(Player sidKetchum);
 	
 	public void printInfo(String info);
+
+	int chooseDrawCard(Player player, List<Object> cards);
+
+	int chooseCardToPutBack(Player player, List<Object> cards);
 }
