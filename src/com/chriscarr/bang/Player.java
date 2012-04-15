@@ -1,8 +1,5 @@
 package com.chriscarr.bang;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Player {
 
 	public static final int SHERIFF = 0;
@@ -65,15 +62,6 @@ public class Player {
 	public int getHealth(){
 		return health;
 	}
-	
-	public static List<Player> getOthers(Player player, List<Player> others){
-		List<Player> othersCopy = new ArrayList<Player>();
-		for(Player otherPlayer : others){
-			othersCopy.add(otherPlayer);
-		}
-		othersCopy.remove(player);
-		return othersCopy;
-	}
 
 	public static String roleToString(int role) {
 		if(role == SHERIFF){
@@ -87,6 +75,38 @@ public class Player {
 		} else { 
 			throw new RuntimeException("Invalid Role");
 		}
+	}
+
+	public void addInPlay(Card card) {
+		inPlay.add(card);
+	}
+
+	public boolean isInPlay(String name) {
+		return inPlay.hasItem(name);
+	}
+
+	public String getName() {
+		return figure.getName();
+	}
+
+	public int getGunRange() {
+		return inPlay.getGunRange();
+	}
+
+	public void addHealth(int toAdd) {
+		health = health + toAdd;
+	}
+
+	public Object removeRandom() {
+		return hand.removeRandom();
+	}
+
+	public int countBeers() {
+		return hand.countBeers();
+	}
+
+	public int countBangs() {
+		return hand.countBangs();
 	}
 
 }

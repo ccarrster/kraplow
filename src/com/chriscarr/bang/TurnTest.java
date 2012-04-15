@@ -1106,6 +1106,12 @@ public class TurnTest extends TestCase{
 		deputy.setRole(Player.DEPUTY);
 		deputy.setFigure(new Figure());
 		players.add(deputy);
+		Player phil = new Player();
+		phil.setHand(new Hand());
+		phil.setInPlay(new InPlay());
+		phil.setRole(Player.OUTLAW);
+		phil.setFigure(new Figure());
+		players.add(phil);
 		turn.setPlayers(players);
 		player.setHealth(1);
 		turn.setDiscard(new Discard());				
@@ -1143,6 +1149,12 @@ public class TurnTest extends TestCase{
 		deputy.setFigure(new Figure());
 		deputy.setRole(Player.OUTLAW);
 		players.add(deputy);
+		Player phil = new Player();
+		phil.setHand(new Hand());
+		phil.setInPlay(new InPlay());
+		phil.setRole(Player.OUTLAW);
+		phil.setFigure(new Figure());
+		players.add(phil);
 		turn.setPlayers(players);
 		player.setHealth(1);
 		turn.setDiscard(new Discard());				

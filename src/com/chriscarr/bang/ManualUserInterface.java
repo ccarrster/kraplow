@@ -318,7 +318,9 @@ public class ManualUserInterface implements UserInterface {
 	
 	private String printPublicPlayer(Player player){
 		StringBuffer playerInfo = new StringBuffer();
-		playerInfo.append(player.getFigure().getName());
+		playerInfo.append(player.getFigure().getName());		
+		playerInfo.append("\n");
+		playerInfo.append(Figure.getSpecialAbilityText(player.getFigure().getName()));		
 		playerInfo.append("\n");
 		playerInfo.append("Health " + player.getHealth() + " / " + player.getMaxHealth());
 		playerInfo.append("\n");
