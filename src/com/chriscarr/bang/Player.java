@@ -113,4 +113,8 @@ public class Player {
 		return hand.countMisses();
 	}
 
+	public void setGun(Card card) {
+		inPlay.setGun(card);
+	}
+
 }

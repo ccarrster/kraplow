@@ -7,13 +7,11 @@ public class Turn {
 
 	private List<Player> players;
 	private Player currentPlayer; 
-	private boolean bangPlayed = false;
 	private UserInterface userInterface;
 	private boolean donePlaying = false;
 	private Discard discard;
 	private Deck deck;
 	private int bangsPlayed = 0;
-	private String winner = null;
 	
 	public void setPlayers(List<Player> players) {
 		this.players = players;
@@ -33,7 +31,7 @@ public class Turn {
 		return players.get(index);
 	}
 	
-	public Player getPreviousPlayer(Player player){
+	public static Player getPreviousPlayer(Player player, List<Player> players){
 		int index = players.indexOf(player);
 		if(index == 0){
 			index = players.size() - 1;
@@ -45,7 +43,6 @@ public class Turn {
 
 	public void nextTurn() {		
 		currentPlayer = getNextPlayer(currentPlayer);
-		bangPlayed = false;
 		donePlaying = false;
 		bangsPlayed = 0;
 		turnLoop(currentPlayer);
@@ -56,7 +53,7 @@ public class Turn {
 			if(isDynamiteExplode()){
 				Player explodePlayer = currentPlayer;
 				userInterface.printInfo("Dynamite Exploded on " + explodePlayer.getName());
-				damagePlayer(explodePlayer, 3, null);			
+				damagePlayer(explodePlayer, players, currentPlayer, 3, null, deck, discard, userInterface);			
 			} else {			
 				passDynamite();
 			}
@@ -91,23 +88,7 @@ public class Turn {
 			}
 		}
 	}
-	
-	public int getSheriff(List<Player> players){
-		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).getRole() == Player.SHERIFF){
-				return i;
-			}
-		}
-		return -1;
-	}
 
-	public boolean isBangPlayed() {
-		return bangPlayed;
-	}
-
-	public void setBangPlayed(boolean bangPlayed) {
-		this.bangPlayed = bangPlayed;
-	}
 
 	public void drawCards(Player player, Deck deck) {
 		Hand hand = player.getHand();		
@@ -211,34 +192,37 @@ public class Turn {
 				targetPlayer.addInPlay(playedCard);
 			}
 		} else {			
-			boolean playable = isPlayable(currentPlayer, cardName, players, bangsPlayed);
-			if(!playable){
+			boolean isPlayable = isPlayable(currentPlayer, cardName, players, bangsPlayed);
+			if(!isPlayable){
 				return;
+			}
+			
+			if(playedCard instanceof Playable){
+				Playable playable = ((Playable)playedCard);
+				boolean canPlay = playable.canPlay(currentPlayer, players, bangsPlayed);
+				if(!canPlay){
+					return;
+				} else {
+					if(playedCard instanceof Bang || playedCard instanceof Missed){
+						bangsPlayed++;
+					}
+					discard.add(hand.remove(card));
+					playable.play(currentPlayer, players, userInterface, deck, discard);
+					return;
+				}
 			}
 
 			discard.add(hand.remove(card));
-			if(cardName == Card.CARDBEER){
-				if(isBeerGiveHealth(players)){
-					if(!isMaxHealth(currentPlayer)){
-						currentPlayer.addHealth(1);
-					}
-				}
-			} else if(Card.CARDSTAGECOACH.equals(cardName)){
-				deckToHand(hand, deck, 2);
-			} else if(Card.CARDWELLSFARGO.equals(cardName)){
-				deckToHand(hand, deck, 3);
-			} else if(Card.CARDSALOON.equals(cardName)){
-				giveEveryoneHealth(players);
-			} else if(Card.CARDINDIANS.equals(cardName)){
+			if(Card.CARDINDIANS.equals(cardName)){
 				Player indianPlayer = getNextPlayer(currentPlayer);
 				while(indianPlayer != currentPlayer){
 					if(Figure.CALAMITYJANET.equals(indianPlayer.getName())){
-						calamityBangOrMiss(indianPlayer, 1, discard, userInterface);
+						calamityBangOrMiss(indianPlayer, players, currentPlayer, 1, deck, discard, userInterface);
 					} else {
 						if(validPlayBang(indianPlayer, indianPlayer.countBangs())){
 							discard.add(indianPlayer.getHand().removeBang());
 						} else {
-							damagePlayer(indianPlayer, 1, currentPlayer);
+							damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 						}
 					}
 					indianPlayer = getNextPlayer(indianPlayer);
@@ -246,17 +230,17 @@ public class Turn {
 			} else if(Card.CARDGATLING.equals(cardName)){
 				Player gatlingPlayer = getNextPlayer(currentPlayer);
 				while(gatlingPlayer != currentPlayer){
-					if (isBarrelSave(gatlingPlayer) > 0){
+					if (isBarrelSave(gatlingPlayer, deck, discard, userInterface) > 0){
 						return;
 					}
 					if(Figure.CALAMITYJANET.equals(gatlingPlayer.getName())){
-						calamityBangOrMiss(gatlingPlayer, 1, discard, userInterface);
+						calamityBangOrMiss(gatlingPlayer, players, currentPlayer, 1, deck, discard, userInterface);
 					} else {
 						int misses = gatlingPlayer.countMisses();
-						if(validPlayMiss(gatlingPlayer, misses, 1)){
+						if(validPlayMiss(gatlingPlayer, misses, 1, userInterface)){
 							discard.add(gatlingPlayer.getHand().removeMiss());
 						} else {
-							damagePlayer(gatlingPlayer, 1, currentPlayer);
+							damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 						}
 					}
 					gatlingPlayer = getNextPlayer(gatlingPlayer);
@@ -287,10 +271,10 @@ public class Turn {
 				boolean someoneIsShot = false;
 				while(!someoneIsShot){
 					if(otherCalamityJanet){
-						someoneIsShot = !calamityBangOrMiss(other, 1, discard, userInterface);
+						someoneIsShot = !calamityBangOrMiss(other, players, currentPlayer, 1, deck, discard, userInterface);
 					} else {
 						if(!validPlayBang(other, other.countBangs())){
-							damagePlayer(other, 1, currentPlayer);
+							damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 							someoneIsShot = true;
 						} else {
 							discard.add(other.getHand().removeBang());
@@ -298,13 +282,13 @@ public class Turn {
 					}
 					if(!someoneIsShot){						
 						if(currentCalamityJanet){
-							someoneIsShot = !calamityBangOrMiss(currentPlayer, 1, discard, userInterface);
+							someoneIsShot = !calamityBangOrMiss(currentPlayer, players, currentPlayer, 1, deck, discard, userInterface);
 						} else {
 							int bangs = currentPlayer.countBangs();
 							if(validPlayBang(currentPlayer, bangs)){
 								discard.add(currentPlayer.getHand().removeBang());
 							} else {								
-								damagePlayer(currentPlayer, 1, other);
+								damagePlayer(currentPlayer, players, currentPlayer, 1, other, deck, discard, userInterface);
 								someoneIsShot = true;
 							}
 						}
@@ -337,36 +321,11 @@ public class Turn {
 				} else {
 					hand.add(otherPlayer.getInPlay().remove(chosenCard));
 				}
-			} else if(Card.CARDBANG.equals(cardName) || Card.CARDMISSED.equals(cardName)){
-				bangsPlayed = bangsPlayed + 1;
-				List<Player> others = getPlayersWithinRange(currentPlayer, players, currentPlayer.getInPlay().getGunRange());
-				Player otherPlayer = getValidChosenPlayer(currentPlayer, others, userInterface);
-				int missesRequired = 1;
-				if(Figure.SLABTHEKILLER.equals(currentPlayer.getName())){
-					missesRequired = 2;
-				}
-				int barrelMisses = isBarrelSave(otherPlayer);
-				missesRequired = missesRequired - barrelMisses;
-				if(missesRequired <= 0){
-					return;
-				}
-				if(Figure.CALAMITYJANET.equals(otherPlayer.getName())){
-					calamityBangOrMiss(otherPlayer, missesRequired, discard, userInterface);
-				} else {
-					int misses = otherPlayer.countMisses();
-					if(validPlayMiss(otherPlayer, misses, missesRequired)){
-						for(int i = 0; i < missesRequired; i++){
-							discard.add(otherPlayer.getHand().removeMiss());
-						}
-					} else {
-						damagePlayer(otherPlayer, 1, currentPlayer);
-					}
-				}				
 			}
 		}
 	}
 	
-	private boolean validPlayMiss(Player player, int misses, int missesRequired){
+	static boolean validPlayMiss(Player player, int misses, int missesRequired, UserInterface userInterface){
 		while(true){
 			boolean playedMiss = userInterface.respondMiss(player, misses, missesRequired);
 			if(!playedMiss || (playedMiss && misses >= missesRequired)){
@@ -375,7 +334,7 @@ public class Turn {
 		}
 	}
 	
-	private boolean validPlayBeer(Player player, int beers){
+	static boolean validPlayBeer(Player player, int beers, UserInterface userInterface){
 		while(true){
 			boolean playedMiss = userInterface.respondBeer(player, beers);
 			if(!playedMiss || (playedMiss && beers > 0)){
@@ -384,7 +343,7 @@ public class Turn {
 		}
 	}
 	
-	private boolean validPlayBang(Player player, int bangs){
+	boolean validPlayBang(Player player, int bangs){
 		while(true){
 			boolean playerShot = userInterface.respondBang(player, bangs);
 			if(!playerShot || (playerShot && bangs > 0)){
@@ -441,7 +400,7 @@ public class Turn {
 	public boolean isDynamiteExplode(){
 		InPlay currentInPlay = currentPlayer.getInPlay();
 		if(currentInPlay.hasItem(Card.CARDDYNAMITE)){
-			Card drawnCard = (Card)draw(currentPlayer);
+			Card drawnCard = (Card)draw(currentPlayer, deck, discard, userInterface);
 			return Card.isExplode(drawnCard);
 		}
 		return false;
@@ -458,7 +417,7 @@ public class Turn {
 		}
 	}
 
-	public Object draw(Player player) {
+	public static Object draw(Player player, Deck deck, Discard discard, UserInterface userInterface) {
 		if(Figure.LUCKYDUKE.equals(player.getName())){
 			List<Object> cards = pullCards(deck, 2);
 			int chosenCard = -1;
@@ -485,7 +444,7 @@ public class Turn {
 		if(currentInPlay.hasItem(Card.CARDJAIL)){
 			Object jailCard = currentInPlay.removeJail();
 			discard.add(jailCard);
-			Card drawn = (Card)draw(currentPlayer);
+			Card drawn = (Card)draw(currentPlayer, deck, discard, userInterface);
 			boolean inJail =  drawn.getSuit() != Card.HEARTS;
 			if(inJail){
 				userInterface.printInfo(currentPlayer.getName() + " stays in jail");
@@ -497,17 +456,17 @@ public class Turn {
 		return false;
 	}
 
-	public int isBarrelSave(Player player) {
+	public static int isBarrelSave(Player player, Deck deck, Discard discard, UserInterface userInterface) {
 		int misses = 0;
 		if(Figure.JOURDONNAIS.equals(player.getName())){
-			Card drawn = (Card)draw(player);
+			Card drawn = (Card)draw(player, deck, discard, userInterface);
 			if(drawn.getSuit() == Card.HEARTS){
 				misses = misses + 1;
 			}
 		}
 		InPlay currentInPlay = player.getInPlay();		
 		if(currentInPlay.hasItem(Card.CARDBARREL)){			
-			Card drawn = (Card)draw(player);
+			Card drawn = (Card)draw(player, deck, discard, userInterface);
 			if(drawn.getSuit() == Card.HEARTS){
 				misses = misses + 1;
 			}
@@ -515,7 +474,7 @@ public class Turn {
 		return misses;
 	}
 	
-	public void damagePlayer(Player player, int damage, Player damager) throws EndOfGameException{
+	public static void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{
 		discardTwoCardsForLife(player, userInterface);
 		player.setHealth(player.getHealth() - damage);
 		if(Figure.BARTCASSIDY.equals(player.getName())){
@@ -532,7 +491,7 @@ public class Turn {
 		if(player.getHealth() <= 0 && players.size() > 2){
 			boolean doNotPlayBeer = false;
 			while(!doNotPlayBeer && player.getHealth() <= 0){
-				if(validPlayBeer(player, player.countBeers())){
+				if(validPlayBeer(player, player.countBeers(), userInterface)){
 					player.setHealth(player.getHealth() + 1);
 					discard.add(player.getHand().removeBeer());
 				} else {
@@ -540,14 +499,14 @@ public class Turn {
 				}
 			}
 			if(player.getHealth() <= 0){
-				handleDeath(player, damager);				
+				handleDeath(player, damager, currentPlayer, players, userInterface, deck, discard);				
 			}
 		}
 	}
 
-	public void handleDeath(Player player, Player damager) throws EndOfGameException {
+	public static void handleDeath(Player player, Player damager, Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard) throws EndOfGameException {
 		if(player.equals(currentPlayer)){
-			currentPlayer = getPreviousPlayer(currentPlayer);
+			currentPlayer = getPreviousPlayer(currentPlayer, players);
 		}
 		players.remove(player);
 		userInterface.printInfo(player.getName() + " is dead. Role was " + Player.roleToString(player.getRole()));
@@ -561,8 +520,7 @@ public class Turn {
 			}
 			deadDiscardAll(player, players, discard);
 			if(isGameOver(players)){
-				winner = getWinners(players);
-				userInterface.printInfo("Winners are " + winner);
+				userInterface.printInfo("Winners are " + getWinners(players));
 				throw new EndOfGameException("Game over");
 			}
 		}		
@@ -745,16 +703,7 @@ public class Turn {
 	}
 	
 	public static boolean isPlayable(Player player, String cardName, List<Player> players, int bangsPlayed){
-		if(Card.CARDBANG.equals(cardName) || Card.CARDMISSED.equals(cardName)){
-			if(Card.CARDMISSED.equals(cardName) && !Figure.CALAMITYJANET.equals(player.getName())){
-				return false;
-			}
-			if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getName())){			
-				return false;
-			}
-			List<Player> others = getPotentialTargets(player, cardName, players);
-			return !others.isEmpty();
-		} else if(Card.CARDPANIC.equals(cardName)){
+		if(Card.CARDPANIC.equals(cardName)){
 			List<Player> others = getPotentialTargets(player, cardName, players);
 			return !others.isEmpty();
 		} else if(Card.CARDCATBALOU.equals(cardName)){
@@ -768,8 +717,6 @@ public class Turn {
 	public static List<Player> getPotentialTargets(Player player, String cardName, List<Player> players){
 		if(Card.CARDJAIL.equals(cardName)){
 			return getJailablePlayers(player, players);
-		} else if(Card.CARDBANG.equals(cardName) || Card.CARDMISSED.equals(cardName)){
-			return getPlayersWithinRange(player, players, player.getGunRange());
 		} else if(Card.CARDPANIC.equals(cardName)){
 			return getPlayersWithCards(getPlayersWithinRange(player, players, 1));
 		} else if(Card.CARDCATBALOU.equals(cardName)){
@@ -814,7 +761,7 @@ public class Turn {
 		return cards.get(cardIndex);
 	}
 	
-	public boolean calamityBangOrMiss(Player player, int required, Discard discard, UserInterface userInterface){
+	public static boolean calamityBangOrMiss(Player player, List<Player> players, Player currentPlayer, int required, Deck deck, Discard discard, UserInterface userInterface){
 		int misses = player.countMisses();
 		int bangs = player.countBangs();
 		int playedBangMiss = -3;
@@ -849,7 +796,7 @@ public class Turn {
 			discard.add(player.getHand().removeMiss());
 			discard.add(player.getHand().removeBang());
 		} else {
-			damagePlayer(player, 1, player);
+			damagePlayer(player, players, currentPlayer, 1, player, deck, discard, userInterface);
 			return false;
 		}
 		return true;
