@@ -109,4 +109,8 @@ public class Player {
 		return hand.countBangs();
 	}
 
+	public int countMisses() {
+		return hand.countMisses();
+	}
+
 }

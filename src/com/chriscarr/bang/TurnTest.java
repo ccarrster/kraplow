@@ -532,6 +532,58 @@ public class TurnTest extends TestCase{
 		}
 	}
 	
+	public void testPlayGatlingMissJanet(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck());
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		List<Player> others = new ArrayList<Player>();
+		for(Player otherPlayer : players){
+			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+			otherPlayer.getHand().add(new Card(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+			others.add(otherPlayer);
+		}
+		others.remove(turn.getCurrentPlayer());
+		turn.play();
+		for(Player otherPlayer : others){
+			assertEquals(otherPlayer.getHealth(), otherPlayer.getMaxHealth());
+			assertEquals(otherPlayer.getHand().size(), 0);
+		}
+	}
+	
+	public void testPlayGatlingMissJanetBang(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck());
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		List<Player> others = new ArrayList<Player>();
+		for(Player otherPlayer : players){
+			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+			otherPlayer.getHand().add(new Card(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+			others.add(otherPlayer);
+		}
+		others.remove(turn.getCurrentPlayer());
+		turn.play();
+		for(Player otherPlayer : others){
+			assertEquals(otherPlayer.getHealth(), otherPlayer.getMaxHealth());
+			assertEquals(otherPlayer.getHand().size(), 0);
+		}
+	}
+	
 	public void testPlayGeneralStore(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
@@ -594,6 +646,28 @@ public class TurnTest extends TestCase{
 		assertEquals(sheriff.getMaxHealth() - 1, sheriff.getHealth());
 	}
 	
+	public void testPlayDuelLoseFirstJanet(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck());
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		for(Player player: players){
+			player.getFigure().setName(Figure.CALAMITYJANET);
+			player.getHand().add(new Card(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		}
+		sheriff.getFigure().setName("Joe Average");
+		UserInterface testUserInterface = new TestUserInterfaceBangBackOnce();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		turn.setDeck(Setup.setupDeck());
+		turn.play();
+		assertEquals(sheriff.getMaxHealth() - 1, sheriff.getHealth());
+	}
+	
 	public void testPlayDuelWinSecond(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
@@ -614,6 +688,35 @@ public class TurnTest extends TestCase{
 		Player enemy = players.get(otherPlayer);
 		enemy.getHand().add(new Card(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		sheriff.getHand().add(new Card(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		assertEquals(enemy.getHand().size(), 1);
+		assertEquals(sheriff.getHand().size(), 2);
+		turn.play();
+		assertEquals(enemy.getHand().size(), 0);
+		assertEquals(sheriff.getHand().size(), 0);
+		assertEquals(enemy.getMaxHealth() - 1, enemy.getHealth());
+	}
+	
+	public void testPlayDuelWinSecondJanet(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck());
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		turn.setDeck(Setup.setupDeck());
+		int otherPlayer = 0;
+		if(players.get(0).equals(sheriff)){
+			otherPlayer = 1;
+		}
+		Player enemy = players.get(otherPlayer);
+		enemy.getHand().add(new Card(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Card(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getFigure().setName(Figure.CALAMITYJANET);
 		assertEquals(enemy.getHand().size(), 1);
 		assertEquals(sheriff.getHand().size(), 2);
 		turn.play();
@@ -1769,6 +1872,39 @@ public class TurnTest extends TestCase{
 		Player enemy = others.get(0);
 		enemy.getHand().add(new Card(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		enemy.getHand().add(new Card(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		turn.play();
+		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
+		assertEquals(0, enemy.getHand().size());
+	}
+	
+	public void testSlabTheKillerJanetOneEach(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck());
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Card(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		Figure figure = new Figure();		
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		turn.setDeck(Setup.setupDeck());
+		List<Player> others = new ArrayList<Player>();
+		for(Player otherPlayer : players){
+			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
+			if(distance <= 1){
+				others.add(otherPlayer);
+			}
+		}
+		others.remove(sheriff);
+		figure.setName(Figure.SLABTHEKILLER);
+		sheriff.setFigure(figure);
+		Player enemy = others.get(0);
+		enemy.getHand().add(new Card(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		enemy.getHand().add(new Card(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		turn.play();
 		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
 		assertEquals(0, enemy.getHand().size());

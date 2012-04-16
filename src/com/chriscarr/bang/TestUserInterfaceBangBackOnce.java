@@ -56,8 +56,16 @@ public class TestUserInterfaceBangBackOnce implements
 	@Override
 	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
 			int missesRequired) {
-		// TODO Auto-generated method stub
-		return 0;
+		Hand hand = otherPlayer.getHand();
+		if(missesRequired == 2 && bangs >= 1 && misses >= 1){
+			return Figure.PLAYONEEACH;
+		} else if(hand.countBangs() > 0){
+			return Figure.PLAYBANG;
+		} else if(hand.countMisses() > 0){
+			return Figure.PLAYMISSED;
+		} else {
+			return Figure.GETSHOT;
+		}
 	}
 
 	@Override
