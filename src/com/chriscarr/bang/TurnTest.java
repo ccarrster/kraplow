@@ -336,7 +336,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Indians(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -360,7 +360,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Indians(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -387,7 +387,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Indians(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -414,7 +414,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Indians(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -440,7 +440,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Indians(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -466,7 +466,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Gatling(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -486,12 +486,12 @@ public class TurnTest extends TestCase{
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
 		Deck deck = new Deck();
-		deck.add(new Card(Card.CARDGATLING, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
+		deck.add(new Gatling(Card.CARDGATLING, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
 		turn.setDeck(Setup.setupDeck());
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Gatling(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -515,7 +515,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Gatling(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -540,7 +540,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Gatling(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -566,7 +566,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Gatling(Card.CARDGATLING, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -592,7 +592,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDGENERALSTORE, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new GeneralStore(Card.CARDGENERALSTORE, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -612,7 +612,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -634,7 +634,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		for(Player player: players){
 			player.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		}
@@ -654,7 +654,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		for(Player player: players){
 			player.getFigure().setName(Figure.CALAMITYJANET);
 			player.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
@@ -676,7 +676,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -704,7 +704,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -733,7 +733,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -757,7 +757,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Card(Card.CARDPANIC, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Panic(Card.CARDPANIC, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -997,7 +997,7 @@ public class TurnTest extends TestCase{
 		turn.setUserInterface(new TestUserInterface());
 		turn.passDynamite();
 		assertFalse(sheriff.getInPlay().hasItem(Card.CARDDYNAMITE));
-		Player nextPlayer = turn.getNextPlayer(turn.getCurrentPlayer());
+		Player nextPlayer = Turn.getNextPlayer(turn.getCurrentPlayer(), players);
 		assertTrue(nextPlayer.getInPlay().hasItem(Card.CARDDYNAMITE));
 	}
 	
@@ -2088,7 +2088,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
-		sheriff.getHand().add(new Card(Card.CARDPANIC, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new Panic(Card.CARDPANIC, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -2108,7 +2108,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
-		sheriff.getHand().add(new Card(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -2140,7 +2140,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
-		sheriff.getHand().add(new Card(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		sheriff.getHand().add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceDonePlaying();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -2161,7 +2161,8 @@ public class TurnTest extends TestCase{
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
 		players.add(sheriff);
-		List<Player> targets = Turn.getPotentialTargets(player, Card.CARDCATBALOU, players);
+		CatBalou catBalou = new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY);
+		List<Player> targets = catBalou.targets(player, players);
 		assertEquals(0, targets.size());
 	}
 	
@@ -2172,14 +2173,15 @@ public class TurnTest extends TestCase{
 		player.setHand(new Hand());
 		Player sheriff = new Player();
 		Hand hand = new Hand();
-		hand.add(new Card(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		hand.add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		sheriff.setHand(hand);
 		sheriff.setInPlay(new InPlay());
 		sheriff.setRole(Player.SHERIFF);
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
 		players.add(sheriff);
-		List<Player> targets = Turn.getPotentialTargets(player, Card.CARDCATBALOU, players);
+		CatBalou catBalou = new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY);
+		List<Player> targets = catBalou.targets(player, players);
 		assertEquals(1, targets.size());
 	}
 	
@@ -2198,7 +2200,8 @@ public class TurnTest extends TestCase{
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
 		players.add(sheriff);
-		List<Player> targets = Turn.getPotentialTargets(player, Card.CARDCATBALOU, players);
+		CatBalou catBalou = new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY);
+		List<Player> targets = catBalou.targets(player, players);
 		assertEquals(1, targets.size());
 	}
 	
@@ -2217,29 +2220,9 @@ public class TurnTest extends TestCase{
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
 		players.add(sheriff);
-		List<Player> targets = Turn.getPotentialTargets(player, Card.CARDCATBALOU, players);
+		CatBalou catBalou = new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY);
+		List<Player> targets = catBalou.targets(player, players);
 		assertEquals(1, targets.size());
-	}
-	
-	public void testTargetsFail(){
-		Player player = new Player();
-		player.setRole(Player.OUTLAW);
-		player.setInPlay(new InPlay());
-		player.setHand(new Hand());
-		Player sheriff = new Player();
-		sheriff.setHand(new Hand());
-		sheriff.setInPlay(new InPlay());
-		sheriff.setRole(Player.SHERIFF);
-		List<Player> players = new ArrayList<Player>();
-		players.add(player);
-		players.add(sheriff);
-		try{
-			Turn.getPotentialTargets(player, Card.CARDBEER, players);
-			fail();
-		} catch (RuntimeException e){
-			//Expected
-		}
-		
 	}
 }
 	

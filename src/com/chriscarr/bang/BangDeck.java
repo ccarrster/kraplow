@@ -70,30 +70,30 @@ public class BangDeck {
 		cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE10, Card.TYPEPLAY));
 		cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
 		
-		cards.add(new Card(Card.CARDPANIC, Card.DIAMONDS, Card.VALUE8, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDPANIC, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDPANIC, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));			
-		cards.add(new Card(Card.CARDPANIC, Card.HEARTS, Card.VALUEA, Card.TYPEPLAY));
+		cards.add(new Panic(Card.CARDPANIC, Card.DIAMONDS, Card.VALUE8, Card.TYPEPLAY));
+		cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
+		cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));			
+		cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEA, Card.TYPEPLAY));
 		
-		cards.add(new Card(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUE10, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUE9, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUEJ, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDCATBALOU, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
+		cards.add(new CatBalou(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUE10, Card.TYPEPLAY));
+		cards.add(new CatBalou(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUE9, Card.TYPEPLAY));
+		cards.add(new CatBalou(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUEJ, Card.TYPEPLAY));
+		cards.add(new CatBalou(Card.CARDCATBALOU, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
 		
-		cards.add(new Card(Card.CARDDUEL, Card.CLUBS, Card.VALUE8, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDDUEL, Card.DIAMONDS, Card.VALUEQ, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDDUEL, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
+		cards.add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUE8, Card.TYPEPLAY));
+		cards.add(new Duel(Card.CARDDUEL, Card.DIAMONDS, Card.VALUEQ, Card.TYPEPLAY));
+		cards.add(new Duel(Card.CARDDUEL, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
 		
 		cards.add(new Stagecoach(Card.CARDSTAGECOACH, Card.SPADES, Card.VALUE9, Card.TYPEPLAY));
 		cards.add(new Stagecoach(Card.CARDSTAGECOACH, Card.SPADES, Card.VALUE9, Card.TYPEPLAY));
 		
-		cards.add(new Card(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUEK, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUEA, Card.TYPEPLAY));
+		cards.add(new Indians(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUEK, Card.TYPEPLAY));
+		cards.add(new Indians(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUEA, Card.TYPEPLAY));
 		
-		cards.add(new Card(Card.CARDGENERALSTORE, Card.SPADES, Card.VALUEQ, Card.TYPEPLAY));
-		cards.add(new Card(Card.CARDGENERALSTORE, Card.SPADES, Card.VALUEQ, Card.TYPEPLAY));
+		cards.add(new GeneralStore(Card.CARDGENERALSTORE, Card.SPADES, Card.VALUEQ, Card.TYPEPLAY));
+		cards.add(new GeneralStore(Card.CARDGENERALSTORE, Card.SPADES, Card.VALUEQ, Card.TYPEPLAY));
 		
-		cards.add(new Card(Card.CARDGATLING, Card.HEARTS, Card.VALUE10, Card.TYPEPLAY));
+		cards.add(new Gatling(Card.CARDGATLING, Card.HEARTS, Card.VALUE10, Card.TYPEPLAY));
 		
 		cards.add(new Saloon(Card.CARDSALOON, Card.HEARTS, Card.VALUE5, Card.TYPEPLAY));
 		
