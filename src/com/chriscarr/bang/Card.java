@@ -1,6 +1,9 @@
 package com.chriscarr.bang;
 
-public class Card {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Card implements Playable{
 
 	public static final int HEARTS = 0;
 	public static final int CLUBS = 1;
@@ -164,5 +167,23 @@ public class Card {
 		} else {
 			throw new RuntimeException("Invalid value");
 		}
+	}
+
+	@Override
+	public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
+		return !player.isInPlay(name);
+	}
+
+	@Override
+	public void play(Player currentPlayer, List<Player> players,
+			UserInterface userInterface, Deck deck, Discard discard) {
+		currentPlayer.addInPlay(this);
+	}
+
+	@Override
+	public List<Player> targets(Player player, List<Player> players) {
+		List<Player> targets = new ArrayList<Player>();
+		targets.add(player);
+		return targets;
 	}
 }

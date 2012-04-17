@@ -28,6 +28,7 @@ public class Bang extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
 	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){
+		discard.add(this);
 		List<Player> others = Turn.getPlayersWithinRange(currentPlayer, players, currentPlayer.getInPlay().getGunRange());
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, others, userInterface);
 		int missesRequired = 1;

@@ -177,35 +177,12 @@ public class Turn {
 			return;
 		}		
 		Card playedCard = (Card)hand.get(card);
-		String cardName = playedCard.getName();
-		if(playedCard.getType() == Card.TYPEGUN){
+		if(playedCard.canPlay(currentPlayer, players, bangsPlayed)){
 			hand.remove(card);
-			playGun(playedCard, currentPlayer.getInPlay(), discard);			
-		} else if(playedCard.getType() == Card.TYPEITEM){
-			if(isItemPlayable(currentPlayer, cardName, players)){
-				hand.remove(card);
-				Player targetPlayer = currentPlayer;
-				if(cardName == Card.CARDJAIL){
-					List<Player> jailablePlayers = getJailablePlayers(currentPlayer, players);					
-					targetPlayer = getValidChosenPlayer(currentPlayer, jailablePlayers, userInterface);
-				}
-				targetPlayer.addInPlay(playedCard);
+			if(playedCard instanceof Bang || playedCard instanceof Missed){
+				bangsPlayed++;
 			}
-		} else {			
-			if(playedCard instanceof Playable){
-				Playable playable = ((Playable)playedCard);
-				boolean canPlay = playable.canPlay(currentPlayer, players, bangsPlayed);
-				if(!canPlay){
-					return;
-				} else {
-					if(playedCard instanceof Bang || playedCard instanceof Missed){
-						bangsPlayed++;
-					}
-					discard.add(hand.remove(card));
-					playable.play(currentPlayer, players, userInterface, deck, discard);
-					return;
-				}
-			}		
+			playedCard.play(currentPlayer, players, userInterface, deck, discard);
 		}
 	}
 	
@@ -220,9 +197,9 @@ public class Turn {
 	
 	static boolean validPlayBeer(Player player, int beers, UserInterface userInterface){
 		while(true){
-			boolean playedMiss = userInterface.respondBeer(player, beers);
-			if(!playedMiss || (playedMiss && beers > 0)){
-				return playedMiss;
+			boolean playedBeer = userInterface.respondBeer(player, beers);
+			if(!playedBeer || (playedBeer && beers > 0)){
+				return playedBeer;
 			}
 		}
 	}
@@ -234,16 +211,6 @@ public class Turn {
 				return playerShot;
 			}
 		}
-	}
-	
-	private void playGun(Card gun, InPlay inPlay, Discard discard){		
-		if(inPlay.hasGun()){
-			if(inPlay.getGunName().equals(gun.getName())){
-				return;
-			}
-			discard.add(inPlay.removeGun());
-		}
-		inPlay.setGun(gun);
 	}
 
 	public boolean isDonePlaying() {
@@ -305,7 +272,7 @@ public class Turn {
 		if(Figure.LUCKYDUKE.equals(player.getName())){
 			List<Object> cards = pullCards(deck, 2);
 			int chosenCard = -1;
-			while(chosenCard < 0 || chosenCard > cards.size() - 1){
+			while(chosenCard < 0 || chosenCard > (cards.size() - 1)){
 				chosenCard = userInterface.chooseDrawCard(player, cards);
 			}
 			for(Object card : cards){
@@ -575,15 +542,6 @@ public class Turn {
 			names.add(player.getName());
 		}
 		return names;
-	}
-	
-	public static boolean isItemPlayable(Player player, String cardName, List<Player> players){
-		if(Card.CARDJAIL.equals(cardName)){
-			List<Player> others = getJailablePlayers(player, players);
-			return !others.isEmpty();				
-		} else {
-			return !player.isInPlay(cardName);
-		}
 	}
 	
 	public static Player getValidChosenPlayer(Player player, List<Player> choosable, UserInterface userInterface){

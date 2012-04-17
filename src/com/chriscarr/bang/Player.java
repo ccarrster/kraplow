@@ -82,7 +82,7 @@ public class Player {
 	}
 
 	public boolean isInPlay(String name) {
-		return inPlay.hasItem(name);
+		return inPlay.hasItem(name) || inPlay.getGunName().equals(name);
 	}
 
 	public String getName() {
@@ -115,6 +115,18 @@ public class Player {
 
 	public void setGun(Card card) {
 		inPlay.setGun(card);
+	}
+
+	public Object getGunName() {
+		return inPlay.getGunName();
+	}
+
+	public boolean hasGun() {
+		return inPlay.hasGun();
+	}
+
+	public Object removeGun() {
+		return inPlay.removeGun();
 	}
 
 }

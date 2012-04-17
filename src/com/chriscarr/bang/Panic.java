@@ -25,7 +25,8 @@ public class Panic extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){		
+	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){
+		discard.add(this);
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		int chosenCard = -3;
 		while(chosenCard < -2 || chosenCard > otherPlayer.getInPlay().size() - 1){

@@ -1,24 +1,17 @@
 package com.chriscarr.bang;
 
-public class Gun {
+import java.util.List;
 
-	int range;
-	boolean limitlessBangs = false;
+public class Gun extends Card {
+	public Gun(String name, int suit, int value, int type) {
+		super(name, suit, value, type);
+	}
 	
-	public void setRange(int i) {
-		range = i;
+	public void play(Player currentPlayer, List<Player> players,
+			UserInterface userInterface, Deck deck, Discard discard) {
+		if(currentPlayer.hasGun()){			
+			discard.add(currentPlayer.removeGun());
+		}
+		currentPlayer.setGun(this);
 	}
-
-	public int getRange() {		
-		return range;
-	}
-
-	public void setLimitlessBangs(boolean b) {
-		limitlessBangs = b;
-	}
-
-	public boolean getLimitlessBangs() {
-		return limitlessBangs;
-	}
-
 }

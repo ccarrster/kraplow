@@ -17,6 +17,7 @@ public class WellsFargo extends Card implements Playable {
 	@Override
 	public void play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard) {
+		discard.add(this);
 		Turn.deckToHand(currentPlayer.getHand(), deck, 3);
 	}
 
