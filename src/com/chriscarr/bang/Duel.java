@@ -11,17 +11,14 @@ public class Duel extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getName())){			
-			return false;
-		}
-		return !targets(player, players).isEmpty();
+		return true;
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#targets(com.chriscarr.bang.Player, java.util.List)
 	 */
 	public List<Player> targets(Player player, List<Player> players){
-		return Turn.getPlayersWithinRange(player, players, player.getGunRange());
+		return Turn.others(player, players);
 	}
 	
 	/* (non-Javadoc)

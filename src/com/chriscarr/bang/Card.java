@@ -186,4 +186,16 @@ public class Card implements Playable{
 		targets.add(player);
 		return targets;
 	}
+
+	public String getDescription() {
+		return null;
+	}
+
+	public static String typeToString(int type) {
+		if(TYPEGUN == type || TYPEITEM == type){
+			return "Item";
+		} else {
+			return "Play";
+		}		
+	}
 }

@@ -35,4 +35,8 @@ public class Deck {
 		this.discard = discard;
 	}
 
+	public int size() {
+		return cards.size();
+	}
+
 }

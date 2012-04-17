@@ -1,5 +1,6 @@
 package com.chriscarr.bang;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WellsFargo extends Card implements Playable {
@@ -23,7 +24,9 @@ public class WellsFargo extends Card implements Playable {
 
 	@Override
 	public List<Player> targets(Player player, List<Player> players) {
-		return null;
+		List<Player> targets = new ArrayList<Player>();
+		targets.add(player);
+		return targets;
 	}
 
 }

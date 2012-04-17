@@ -100,4 +100,16 @@ public class InPlay {
 			return "Colt .45";
 		}
 	}
+
+	public Object getGun() {
+		return gun;
+	}
+
+	public List<GameStateCard> getGameStateInPlay() {
+		List<GameStateCard> gameStateCards = new ArrayList<GameStateCard>();
+		for(Object card : cards){
+			gameStateCards.add(Turn.cardToGameStateCard(((Card)card)));
+		}
+		return gameStateCards;
+	}
 }

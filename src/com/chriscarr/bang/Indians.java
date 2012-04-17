@@ -18,7 +18,7 @@ public class Indians extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#targets(com.chriscarr.bang.Player, java.util.List)
 	 */
 	public List<Player> targets(Player player, List<Player> players){
-		return null;
+		return Turn.others(player, players);
 	}
 	
 	/* (non-Javadoc)

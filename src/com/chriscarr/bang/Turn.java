@@ -612,4 +612,68 @@ public class Turn {
 		}
 		return true;
 	}
+
+	public GameState getGameState() {
+		GameState gameState = new TestGameState(this);
+		return gameState;
+	}
+
+	public GameStateCard getDiscardTopCard() {
+		if(!discard.isEmpty()){
+			return cardToGameStateCard((Card)discard.peek());
+		} else {
+			return null;
+		}
+	}
+	
+	public static GameStateCard cardToGameStateCard(Card fromCard){
+		if(fromCard == null){
+			return null;
+		}
+		GameStateCard card = new GameStateCard();
+		card.name = fromCard.getName();
+		card.suit = Card.suitToString(fromCard.getSuit());
+		card.value = Card.valueToString(fromCard.getValue());
+		card.type = Card.typeToString(fromCard.getType());
+		card.description = fromCard.getDescription();
+		return card;
+	}
+
+	public int getDeckSize() {
+		return deck.size();
+	}
+
+	public boolean isGameOver() {
+		return isGameOver(players);
+	}
+
+	public List<GameStatePlayer> getGameStatePlayers() {
+		List<GameStatePlayer> gameStatePlayers = new ArrayList<GameStatePlayer>();
+		for(Player player : players){
+			GameStatePlayer gameStatePlayer = new GameStatePlayer();
+			gameStatePlayer.name = player.getName();			
+			gameStatePlayer.health = player.getHealth();
+			gameStatePlayer.maxHealth = player.getMaxHealth();
+			gameStatePlayer.handSize = player.getHandSize();
+			gameStatePlayer.gun = player.getGameStateGun();
+			gameStatePlayer.isSheriff = player.isSheriff();
+			gameStatePlayer.specialAbility = player.getSpecialAbility();
+			gameStatePlayer.inPlay = player.getGameStateInPlay();
+			gameStatePlayers.add(gameStatePlayer);
+		}
+		return gameStatePlayers;
+	}
+
+	public List<String> targets(Player player, Card card) {
+		List<String> names = new ArrayList<String>();
+		List<Player> targets = card.targets(player, players);
+		for(Player target : targets){
+			names.add(target.getName());
+		}
+		return names; 
+	}
+
+	public boolean canPlay(Player player, Card card) {
+		return card.canPlay(player, players, bangsPlayed);
+	}
 }

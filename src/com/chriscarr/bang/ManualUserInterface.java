@@ -6,7 +6,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManualUserInterface implements UserInterface {
+public class ManualUserInterface implements UserInterface, GameStateListener {
+	
+	Turn turn;
+	
+	public void setTurn(Turn turn){
+		this.turn = turn;
+	}
 	
 	public void printInfo(String info){
 		System.out.println(info);
@@ -73,13 +79,23 @@ public class ManualUserInterface implements UserInterface {
 
 	@Override
 	public int askPlay(Player player) {
-		System.out.println(printPublicPlayer(player));
+		printGameState();
+		printPrivateInfo(player);
 		System.out.println("Play");
 		Hand hand = player.getHand();
 		int handSize = hand.size();
 		System.out.println("-1) done playing");
-		for(int i = 0; i < handSize; i++){			
-			System.out.println(i + ") " + ((Card)hand.get(i)).getName());
+		for(int i = 0; i < handSize; i++){
+			Card card = ((Card)hand.get(i));
+			boolean canPlay = turn.canPlay(player, card);
+			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+			if(canPlay){
+				System.out.print(" Targets: ");
+				for(String name : turn.targets(player, card)){
+					System.out.print(name + " ");
+				}
+			}
+			System.out.println("");
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -94,6 +110,10 @@ public class ManualUserInterface implements UserInterface {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void printPrivateInfo(Player player) {
+		System.out.println(Player.roleToString(player.getRole()));
 	}
 
 	@Override
@@ -315,29 +335,6 @@ public class ManualUserInterface implements UserInterface {
 			}
 		}
 	}
-	
-	private String printPublicPlayer(Player player){
-		StringBuffer playerInfo = new StringBuffer();
-		playerInfo.append(player.getFigure().getName());		
-		playerInfo.append("\n");
-		playerInfo.append(Figure.getSpecialAbilityText(player.getFigure().getName()));		
-		playerInfo.append("\n");
-		playerInfo.append("Health " + player.getHealth() + " / " + player.getMaxHealth());
-		playerInfo.append("\n");
-		playerInfo.append("Hand: " + player.getHand().size());
-		playerInfo.append("\n");
-		InPlay inPlay = player.getInPlay();
-		playerInfo.append("Gun: " + inPlay.getGunName());
-		playerInfo.append("\n");
-		playerInfo.append("In Play");
-		playerInfo.append("\n");
-		int inPlaySize = inPlay.size();		
-		for(int i = 0; i < inPlaySize; i++){
-			playerInfo.append(((Card)inPlay.get(i)).getName());
-			playerInfo.append("\n");
-		}		
-		return playerInfo.toString();
-	}
 
 	@Override
 	public boolean chooseFromPlayer(Player player) {
@@ -404,6 +401,39 @@ public class ManualUserInterface implements UserInterface {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void printGameState(){
+		GameState gameState = turn.getGameState();
+		System.out.println("Current Turn: " + gameState.getCurrentName());
+		System.out.println("Is game over: " + gameState.isGameOver());		
+		System.out.println("Deck size: " + gameState.getDeckSize());
+		System.out.println("Discard top card: " + gameState.discardTopCard());
+		List<GameStatePlayer> players = gameState.getPlayers();
+		for(GameStatePlayer player : players){
+			System.out.println("Name: " + player.name);
+			System.out.println("Is Sheriff: " + player.isSheriff);
+			System.out.println("Ability: " + player.specialAbility);
+			System.out.println("Health: " + player.health);
+			System.out.println("Max: " + player.maxHealth);
+			System.out.println("Hand: " + player.handSize);
+			GameStateCard gun = player.gun;
+			if(gun != null){
+				System.out.println("Discard top card: " + gun.name);
+				System.out.println("Discard top card: " + gun.suit);
+				System.out.println("Discard top card: " + gun.description);
+				System.out.println("Discard top card: " + gun.type);
+				System.out.println("Discard top card: " + gun.value);
+			}
+			List<GameStateCard> cards = player.inPlay;
+			for(GameStateCard card : cards){
+				System.out.println("name: " + card.name);
+				System.out.println("suit: " + card.suit);
+				System.out.println("desc: " + card.description);
+				System.out.println("type: " + card.type);
+				System.out.println("value: " + card.value);
 			}
 		}
 	}

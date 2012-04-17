@@ -10,7 +10,7 @@ public class Setup {
 	private Deck deck;
 	private List<Player> players;
 	
-	public Setup(int countPlayers, UserInterface userInterface){
+	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener) {
 		deck = setupDeck();
 		deck.shuffle();
 		Discard discard = new Discard();
@@ -22,9 +22,10 @@ public class Setup {
 		turn.setDiscard(discard);
 		turn.setPlayers(players);
 		turn.setUserInterface(userInterface);
+		gameStateListener.setTurn(turn);
 		turn.setSheriff();
 	}
-	
+
 	public static Deck setupDeck(){
 		Deck deck = new Deck();
 		List<Card> cards = BangDeck.makeDeck();

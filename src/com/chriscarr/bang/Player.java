@@ -1,5 +1,7 @@
 package com.chriscarr.bang;
 
+import java.util.List;
+
 public class Player {
 
 	public static final int SHERIFF = 0;
@@ -127,6 +129,26 @@ public class Player {
 
 	public Object removeGun() {
 		return inPlay.removeGun();
+	}
+
+	public int getHandSize() {
+		return hand.size();
+	}
+
+	public boolean isSheriff() {
+		return role == SHERIFF;
+	}
+
+	public GameStateCard getGameStateGun() {
+		return Turn.cardToGameStateCard((Card)inPlay.getGun());
+	}
+
+	public String getSpecialAbility() {
+		return Figure.getSpecialAbilityText(getName());
+	}
+
+	public List<GameStateCard> getGameStateInPlay() {
+		return inPlay.getGameStateInPlay();
 	}
 
 }

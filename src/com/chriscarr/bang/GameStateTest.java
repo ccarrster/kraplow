@@ -25,7 +25,7 @@ public class GameStateTest extends TestCase {
 			int health = player.getHealth();
 			int maxHealth = player.getMaxHealth();
 			int handSize = player.getHandSize();
-			String gunName = player.getGunName();
+			GameStateCard gun = player.getGun();
 			boolean isSheriff = player.isSheriff();
 			List<GameStateCard> inPlayCards = player.getCardsInPlay();
 			for(GameStateCard inPlayCard : inPlayCards){

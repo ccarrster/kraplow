@@ -1,6 +1,5 @@
 package com.chriscarr.bang;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Saloon extends Card implements Playable {
@@ -27,9 +26,7 @@ public class Saloon extends Card implements Playable {
 
 	@Override
 	public List<Player> targets(Player player, List<Player> players) {
-		List<Player> targets = new ArrayList<Player>();
-		targets.add(player);
-		return targets;
+		return players;
 	}
 
 }

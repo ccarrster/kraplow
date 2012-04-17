@@ -1,44 +1,43 @@
 package com.chriscarr.bang;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestGameState implements GameState {
 
+	Turn turn;
+	
+	public TestGameState(Turn turn) {
+		this.turn = turn;
+	}
+
 	@Override
 	public List<GameStatePlayer> getPlayers() {
-		// TODO Auto-generated method stub
-		return new ArrayList<GameStatePlayer>();
+		return turn.getGameStatePlayers();
 	}
 
 	@Override
 	public GameStateCard discardTopCard() {
-		// TODO Auto-generated method stub
-		return new GameStateCard();
+		return turn.getDiscardTopCard();
 	}
 
 	@Override
 	public String getCurrentName() {
-		// TODO Auto-generated method stub
-		return null;
+		return turn.getCurrentPlayer().getName();
 	}
 
 	@Override
 	public int getDeckSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return turn.getDeckSize();
 	}
 
 	@Override
 	public String getWinners() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isGameOver() {
-		// TODO Auto-generated method stub
-		return false;
+		return turn.isGameOver();
 	}
 
 }
