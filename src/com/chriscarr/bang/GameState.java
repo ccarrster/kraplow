@@ -10,8 +10,6 @@ public interface GameState {
 
 	boolean isGameOver();
 
-	String getWinners();
-
 	int getDeckSize();
 
 	GameStateCard discardTopCard();

@@ -31,11 +31,6 @@ public class TestGameState implements GameState {
 	}
 
 	@Override
-	public String getWinners() {
-		return null;
-	}
-
-	@Override
 	public boolean isGameOver() {
 		return turn.isGameOver();
 	}

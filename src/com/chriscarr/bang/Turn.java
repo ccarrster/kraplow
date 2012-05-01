@@ -64,7 +64,7 @@ public class Turn {
 				}
 			}
 		}catch(EndOfGameException e){
-			e.printStackTrace();
+			return;
 		}
 		if(players.contains(currentPlayer)){
 			discard(currentPlayer);
@@ -349,9 +349,9 @@ public class Turn {
 					doNotPlayBeer = true;
 				}
 			}
-			if(player.getHealth() <= 0){
-				handleDeath(player, damager, currentPlayer, players, userInterface, deck, discard);				
-			}
+		}
+		if(player.getHealth() <= 0){
+			handleDeath(player, damager, currentPlayer, players, userInterface, deck, discard);				
 		}
 	}
 
@@ -369,12 +369,12 @@ public class Turn {
 				userInterface.printInfo(damager.getName() + " killed an outlaw, draws 3 cards");
 				deckToHand(damager.getHand(), deck, 3);
 			}
-			deadDiscardAll(player, players, discard);
-			if(isGameOver(players)){
-				userInterface.printInfo("Winners are " + getWinners(players));
-				throw new EndOfGameException("Game over");
-			}
-		}		
+		}
+		deadDiscardAll(player, players, discard);
+		if(isGameOver(players)){
+			userInterface.printInfo("Winners are " + getWinners(players));
+			throw new EndOfGameException("Game over");
+		}
 	}
 	
 	public static void discardAll(Player player, Discard discard){
