@@ -1,4 +1,5 @@
 <%@page import="com.chriscarr.bang.*"%>
+<%@page import="java.util.*"%>
 
 <html>
 <head>
@@ -40,6 +41,30 @@ Players <%= players %>
 	GameState gameState = userInterface.getGameState();
 	out.println("deck size: " + gameState.getDeckSize());
 	out.println("is game over: " + gameState.isGameOver());
+	out.println("current turn: " + gameState.getCurrentName());
+	GameStateCard discardTopCard = gameState.discardTopCard();
+	if(discardTopCard != null){
+		out.println("discard top card: " + discardTopCard.name);
+	}
+	List<GameStatePlayer> gameStatePlayers = gameState.getPlayers();
+	for(GameStatePlayer player : gameStatePlayers){
+		out.println("name " + player.name);
+		out.println("ability " + player.specialAbility);
+		out.println("health " + player.health);
+		out.println("max health " + player.maxHealth);
+		out.println("hand size " + player.handSize);
+		out.println("is sheriff " + player.isSheriff);
+		GameStateCard gun = player.gun;
+		if(gun != null){
+			out.println("gun name " + gun.name);
+		}
+		List<GameStateCard> inPlay = player.inPlay;
+		for(GameStateCard inPlayCard : inPlay){
+			out.println("in play name " + inPlayCard.name);
+		}
+	}
+	
+	
 	String previousResult = request.getParameter("result");	
 	if(previousResult != null){
 		String[] previousResults = request.getParameterValues("result");

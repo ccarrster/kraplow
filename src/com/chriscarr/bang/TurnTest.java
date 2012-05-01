@@ -1200,12 +1200,25 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
-		players.add(new Player());
-		players.add(new Player());
-		player.setFigure(new Figure());
+		Player other1 = new Player();
+		other1.setRole(Player.OUTLAW);
+		Player other2 = new Player();
+		other2.setRole(Player.SHERIFF);
+		Figure figure1 = new Figure();
+		Figure figure2 = new Figure();
+		figure1.setName("Jim Normal");
+		figure2.setName("Phil Average");
+		other1.setFigure(figure1);
+		other2.setFigure(figure2);
+		players.add(other1);
+		players.add(other2);
+		Figure figure = new Figure();
+		figure.setName("Testerson Smithe");
+		player.setFigure(figure);
 		turn.setPlayers(players);
 		player.setHealth(1);
 		player.setHand(new Hand());
+		player.setInPlay(new InPlay());
 		assertTrue(players.contains(player));
 		turn.setUserInterface(new TestUserInterface());
 		turn.setDiscard(new Discard());
@@ -1219,8 +1232,21 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
-		players.add(new Player());
-		players.add(new Player());
+		player.setInPlay(new InPlay());
+		Player other1 = new Player();
+		other1.setRole(Player.OUTLAW);
+		Player other2 = new Player();
+		other2.setRole(Player.SHERIFF);
+		Figure figure1 = new Figure();
+		Figure figure2 = new Figure();
+		figure1.setName("Jim Normal");
+		figure2.setName("Phil Average");
+		other1.setFigure(figure1);
+		other2.setFigure(figure2);
+		players.add(other1);
+		players.add(other2);
+		Figure figure = new Figure();
+		figure.setName("Testerson Smithe");
 		turn.setPlayers(players);
 		player.setHealth(1);
 		turn.setUserInterface(new TestUserInterface());
@@ -1236,6 +1262,21 @@ public class TurnTest extends TestCase{
 		player.setHand(new Hand());
 		Turn turn = new Turn();
 		List<Player> players = new ArrayList<Player>();
+		player.setInPlay(new InPlay());
+		Player other1 = new Player();
+		other1.setRole(Player.OUTLAW);
+		Player other2 = new Player();
+		other2.setRole(Player.SHERIFF);
+		Figure figure1 = new Figure();
+		Figure figure2 = new Figure();
+		figure1.setName("Jim Normal");
+		figure2.setName("Phil Average");
+		other1.setFigure(figure1);
+		other2.setFigure(figure2);
+		players.add(other1);
+		players.add(other2);
+		Figure figure = new Figure();
+		figure.setName("Testerson Smithe");
 		players.add(player);
 		turn.setPlayers(players);
 		player.setHealth(1);
@@ -1243,10 +1284,10 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		player.getHand().add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
 		player.setFigure(new Figure());
-		Turn.damagePlayer(player, players, player, 1, null, null, null, new NoBeerUserInterface());
+		Turn.damagePlayer(player, players, player, 1, null, null, new Discard(), new NoBeerUserInterface());
 		turn.setUserInterface(new NoBeerUserInterface());
 		turn.setDiscard(new Discard());		
-		assertTrue(players.contains(player));
+		assertFalse(players.contains(player));
 	}
 	
 	public void testSheriffKillDeputy(){
@@ -1508,6 +1549,7 @@ public class TurnTest extends TestCase{
 		Figure figure = new Figure();
 		figure.setName(Figure.BARTCASSIDY);
 		player.setFigure(figure);
+		player.setMaxHealth(4);
 		Turn.damagePlayer(player, new ArrayList<Player>(), player, 1, player, deck, null, null);
 		assertEquals(player.getHand().size(), 1);
 	}
@@ -1946,17 +1988,20 @@ public class TurnTest extends TestCase{
 	public void testElGringo(){
 		Player elGringo = new Player();
 		Figure figure = new Figure();
-		figure.setName(Figure.ELGRINGO);		
+		figure.setName(Figure.ELGRINGO);
+		elGringo.setMaxHealth(4);
 		elGringo.setFigure(figure);
 		Hand gringoHand = new Hand();
 		elGringo.setHand(gringoHand);
 		Player other = new Player();
+		other.setMaxHealth(4);
+		other.setFigure(figure);
 		Hand otherHand = new Hand();
 		otherHand.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		other.setHand(otherHand);
 		Turn turn = new Turn();
 		turn.setPlayers(new ArrayList<Player>());
-		Turn.damagePlayer(elGringo, new ArrayList<Player>(), other, 1, other, null, null, null);
+		Turn.damagePlayer(elGringo, new ArrayList<Player>(), other, 1, other, null, null, new TestUserInterface());
 		assertTrue(otherHand.size() == 0);
 		assertTrue(gringoHand.size() == 1);
 	}
@@ -1966,6 +2011,7 @@ public class TurnTest extends TestCase{
 		Figure figure = new Figure();
 		figure.setName(Figure.ELGRINGO);		
 		elGringo.setFigure(figure);
+		elGringo.setMaxHealth(4);
 		Hand gringoHand = new Hand();
 		elGringo.setHand(gringoHand);
 		Player other = new Player();
