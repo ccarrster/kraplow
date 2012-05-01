@@ -40,9 +40,25 @@ Players <%= players %>
 	GameState gameState = userInterface.getGameState();
 	out.println("deck size: " + gameState.getDeckSize());
 	out.println("is game over: " + gameState.isGameOver());
-	String previousResult = request.getParameter("result");
+	String previousResult = request.getParameter("result");	
 	if(previousResult != null){
+		String[] previousResults = request.getParameterValues("result");
+		String tempResult = "";
+		if(previousResults.length > 1){
+			for(int i = 0; i < previousResults.length; i++){
+				tempResult += previousResults[i] + ",";
+			}
+			previousResult = tempResult;
+		}
 		userInterface.responses.add(previousResult);
+		try{
+			Thread.sleep(100);
+		}catch(Exception e){
+			//ignore
+		}
+	} else if(request.getParameter("twoForLife") != null){
+		//Hack no result checkboxes checked, no result param sent.
+		userInterface.responses.add("");
 		try{
 			Thread.sleep(100);
 		}catch(Exception e){
@@ -149,7 +165,27 @@ Players <%= players %>
 					<input type="submit" value="None">
 					</form>
 					<%	
-				} else {
+				} else if(command.equals("chooseTwoDiscardForLife")){
+					String[] splitData;
+					String data = commandData.substring(commandIndex + 1);
+					splitData = data.split(", ");
+					%>
+					<form>
+					<input type="hidden" name="countPlayers" value="<%=players%>">
+					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="twoForLife" value="true">
+					<%
+					for(int i = 0; i < splitData.length; i++){
+						%>
+						<input type="checkbox" name="result" value="<%=i%>"><%=splitData[i]%><br/>					
+						<%
+					}
+					%>
+					<input type="submit">
+					</form>
+					<%
+							
+				}else {
 					String[] splitData;
 					String data = commandData.substring(commandIndex + 1);
 					splitData = data.split(", ");
@@ -187,7 +223,7 @@ Players <%= players %>
 						<input type="submit" value="Done Playing">
 						</form>
 						<%
-					}										
+					}					
 					for(int i = 0; i < splitData.length; i++){
 						String targets = "";
 						Boolean canPlay = true;

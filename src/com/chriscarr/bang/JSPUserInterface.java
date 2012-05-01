@@ -20,9 +20,16 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		}
 	}
 	
-	private List<Object> makeCardList(String remove) {
-		throw new RuntimeException("makeCardList Not Implemented");
-		//return new ArrayList<Object>();
+	private List<Object> makeCardList(String remove, Player player) {
+		List<Object> cardsToDiscard = new ArrayList<Object>();
+		if(!"".equals(remove)){
+			String[] removed = remove.split(",");
+			Hand hand = player.getHand();
+			for(int i = 0; i < removed.length; i++){
+				cardsToDiscard.add(hand.get(Integer.parseInt(removed[i])));
+			}
+		}
+		return cardsToDiscard;
 	}
 
 	
@@ -136,7 +143,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		}
 		sendMessage(player.getName(), "chooseTwoDiscardForLife " + handCards);
 		waitForResponse();
-		return makeCardList(responses.remove(0));
+		return makeCardList(responses.remove(0), player);
 	}
 
 	@Override
