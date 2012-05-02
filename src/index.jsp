@@ -102,42 +102,7 @@ Players <%= players %>
 			if(commandIndex != -1){
 				String command = commandData.substring(0, commandIndex);
 				out.println("Command: " + command);				
-				if(command.equals("respondBang")){
-					String data = commandData.substring(commandIndex + 1);
-					out.println("You have: " + data);
-					%>					
-					<form>
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
-					<input type="hidden" name="result" value="true">
-					<input type="submit" value="true">
-					</form>
-					<form>
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
-					<input type="hidden" name="result" value="false">
-					<input type="submit" value="false">
-					</form>
-					<%
-				} else if(command.equals("respondMiss")){
-					String data = commandData.substring(commandIndex + 1);
-					String[] splitData = data.split(" ");
-					out.println("You have: " + splitData[0] + " req:" + splitData[1]);
-					%>
-					<form>
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
-					<input type="hidden" name="result" value="true">
-					<input type="submit" value="true">
-					</form>
-					<form>
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
-					<input type="hidden" name="result" value="false">
-					<input type="submit" value="false">
-					</form>
-					<%
-				} else if(command.equals("respondBangMiss")){
+				if(command.equals("respondBangMiss")){
 					String data = commandData.substring(commandIndex + 1);
 					String[] splitData = data.split(" ");
 					out.println("You have bangs: " + splitData[0] + " misses:" + splitData[1] + " required:" + splitData[2]);
@@ -222,7 +187,7 @@ Players <%= players %>
 						String[] tempSplitData = new String[splitData.length - 2];
 						System.arraycopy(splitData, 2, tempSplitData, 0, splitData.length - 2);
 						splitData = tempSplitData;
-					} else if(command.equals("askPlay") || command.equals("respondBeer")){
+					} else if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
 						%>
 						<form>
 						<input type="hidden" name="countPlayers" value="<%=players%>">
@@ -235,7 +200,7 @@ Players <%= players %>
 					for(int i = 0; i < splitData.length; i++){
 						String targets = "";
 						Boolean canPlay = true;
-						if(command.equals("askPlay") || command.equals("respondBeer")){
+						if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
 							String[] canPlayTargets = splitData[i].split("@");							
 							splitData[i] = canPlayTargets[0];							
 							if(canPlayTargets.length == 3){

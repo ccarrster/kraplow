@@ -13,12 +13,12 @@ public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
 
 	int banged = 0;
 	@Override
-	public boolean respondBang(Player indianPlayer, int bangs) {
+	public int respondBang(Player player) {
 		if(banged < 2){
 			banged = banged + 1;
-			return true;
+			return 0;
 		} else {
-			return false;
+			return -1;
 		}
 	}
 
@@ -64,9 +64,9 @@ public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
 	}
 
 	@Override
-	public boolean respondMiss(Player miss, int misses, int missesRequired) {
+	public int respondMiss(Player miss) {
 		// TODO Auto-generated method stub
-		return true;
+		return 0;
 	}
 
 	@Override

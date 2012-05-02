@@ -13,12 +13,12 @@ public class TestUserInterfaceBangBackOnce extends TestUserInterface implements
 
 	boolean banged = false;
 	@Override
-	public boolean respondBang(Player indianPlayer, int bangs) {
+	public int respondBang(Player player) {
 		if(!banged){
 			banged = true;
-			return true;
+			return 0;
 		} else {
-			return false;
+			return -1;
 		}
 	}
 
@@ -60,12 +60,6 @@ public class TestUserInterfaceBangBackOnce extends TestUserInterface implements
 		} else {
 			return Figure.GETSHOT;
 		}
-	}
-
-	@Override
-	public boolean respondMiss(Player miss, int misses, int missesRequired) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

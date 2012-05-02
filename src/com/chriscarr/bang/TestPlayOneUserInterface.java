@@ -11,12 +11,6 @@ public class TestPlayOneUserInterface extends TestUserInterface implements UserI
 	}
 
 	@Override
-	public boolean respondBang(Player indianPlayer, int bangs) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public int chooseGeneralStoreCard(Player generalPlayer,
 			List<Object> generalStoreCards) {
 		// TODO Auto-generated method stub
@@ -46,12 +40,6 @@ public class TestPlayOneUserInterface extends TestUserInterface implements UserI
 			int missesRequired) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean respondMiss(Player miss, int misses, int missesRequired) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

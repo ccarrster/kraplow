@@ -27,37 +27,20 @@ public class Duel extends Card implements Playable {
 	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){
 		discard.add(this);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, Turn.others(currentPlayer, players), userInterface);				
-		boolean currentCalamityJanet = false;
-		boolean otherCalamityJanet = false;
-		if(Figure.CALAMITYJANET.equals(currentPlayer.getName())){
-			currentCalamityJanet = true;
-		} else if(Figure.CALAMITYJANET.equals(other.getName())){
-			otherCalamityJanet = true;
-		}
-		boolean someoneIsShot = false;
-		while(!someoneIsShot){
-			if(otherCalamityJanet){
-				someoneIsShot = !Turn.calamityBangOrMiss(other, players, currentPlayer, 1, deck, discard, userInterface);
+		while(true){
+			int bangPlayed = Turn.validPlayBang(other, userInterface);
+			if(bangPlayed == -1){
+				Turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+				return;
 			} else {
-				if(!Turn.validPlayBang(other, other.countBangs(), userInterface)){
-					Turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-					someoneIsShot = true;
-				} else {
-					discard.add(other.getHand().removeBang());
-				}
-			}
-			if(!someoneIsShot){						
-				if(currentCalamityJanet){
-					someoneIsShot = !Turn.calamityBangOrMiss(currentPlayer, players, currentPlayer, 1, deck, discard, userInterface);
-				} else {
-					int bangs = currentPlayer.countBangs();
-					if(Turn.validPlayBang(currentPlayer, bangs, userInterface)){
-						discard.add(currentPlayer.getHand().removeBang());
-					} else {								
-						Turn.damagePlayer(currentPlayer, players, currentPlayer, 1, other, deck, discard, userInterface);
-						someoneIsShot = true;
-					}
-				}
+				discard.add(other.getHand().remove(bangPlayed));				
+			}		
+			int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
+			if(currentBangPlayed == -1){
+				Turn.damagePlayer(currentPlayer, players, currentPlayer, 1, other, deck, discard, userInterface);
+				return;						
+			} else {								
+				discard.add(currentPlayer.getHand().remove(currentBangPlayed));
 			}
 		}
 	}

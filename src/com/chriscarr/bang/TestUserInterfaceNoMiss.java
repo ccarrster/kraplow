@@ -11,17 +11,6 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 		return 0;
 	}
 
-	int banged = 0;
-	@Override
-	public boolean respondBang(Player indianPlayer, int bangs) {
-		if(banged < 2){
-			banged = banged + 1;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	@Override
 	public int chooseGeneralStoreCard(Player generalPlayer,
 			List<Object> generalStoreCards) {
@@ -57,12 +46,6 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 			int missesRequired) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean respondMiss(Player miss, int misses, int missesRequired) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

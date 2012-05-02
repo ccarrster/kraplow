@@ -42,19 +42,6 @@ public class Hand {
 		return bangs;
 	}
 
-	public Object removeBang() {		
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDBANG)){
-				cards.remove(card); 
-				if(cards.isEmpty()){
-					emptyListener.handleEmptyHand();
-				}
-				return card;
-			}
-		}
-		return null;
-	}
-
 	public int countMisses() {
 		int bangs = 0;
 		for(Object card : cards){

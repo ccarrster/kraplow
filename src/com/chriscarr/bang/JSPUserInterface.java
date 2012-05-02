@@ -152,10 +152,18 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean respondBang(Player player, int bangs) {
-		sendMessage(player.getName(), "respondBang " + bangs);
+	public int respondBang(Player player) {
+		Hand hand = player.getHand();
+		String handCards = "";
+		for(int i = 0; i < hand.size(); i++){
+			Card card = (Card)hand.get(i);
+			String name = card.getName();
+			boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Figure.CALAMITYJANET.equals(player.getName()));
+			handCards += name + "@" + canPlay + ", ";
+		}
+		sendMessage(player.getName(), "respondBang " + handCards);
 		waitForResponse();
-		return Boolean.parseBoolean(responses.remove(0));
+		return Integer.parseInt(responses.remove(0));
 	}
 
 	@Override
@@ -182,10 +190,18 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean respondMiss(Player player, int misses, int missesRequired) {
-		sendMessage(player.getName(), "respondMiss " + misses + " " + missesRequired);
+	public int respondMiss(Player player) {
+		Hand hand = player.getHand();
+		String handCards = "";
+		for(int i = 0; i < hand.size(); i++){
+			Card card = (Card)hand.get(i);
+			String name = card.getName();
+			boolean canPlay = Card.CARDMISSED.equals(name) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getName()));
+			handCards += name + "@" + canPlay + ", ";
+		}
+		sendMessage(player.getName(), "respondMiss " + handCards);
 		waitForResponse();
-		return Boolean.parseBoolean(responses.remove(0));
+		return Integer.parseInt(responses.remove(0));
 	}
 
 	@Override

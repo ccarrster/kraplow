@@ -186,11 +186,19 @@ public class Turn {
 		}
 	}
 	
-	static boolean validPlayMiss(Player player, int misses, int missesRequired, UserInterface userInterface){
+	static int validPlayMiss(Player player, UserInterface userInterface){
 		while(true){
-			boolean playedMiss = userInterface.respondMiss(player, misses, missesRequired);
-			if(!playedMiss || (playedMiss && misses >= missesRequired)){
+			int playedMiss = userInterface.respondMiss(player);
+			if(playedMiss == -1){
 				return playedMiss;
+			} else {
+				Hand hand = player.getHand();
+				Card card = (Card)hand.get(playedMiss); 
+				if(Card.CARDMISSED.equals(card.getName())){
+					return playedMiss;
+				} else if(Card.CARDBANG.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName())){
+					return playedMiss;
+				}
 			}
 		}
 	}
@@ -204,11 +212,19 @@ public class Turn {
 		}
 	}
 	
-	static boolean validPlayBang(Player player, int bangs, UserInterface userInterface){
+	static int validPlayBang(Player player, UserInterface userInterface){
 		while(true){
-			boolean playerShot = userInterface.respondBang(player, bangs);
-			if(!playerShot || (playerShot && bangs > 0)){
+			int playerShot = userInterface.respondBang(player);
+			if(playerShot == -1){
 				return playerShot;
+			} else {
+				Hand hand = player.getHand();
+				Card card = (Card)hand.get(playerShot);
+				if(Card.CARDBANG.equals(card.getName())){
+					return playerShot;
+				} else if(Card.CARDMISSED.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName())) {
+					return playerShot;
+				}
 			}
 		}
 	}
@@ -571,47 +587,6 @@ public class Turn {
 			cardIndex = userInterface.chooseCardToPutBack(player, cards);
 		}
 		return cards.get(cardIndex);
-	}
-	
-	public static boolean calamityBangOrMiss(Player player, List<Player> players, Player currentPlayer, int required, Deck deck, Discard discard, UserInterface userInterface){
-		int misses = player.countMisses();
-		int bangs = player.countBangs();
-		int playedBangMiss = -3;
-		boolean validPlay = false;
-		while(!validPlay){
-			playedBangMiss = userInterface.respondBangMiss(player, bangs, misses, required);
-			if(playedBangMiss == Figure.PLAYBANG){
-				if(bangs >= required){
-					validPlay = true;
-				}
-			} else if(playedBangMiss == Figure.PLAYMISSED){
-				if(misses >= required){
-					validPlay = true;
-				}
-			} else if(playedBangMiss == Figure.PLAYONEEACH){
-				if(misses >= 1 && bangs >= 1 && required == 2){
-					validPlay = true;
-				}
-			} else if(playedBangMiss == Figure.GETSHOT){
-				validPlay = true;
-			}
-		}
-		if(playedBangMiss == Figure.PLAYBANG){
-			for(int i = 0; i < required; i++){
-				discard.add(player.getHand().removeBang());
-			}
-		} else if(playedBangMiss == Figure.PLAYMISSED){
-			for(int i = 0; i < required; i++){
-				discard.add(player.getHand().removeMiss());
-			}
-		} else if(playedBangMiss == Figure.PLAYONEEACH){
-			discard.add(player.getHand().removeMiss());
-			discard.add(player.getHand().removeBang());
-		} else {
-			damagePlayer(player, players, currentPlayer, 1, player, deck, discard, userInterface);
-			return false;
-		}
-		return true;
 	}
 
 	public GameState getGameState() {

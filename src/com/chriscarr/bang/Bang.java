@@ -40,16 +40,12 @@ public class Bang extends Card implements Playable {
 		if(missesRequired <= 0){
 			return;
 		}
-		if(Figure.CALAMITYJANET.equals(otherPlayer.getName())){
-			Turn.calamityBangOrMiss(otherPlayer, players, currentPlayer, missesRequired, deck, discard, userInterface);
+		int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface); 
+		if(missPlayed == -1){
+			Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 		} else {
-			int misses = otherPlayer.countMisses();
-			if(Turn.validPlayMiss(otherPlayer, misses, missesRequired, userInterface)){
-				for(int i = 0; i < missesRequired; i++){
-					discard.add(otherPlayer.getHand().removeMiss());
-				}
-			} else {
-				Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+			for(int i = 0; i < missesRequired; i++){
+				discard.add(otherPlayer.getHand().remove(missPlayed));
 			}
 		}
 	}

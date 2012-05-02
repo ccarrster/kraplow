@@ -28,14 +28,11 @@ public class Indians extends Card implements Playable {
 		discard.add(this);
 		Player indianPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(indianPlayer != currentPlayer){
-			if(Figure.CALAMITYJANET.equals(indianPlayer.getName())){
-				Turn.calamityBangOrMiss(indianPlayer, players, currentPlayer, 1, deck, discard, userInterface);
+			int bangPlayed = Turn.validPlayBang(indianPlayer, userInterface);
+			if(bangPlayed == -1){
+				Turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);	
 			} else {
-				if(Turn.validPlayBang(indianPlayer, indianPlayer.countBangs(), userInterface)){
-					discard.add(indianPlayer.getHand().removeBang());
-				} else {
-					Turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-				}
+				discard.add(indianPlayer.getHand().remove(bangPlayed));	
 			}
 			indianPlayer = Turn.getNextPlayer(indianPlayer, players);
 		}

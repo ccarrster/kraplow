@@ -31,15 +31,11 @@ public class Gatling extends Card implements Playable {
 			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface) > 0){
 				return;
 			}
-			if(Figure.CALAMITYJANET.equals(gatlingPlayer.getName())){
-				Turn.calamityBangOrMiss(gatlingPlayer, players, currentPlayer, 1, deck, discard, userInterface);
+			int missPlayed = Turn.validPlayMiss(gatlingPlayer, userInterface);
+			if(missPlayed == -1){
+				Turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 			} else {
-				int misses = gatlingPlayer.countMisses();
-				if(Turn.validPlayMiss(gatlingPlayer, misses, 1, userInterface)){
-					discard.add(gatlingPlayer.getHand().removeMiss());
-				} else {
-					Turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-				}
+				discard.add(gatlingPlayer.getHand().remove(missPlayed));
 			}
 			gatlingPlayer = Turn.getNextPlayer(gatlingPlayer, players);
 		}

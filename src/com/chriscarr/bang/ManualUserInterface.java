@@ -225,23 +225,32 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean respondBang(Player player, int bangs) {
-		System.out.println(player.getFigure().getName());
-		System.out.println("Respond with Bang you have " + bangs);
-		if(bangs >= 1){
-			System.out.println("0) bang");
+	public int respondBang(Player player) {
+		printPrivateInfo(player);
+		System.out.println("Respond Bang");
+		Hand hand = player.getHand();
+		int handSize = hand.size();
+		System.out.println("-1) done playing");
+		for(int i = 0; i < handSize; i++){
+			Card card = ((Card)hand.get(i));
+			boolean canPlay = Card.CARDBANG.equals(card.getName()) || (Card.CARDMISSED.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName()));
+			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+			if(canPlay){
+				System.out.print(" Targets: ");
+				for(String name : turn.targets(player, card)){
+					System.out.print(name + " ");
+				}
+			}
+			System.out.println("");
 		}
-		System.out.println("1) not bang");
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
 		while (true){
 			try {
 				String line = in.readLine();
 				int cardNumber = Integer.parseInt(line);
-				if(cardNumber == 0 && bangs >= 1){
-					return true;
-				} else if(cardNumber == 1) {
-					return false;
+				if(cardNumber >= -1 && cardNumber < handSize){
+					return cardNumber;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -321,23 +330,32 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean respondMiss(Player player, int misses, int missesRequired) {
-		System.out.println(player.getFigure().getName());
-		System.out.println("Respond with Miss you have " + misses + " there are " + missesRequired + " required");
-		if(misses >= missesRequired){
-			System.out.println("0) miss");
+	public int respondMiss(Player player) {
+		printPrivateInfo(player);
+		System.out.println("Respond Miss");
+		Hand hand = player.getHand();
+		int handSize = hand.size();
+		System.out.println("-1) done playing");
+		for(int i = 0; i < handSize; i++){
+			Card card = ((Card)hand.get(i));
+			boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName()));
+			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+			if(canPlay){
+				System.out.print(" Targets: ");
+				for(String name : turn.targets(player, card)){
+					System.out.print(name + " ");
+				}
+			}
+			System.out.println("");
 		}
-		System.out.println("1) not miss");
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
 		while (true){
 			try {
 				String line = in.readLine();
 				int cardNumber = Integer.parseInt(line);
-				if(cardNumber == 0 && misses >= missesRequired){
-					return true;
-				} else if(cardNumber == 1) {
-					return false;
+				if(cardNumber >= -1 && cardNumber < handSize){
+					return cardNumber;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

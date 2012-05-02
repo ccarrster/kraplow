@@ -47,23 +47,12 @@ public class TestUserInterfaceDonePlaying extends TestUserInterface implements U
 	}
 
 	@Override
-	public boolean respondBang(Player player, int bangs) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
 			int missesRequired) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
-	public boolean respondMiss(Player miss, int misses, int missesRequired) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	public void printInfo(String info){
 		//do nothing
 	}

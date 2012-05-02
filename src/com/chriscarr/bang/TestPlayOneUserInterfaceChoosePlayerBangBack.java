@@ -14,9 +14,9 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack extends TestUserInterf
 
 
 	
-	public boolean respondBang(Player indianPlayer, int bangs) {
+	public int respondBang(Player indianPlayer) {
 		// TODO Auto-generated method stub
-		return true;
+		return 0;
 	}
 
 	@Override
@@ -60,9 +60,9 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack extends TestUserInterf
 	}
 
 	@Override
-	public boolean respondMiss(Player miss, int misses, int missesRequired) {
+	public int respondMiss(Player miss) {
 		// TODO Auto-generated method stub
-		return true;
+		return 0;
 	}
 
 	@Override

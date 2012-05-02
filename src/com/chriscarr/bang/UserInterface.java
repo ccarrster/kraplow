@@ -10,9 +10,9 @@ public interface UserInterface {
 
 	int askPlayer(Player player, List<String> otherPlayers);
 
-	boolean respondBang(Player player, int bangs);
+	int respondBang(Player player);
 
-	boolean respondMiss(Player miss, int misses, int missesRequired);
+	int respondMiss(Player player);
 
 	int chooseGeneralStoreCard(Player player,
 			List<Object> cards);

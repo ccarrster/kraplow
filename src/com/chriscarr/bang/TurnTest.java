@@ -406,32 +406,6 @@ public class TurnTest extends TestCase{
 		}
 	}
 	
-	public void testPlayIndiansCalamityJanetTakeDamage(){
-		Turn turn = new Turn();
-		List<Player> players = Setup.getNormalPlayers(4);
-		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
-		turn.setDiscard(new Discard());
-		turn.setSheriffManualTest();
-		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getHand().add(new Indians(Card.CARDINDIANS, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayerBangBack();
-		turn.setUserInterface(testUserInterface);
-		turn.setDiscard(new Discard());
-		List<Player> others = new ArrayList<Player>();
-		for(Player otherPlayer : players){
-			others.add(otherPlayer);
-			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
-		}
-		others.remove(turn.getCurrentPlayer());
-		
-		turn.play();
-		for(Player otherPlayer : others){
-			assertEquals(otherPlayer.getHealth(), otherPlayer.getMaxHealth() - 1);
-			assertEquals(otherPlayer.getHand().size(), 0);
-		}
-	}
-	
 	public void testPlayIndiansBangBack(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
