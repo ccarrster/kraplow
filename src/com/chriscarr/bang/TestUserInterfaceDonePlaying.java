@@ -2,7 +2,7 @@ package com.chriscarr.bang;
 
 import java.util.List;
 
-public class TestUserInterfaceDonePlaying implements UserInterface {
+public class TestUserInterfaceDonePlaying extends TestUserInterface implements UserInterface {
 
 	@Override
 	public int askDiscard(Player player) {
@@ -57,12 +57,6 @@ public class TestUserInterfaceDonePlaying implements UserInterface {
 			int missesRequired) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean respondBeer(Player player, int beers) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

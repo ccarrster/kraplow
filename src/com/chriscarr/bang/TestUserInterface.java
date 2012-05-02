@@ -45,11 +45,11 @@ public class TestUserInterface implements UserInterface {
 		
 	}
 
-	public boolean respondBeer(Player player, int beers) {
-		if(beers > 0){
-			return true;
+	public int respondBeer(Player player) {
+		if(player.countBeers() > 0){
+			return 0;
 		} else {
-			return false;
+			return -1;
 		}
 	}
 

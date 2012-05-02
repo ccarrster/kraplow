@@ -2,7 +2,7 @@ package com.chriscarr.bang;
 
 import java.util.List;
 
-public class TestUserInterfaceBangBackTwice implements
+public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
 		UserInterface {
 
 	@Override
@@ -39,12 +39,6 @@ public class TestUserInterfaceBangBackTwice implements
 	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
 		// TODO Auto-generated method stub
 		return -1;
-	}
-
-	@Override
-	public boolean respondBeer(Player player, int beers) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 

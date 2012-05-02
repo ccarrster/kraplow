@@ -19,7 +19,7 @@ public interface UserInterface {
 
 	int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
 
-	boolean respondBeer(Player player, int beers);
+	int respondBeer(Player player);
 
 	boolean chooseDiscard(Player player);
 	
@@ -33,5 +33,5 @@ public interface UserInterface {
 
 	int chooseDrawCard(Player player, List<Object> cards);
 
-	int chooseCardToPutBack(Player player, List<Object> cards);
+	int chooseCardToPutBack(Player player, List<Object> cards);	
 }

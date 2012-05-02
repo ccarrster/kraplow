@@ -2,7 +2,7 @@ package com.chriscarr.bang;
 
 import java.util.List;
 
-public class TestUserInterfaceNoMiss implements
+public class TestUserInterfaceNoMiss extends TestUserInterface implements
 		UserInterface {
 
 	@Override
@@ -44,12 +44,6 @@ public class TestUserInterfaceNoMiss implements
 		} else {
 			return -1;
 		}
-	}
-
-	@Override
-	public boolean respondBeer(Player player, int beers) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

@@ -195,10 +195,10 @@ public class Turn {
 		}
 	}
 	
-	static boolean validPlayBeer(Player player, int beers, UserInterface userInterface){
+	static int validPlayBeer(Player player, UserInterface userInterface){
 		while(true){
-			boolean playedBeer = userInterface.respondBeer(player, beers);
-			if(!playedBeer || (playedBeer && beers > 0)){
+			int playedBeer = userInterface.respondBeer(player);
+			if(playedBeer == -1 || Card.CARDBEER.equals(((Card)(player.getHand().get(playedBeer))).getName())){
 				return playedBeer;
 			}
 		}
@@ -342,9 +342,10 @@ public class Turn {
 		if(player.getHealth() <= 0 && players.size() > 2){
 			boolean doNotPlayBeer = false;
 			while(!doNotPlayBeer && player.getHealth() <= 0){
-				if(validPlayBeer(player, player.countBeers(), userInterface)){
+				int playedBeer = validPlayBeer(player, userInterface);
+				if(playedBeer != -1){
 					player.setHealth(player.getHealth() + 1);
-					discard.add(player.getHand().removeBeer());
+					discard.add(player.getHand().remove(playedBeer));
 				} else {
 					doNotPlayBeer = true;
 				}

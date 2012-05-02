@@ -167,10 +167,18 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean respondBeer(Player player, int beers) {
-		sendMessage(player.getName(), "respondBeer " + beers);
+	public int respondBeer(Player player) {
+		Hand hand = player.getHand();
+		String handCards = "";
+		for(int i = 0; i < hand.size(); i++){
+			Card card = (Card)hand.get(i);
+			String name = card.getName();
+			boolean canPlay = Card.CARDBEER.equals(name);
+			handCards += name + "@" + canPlay + ", ";
+		}
+		sendMessage(player.getName(), "respondBeer " + handCards);
 		waitForResponse();
-		return Boolean.parseBoolean(responses.remove(0));
+		return Integer.parseInt(responses.remove(0));
 	}
 
 	@Override

@@ -287,23 +287,32 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean respondBeer(Player player, int beers) {
-		System.out.println(player.getFigure().getName());
-		System.out.println("Respond with Beer you have " + beers);
-		if(beers >= 1){
-			System.out.println("0) beer");
+	public int respondBeer(Player player) {
+		printPrivateInfo(player);
+		System.out.println("Respond Beer");
+		Hand hand = player.getHand();
+		int handSize = hand.size();
+		System.out.println("-1) done playing");
+		for(int i = 0; i < handSize; i++){
+			Card card = ((Card)hand.get(i));
+			boolean canPlay = Card.CARDBEER.equals(card.getName());
+			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+			if(canPlay){
+				System.out.print(" Targets: ");
+				for(String name : turn.targets(player, card)){
+					System.out.print(name + " ");
+				}
+			}
+			System.out.println("");
 		}
-		System.out.println("1) not beer");
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
 		while (true){
 			try {
 				String line = in.readLine();
 				int cardNumber = Integer.parseInt(line);
-				if(cardNumber == 0 && beers >= 1){
-					return true;
-				} else if(cardNumber == 1) {
-					return false;
+				if(cardNumber >= -1 && cardNumber < handSize){
+					return cardNumber;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

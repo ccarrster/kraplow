@@ -119,23 +119,6 @@ Players <%= players %>
 					<input type="submit" value="false">
 					</form>
 					<%
-				} else if(command.equals("respondBeer")){
-					String data = commandData.substring(commandIndex + 1);
-					out.println("You have: " + data);
-					%>
-					<form>
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
-					<input type="hidden" name="result" value="true">
-					<input type="submit" value="true">
-					</form>
-					<form>
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
-					<input type="hidden" name="result" value="false">
-					<input type="submit" value="false">
-					</form>
-					<%
 				} else if(command.equals("respondMiss")){
 					String data = commandData.substring(commandIndex + 1);
 					String[] splitData = data.split(" ");
@@ -239,7 +222,7 @@ Players <%= players %>
 						String[] tempSplitData = new String[splitData.length - 2];
 						System.arraycopy(splitData, 2, tempSplitData, 0, splitData.length - 2);
 						splitData = tempSplitData;
-					} else if(command.equals("askPlay")){
+					} else if(command.equals("askPlay") || command.equals("respondBeer")){
 						%>
 						<form>
 						<input type="hidden" name="countPlayers" value="<%=players%>">
@@ -252,7 +235,7 @@ Players <%= players %>
 					for(int i = 0; i < splitData.length; i++){
 						String targets = "";
 						Boolean canPlay = true;
-						if(command.equals("askPlay")){
+						if(command.equals("askPlay") || command.equals("respondBeer")){
 							String[] canPlayTargets = splitData[i].split("@");							
 							splitData[i] = canPlayTargets[0];							
 							if(canPlayTargets.length == 3){
@@ -260,6 +243,10 @@ Players <%= players %>
 									canPlay = false;
 								} else {
 									targets = canPlayTargets[2];
+								}
+							} else if(canPlayTargets.length == 2){
+								if("false".equals(canPlayTargets[1])){
+									canPlay = false;
 								}
 							}
 						}
