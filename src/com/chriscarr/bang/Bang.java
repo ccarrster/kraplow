@@ -39,14 +39,27 @@ public class Bang extends Card implements Playable {
 		missesRequired = missesRequired - barrelMisses;
 		if(missesRequired <= 0){
 			return;
-		}
-		int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface); 
-		if(missPlayed == -1){
-			Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-		} else {
-			for(int i = 0; i < missesRequired; i++){
-				discard.add(otherPlayer.getHand().remove(missPlayed));
+		} else if(missesRequired == 1){
+			int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface); 
+			if(missPlayed == -1){
+				Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+			} else {
+				for(int i = 0; i < missesRequired; i++){
+					discard.add(otherPlayer.getHand().remove(missPlayed));
+				}
 			}
+		} else if(missesRequired == 2){
+			Hand hand = otherPlayer.getHand();
+			List<Object> cardsToDiscard = null;			
+			cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);			
+			if(cardsToDiscard.size() == 0){
+				Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);	
+			} else {
+				for(Object card : cardsToDiscard){
+					hand.remove(card);
+					discard.add(card);
+				}				
+			}	
 		}
 	}
 }

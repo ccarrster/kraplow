@@ -1,5 +1,6 @@
 package com.chriscarr.bang;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
@@ -49,21 +50,6 @@ public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
 	}
 
 	@Override
-	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
-			int missesRequired) {
-		Hand hand = otherPlayer.getHand();
-		if(missesRequired == 2 && bangs >= 1 && misses >= 1){
-			return Figure.PLAYONEEACH;
-		} else if(hand.countBangs() > 0){
-			return Figure.PLAYBANG;
-		} else if(hand.countMisses() > 0){
-			return Figure.PLAYMISSED;
-		} else {
-			return Figure.GETSHOT;
-		}
-	}
-
-	@Override
 	public int respondMiss(Player miss) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -100,5 +86,14 @@ public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
 	public int chooseCardToPutBack(Player player, List<Object> cards) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public List<Object> respondTwoMiss(Player player) {
+		List<Object> result = new ArrayList<Object>();
+		Hand hand = player.getHand();
+		result.add(hand.get(0));
+		result.add(hand.get(1));
+		return result;
 	}
 }

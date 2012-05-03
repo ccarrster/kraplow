@@ -89,6 +89,14 @@ Players <%= players %>
 		}catch(Exception e){
 			//ignore
 		}
+	} else if(request.getParameter("twoMisses") != null){
+		//Hack no result checkboxes checked, no result param sent.
+		userInterface.responses.add("");
+		try{
+			Thread.sleep(100);
+		}catch(Exception e){
+			//ignore
+		}
 	}
 	
 	if(!userInterface.messages.isEmpty()){
@@ -158,7 +166,34 @@ Players <%= players %>
 					</form>
 					<%
 							
-				}else {
+				} else if(command.equals("respondTwoMiss")){
+					String[] splitData;
+					String data = commandData.substring(commandIndex + 1);
+					splitData = data.split(", ");
+					%>
+					<form>
+					<input type="hidden" name="countPlayers" value="<%=players%>">
+					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="twoMisses" value="true">
+					<%
+					for(int i = 0; i < splitData.length; i++){
+						String[] nameCanPlaySplit = splitData[i].split("@");
+						String cardName = nameCanPlaySplit[0];
+						String canPlay = nameCanPlaySplit[1];
+						String disabled = "";
+						if("false".equals(canPlay)){
+							disabled = "disabled='true'";
+						}
+						%>
+						<input type="checkbox" name="result" value="<%=i%>" <%= disabled %>><%=cardName%><br/>					
+						<%
+					}
+					%>
+					<input type="submit">
+					</form>
+					<%
+							
+				} else {
 					String[] splitData;
 					String data = commandData.substring(commandIndex + 1);
 					splitData = data.split(", ");

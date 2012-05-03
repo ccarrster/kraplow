@@ -64,13 +64,6 @@ public class TestUserInterface implements UserInterface {
 	}
 
 	@Override
-	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
-			int missesRequired) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int respondMiss(Player miss) {
 		// TODO Auto-generated method stub
 		return -1;
@@ -107,5 +100,10 @@ public class TestUserInterface implements UserInterface {
 	public int chooseCardToPutBack(Player player, List<Object> cards) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<Object> respondTwoMiss(Player player) {
+		return new ArrayList<Object>();
 	}
 }

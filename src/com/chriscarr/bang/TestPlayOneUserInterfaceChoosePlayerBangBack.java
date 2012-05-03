@@ -45,21 +45,6 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack extends TestUserInterf
 	}
 
 	@Override
-	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
-			int missesRequired) {
-		// TODO Auto-generated method stub
-		Hand hand = otherPlayer.getHand();
-		if(hand.countBangs() > 0){
-			return Figure.PLAYBANG;
-		} else if(hand.countMisses() > 0){
-			return Figure.PLAYMISSED;
-		} else {
-			return Figure.GETSHOT;
-		}
-		
-	}
-
-	@Override
 	public int respondMiss(Player miss) {
 		// TODO Auto-generated method stub
 		return 0;

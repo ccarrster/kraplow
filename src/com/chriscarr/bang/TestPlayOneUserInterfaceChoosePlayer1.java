@@ -50,13 +50,6 @@ public class TestPlayOneUserInterfaceChoosePlayer1 extends TestUserInterface imp
 	}
 
 	@Override
-	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
-			int missesRequired) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int askPlay(Player player) {
 		// TODO Auto-generated method stub
 		return 0;

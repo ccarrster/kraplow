@@ -167,14 +167,6 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int respondBangMiss(Player player, int bangs, int misses,
-			int missesRequired) {
-		sendMessage(player.getName(), "respondBangMiss " + bangs + " " + misses + " " + missesRequired);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
-	}
-
-	@Override
 	public int respondBeer(Player player) {
 		Hand hand = player.getHand();
 		String handCards = "";
@@ -215,6 +207,23 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	
 	public void sendMessage(String player, String message){
 		messages.add(player + "-" + message);
+	}
+
+	@Override
+	public List<Object> respondTwoMiss(Player player) {
+		Hand hand = player.getHand();
+		String handCards = "";
+		for(int i = 0; i < hand.size(); i++){
+			boolean canPlay = false;
+			String cardName = ((Card)hand.get(i)).getName();
+			if(Card.CARDMISSED.equals(cardName) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getName()))){
+				canPlay = true;
+			}
+			handCards += cardName + "@" + canPlay + ", ";
+		}
+		sendMessage(player.getName(), "respondTwoMiss " + handCards);
+		waitForResponse();
+		return makeCardList(responses.remove(0), player);
 	}
 
 }

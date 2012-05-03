@@ -13,6 +13,8 @@ public interface UserInterface {
 	int respondBang(Player player);
 
 	int respondMiss(Player player);
+	
+	List<Object> respondTwoMiss(Player player);
 
 	int chooseGeneralStoreCard(Player player,
 			List<Object> cards);
@@ -24,8 +26,6 @@ public interface UserInterface {
 	boolean chooseDiscard(Player player);
 	
 	boolean chooseFromPlayer(Player player);	
-
-	int respondBangMiss(Player player, int bangs, int misses, int missesRequired);
 
 	List<Object> chooseTwoDiscardForLife(Player player);
 	

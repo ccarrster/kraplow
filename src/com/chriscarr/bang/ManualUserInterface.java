@@ -259,43 +259,6 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int respondBangMiss(Player player, int bangs, int misses,
-			int missesRequired) {
-		System.out.println(player.getFigure().getName());
-		System.out.println("Respond with Miss or Bang you have " + bangs + " and " + misses + " misses there are " + missesRequired + " required");
-		Hand hand = player.getHand();
-		if(hand.countBangs() >= missesRequired){
-			System.out.println(Figure.PLAYBANG + ") bang");
-		}
-		if(hand.countMisses() >= missesRequired){
-			System.out.println(Figure.PLAYMISSED + ") miss");
-		}
-		if(missesRequired == 2 && hand.countBangs() >= 1 && hand.countMisses() >= 1){
-			System.out.println(Figure.PLAYONEEACH + ") one of each");
-		}
-		System.out.println(Figure.GETSHOT + ") not bang or miss");
-		InputStreamReader converter = new InputStreamReader(System.in);
-		BufferedReader in = new BufferedReader(converter);
-		while (true){
-			try {
-				String line = in.readLine();
-				int cardNumber = Integer.parseInt(line);
-				if(cardNumber == Figure.PLAYBANG && hand.countBangs() >= missesRequired){
-					return Figure.PLAYBANG;
-				} else if(cardNumber == Figure.PLAYMISSED && hand.countMisses() >= missesRequired) {
-					return Figure.PLAYMISSED;
-				} else if(cardNumber == Figure.PLAYONEEACH && missesRequired == 2 && hand.countBangs() >= 1 && hand.countMisses() >= 1) {
-					return Figure.PLAYONEEACH;
-				} else if(cardNumber == Figure.GETSHOT) {
-					return Figure.GETSHOT;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public int respondBeer(Player player) {
 		printPrivateInfo(player);
 		System.out.println("Respond Beer");
@@ -461,6 +424,45 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 				System.out.println("desc: " + card.description);
 				System.out.println("type: " + card.type);
 				System.out.println("value: " + card.value);
+			}
+		}
+	}
+
+	@Override
+	public List<Object> respondTwoMiss(Player player) {
+		System.out.println(player.getFigure().getName());
+		System.out.println("Two misses or get shot");
+		Hand hand = player.getHand();
+		int handSize = hand.size();
+		InputStreamReader converter = new InputStreamReader(System.in);
+		BufferedReader in = new BufferedReader(converter);
+		List<Object> chosenCards = new ArrayList<Object>();
+		while (true){
+			System.out.println("-1) done choosing");
+			for(int i = 0; i < handSize; i++){
+				String chosen = " not chosen";
+				if(chosenCards.contains(hand.get(i))){
+					chosen = " chosen";
+				}
+				System.out.println(i + ") " + ((Card)hand.get(i)).getName() + chosen);
+			}
+			try {
+				String line = in.readLine();
+				int cardNumber = Integer.parseInt(line);
+				if(cardNumber >= -1 && cardNumber < handSize){
+					if(cardNumber == -1){
+						return chosenCards;
+					} else {
+						Object card = hand.get(cardNumber);
+						if(chosenCards.contains(card)){
+							chosenCards.remove(card);
+						} else {
+							chosenCards.add(card);
+						}
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

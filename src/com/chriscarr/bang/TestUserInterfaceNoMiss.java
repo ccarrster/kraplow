@@ -42,13 +42,6 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 	}
 
 	@Override
-	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
-			int missesRequired) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int askPlay(Player player) {
 		if(player.getHand().size() > 0){
 			return 0;

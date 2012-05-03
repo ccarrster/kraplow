@@ -146,7 +146,7 @@ public class Turn {
 	}
 
 	public void discard(Player player) {
-		discardTwoCardsForLife(player, userInterface);
+		discardTwoCardsForLife(player, discard, userInterface);
 		Hand hand = player.getHand();
 		while(hand.size() > player.getHealth()){
 			askPlayerToDiscard(player, discard);
@@ -342,7 +342,7 @@ public class Turn {
 	}
 	
 	public static void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{
-		discardTwoCardsForLife(player, userInterface);
+		discardTwoCardsForLife(player, discard, userInterface);
 		player.setHealth(player.getHealth() - damage);
 		if(Figure.BARTCASSIDY.equals(player.getName())){
 			for(int i = 0; i < damage; i++){
@@ -466,7 +466,7 @@ public class Turn {
 		}
 	}
 	
-	public static void discardTwoCardsForLife(Player player, UserInterface userInterface){
+	public static void discardTwoCardsForLife(Player player, Discard discard, UserInterface userInterface){
 		if(Figure.SIDKETCHUM.equals(player.getName())){
 			Hand hand = player.getHand();
 			if(hand.size() >= 2){
@@ -477,6 +477,7 @@ public class Turn {
 				if(cardsToDiscard.size() % 2 == 0){
 					for(Object card : cardsToDiscard){
 						hand.remove(card);
+						discard.add(card);
 					}
 					player.setHealth(player.getHealth() + (cardsToDiscard.size() / 2));
 				}
@@ -651,5 +652,25 @@ public class Turn {
 
 	public boolean canPlay(Player player, Card card) {
 		return card.canPlay(player, players, bangsPlayed);
+	}
+
+	public static List<Object> validRespondTwoMiss(Player player, UserInterface userInterface) {
+		List<Object> cards = null;
+		boolean validCards = false;
+		while(!validCards){
+			cards = userInterface.respondTwoMiss(player);
+			if(cards.size() == 0){
+				validCards = true;
+			} else if(cards.size() == 2){
+				validCards = true;
+				for(Object card : cards){
+					Card missCard = (Card)card;					
+					if(!(Card.CARDMISSED.equals(missCard.getName()) || (Card.CARDBANG.equals(missCard.getName()) && Figure.CALAMITYJANET.equals(player.getName())))){
+						validCards = false;
+					}
+				}
+			}
+		}
+		return cards;
 	}
 }

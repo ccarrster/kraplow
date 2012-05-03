@@ -46,13 +46,6 @@ public class TestUserInterfaceDonePlaying extends TestUserInterface implements U
 		return null;
 	}
 
-	@Override
-	public int respondBangMiss(Player otherPlayer, int bangs, int misses,
-			int missesRequired) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public void printInfo(String info){
 		//do nothing
 	}
