@@ -2045,8 +2045,8 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		turn.setPlayers(new ArrayList<Player>());
 		turn.setUserInterface(userInterface);
-		sidKetchum.setMaxHealth(1);
-		Turn.damagePlayer(sidKetchum, new ArrayList<Player>(), sidKetchum, 1, null, null, null, userInterface);
+		sidKetchum.setMaxHealth(1);		
+		Turn.damagePlayer(sidKetchum, new ArrayList<Player>(), sidKetchum, 1, null, null, new Discard(), userInterface);
 		assertEquals(1, sidKetchum.getHealth());
 		assertEquals(0, sidKetchum.getHand().size());
 	}
