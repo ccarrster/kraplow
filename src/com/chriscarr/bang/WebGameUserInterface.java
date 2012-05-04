@@ -10,12 +10,15 @@ import java.util.Set;
 public class WebGameUserInterface extends JSPUserInterface {
 	
 	Map<String, List<String>> messages;
+	Map<String, List<String>> responses;
 	Map<String, String> userFigureNames = null;
 	
 	public WebGameUserInterface(List<String> users){
 		messages = new HashMap<String, List<String>>();
+		responses = new HashMap<String, List<String>>();
 		for(String user : users){
 			messages.put(user, new ArrayList<String>());
+			responses.put(user, new ArrayList<String>());
 		}
 	}
 	
@@ -25,6 +28,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 		}
 		List<String> playerMessages = messages.get(userFigureNames.get(player));		
 		playerMessages.add(player + "-" + message);
+	}
+	
+	public void addResponse(String user, String message){
+		List<String> playerResponses = responses.get(user);		
+		playerResponses.add(message);
 	}
 	
 	public void printInfo(String info) {
@@ -52,5 +60,15 @@ public class WebGameUserInterface extends JSPUserInterface {
 		for(GameStatePlayer player : players){
 			userFigureNames.put(player.name, userIter.next());
 		}
+	}
+	
+	protected void waitForResponse(String player){
+		while(responses.get(userFigureNames.get(player)).isEmpty()){
+			Thread.yield();
+		}
+	}
+	
+	public String removeResponse(String player){
+		return responses.get(userFigureNames.get(player)).remove(0);
 	}
 }

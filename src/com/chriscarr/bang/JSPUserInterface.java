@@ -14,7 +14,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		responses = new ArrayList<String>();
 	}
 	
-	private void waitForResponse(){
+	protected void waitForResponse(String player){
 		while(responses.isEmpty()){
 			Thread.yield();
 		}
@@ -41,8 +41,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += ((Card)hand.get(i)).getName() + ", ";
 		}
 		sendMessage(player.getName(), "askDiscard " + handCards);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 	@Override
 	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
@@ -52,8 +52,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		}		
 		boolean hasGun = inPlay.hasGun();
 		sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + ", " + inPlayCards);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -72,8 +72,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += name + "@" + canPlay + "@" + targetString + ", ";
 		}
 		sendMessage(player.getName(), "askPlay " + handCards);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -83,8 +83,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			names += name + ", ";
 		}
 		sendMessage(player.getName(), "askPlayer " + names);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -94,15 +94,15 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			cardString += ((Card)cards.get(i)).getName() + " " + Card.suitToString(((Card)cards.get(i)).getSuit()) + " " + Card.valueToString(((Card)cards.get(i)).getValue()) + ", ";
 		}
 		sendMessage(player.getName(), "chooseCardToPutBack " + cardString);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
 	public boolean chooseDiscard(Player player) {
 		sendMessage(player.getName(), "chooseDiscard");
-		waitForResponse();
-		return Boolean.parseBoolean(responses.remove(0));
+		waitForResponse(player.getName());
+		return Boolean.parseBoolean(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -112,15 +112,15 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			cardString += ((Card)cards.get(i)).getName() + " " + Card.suitToString(((Card)cards.get(i)).getSuit()) + " " + Card.valueToString(((Card)cards.get(i)).getValue()) + ", ";
 		}
 		sendMessage(player.getName(), "chooseDrawCard " + cardString);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
 	public boolean chooseFromPlayer(Player player) {
 		sendMessage(player.getName(), "chooseFromPlayer");
-		waitForResponse();
-		return Boolean.parseBoolean(responses.remove(0));
+		waitForResponse(player.getName());
+		return Boolean.parseBoolean(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -130,8 +130,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			cardString += ((Card)cards.get(i)).getName() + ", ";
 		}
 		sendMessage(player.getName(), "chooseGeneralStoreCard " + cardString);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -142,8 +142,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += ((Card)hand.get(i)).getName() + ", ";
 		}
 		sendMessage(player.getName(), "chooseTwoDiscardForLife " + handCards);
-		waitForResponse();
-		return makeCardList(responses.remove(0), player);
+		waitForResponse(player.getName());
+		return makeCardList(removeResponse(player.getName()), player);
 	}
 
 	@Override
@@ -162,8 +162,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondBang " + handCards);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -177,8 +177,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondBeer " + handCards);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -192,8 +192,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondMiss " + handCards);
-		waitForResponse();
-		return Integer.parseInt(responses.remove(0));
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
 	}
 
 	@Override
@@ -222,8 +222,12 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += cardName + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondTwoMiss " + handCards);
-		waitForResponse();
-		return makeCardList(responses.remove(0), player);
+		waitForResponse(player.getName());
+		return makeCardList(removeResponse(player.getName()), player);
+	}
+	
+	public String removeResponse(String playerName){
+		return responses.remove(0);
 	}
 
 }

@@ -22,6 +22,12 @@ if(join != null){
 				<input type="hidden" name="leave" value="<%= user %>">
 				<input type="submit" value="Leave">			
 			</form>
+			<form method="POST" action="index.jsp">
+				<input type="hidden" name="countPlayers" value="null">
+				<input type="hidden" name="gameStarted" value="true">
+				<input type="hidden" name="user" value="<%=user%>">
+				<input type="submit" value="refresh" id="refresh">
+			</form>
 		<%
 		if(WebGame.canStart()){
 			%>

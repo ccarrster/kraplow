@@ -15,7 +15,7 @@ String user = request.getParameter("user");
 if(webStart != null){
 	WebGame.start();
 	%>
-	<form>
+	<form method="POST">
 	<input type="hidden" name="user" value="<%=user%>">
 	<input type="hidden" name="countPlayers" value="<%=players%>">
 	<input type="hidden" name="gameStarted" value="true">
@@ -23,7 +23,7 @@ if(webStart != null){
 	</form>
 	<%
 } else if(players == null){%>
-<form>
+<form method="POST">
 <select id="countPlayers" name="countPlayers">
 <option value="4">4</option>
 <option value="5">5</option>
@@ -42,7 +42,7 @@ Players <%= players %>
 	JSPUserInterface x = new JSPUserInterface();
 	webInit.setup(Integer.parseInt(players), x, x);
 	%>
-	<form>
+	<form method="POST">
 	<input type="hidden" name="countPlayers" value="<%=players%>">
 	<input type="hidden" name="gameStarted" value="true">
 	<input type="submit">
@@ -76,9 +76,16 @@ Players <%= players %>
 		}
 	}
 	
+
+	List<String> messages;
+	if(user != null){
+		messages = ((WebGameUserInterface)userInterface).getMessages(user);
+	} else {
+		messages = userInterface.messages;
+	}
 	
 	String previousResult = request.getParameter("result");	
-	if(previousResult != null){
+	if(previousResult != null){		
 		String[] previousResults = request.getParameterValues("result");
 		String tempResult = "";
 		if(previousResults.length > 1){
@@ -87,42 +94,32 @@ Players <%= players %>
 			}
 			previousResult = tempResult;
 		}
-		userInterface.responses.add(previousResult);
-		try{
-			Thread.sleep(100);
-		}catch(Exception e){
-			//ignore
+		if(user == null){
+			userInterface.responses.add(previousResult);
+		} else {
+			((WebGameUserInterface)userInterface).addResponse(user, previousResult);
 		}
+		messages.remove(0);
 	} else if(request.getParameter("twoForLife") != null){
 		//Hack no result checkboxes checked, no result param sent.
-		userInterface.responses.add("");
-		try{
-			Thread.sleep(100);
-		}catch(Exception e){
-			//ignore
+		if(user == null){
+			userInterface.responses.add("");
+		} else {
+			((WebGameUserInterface)userInterface).addResponse(user, "");
 		}
+		messages.remove(0);
 	} else if(request.getParameter("twoMisses") != null){
 		//Hack no result checkboxes checked, no result param sent.
-		userInterface.responses.add("");
-		try{
-			Thread.sleep(100);
-		}catch(Exception e){
-			//ignore
+		if(user == null){
+			userInterface.responses.add("");
+		} else {
+			((WebGameUserInterface)userInterface).addResponse(user, "");
 		}
-	}
-	
-	List<String> messages;
-	out.println("user: " + user);
-	if(user != null){
-		out.println("WebGame");
-		messages = ((WebGameUserInterface)userInterface).getMessages(user);
-	} else {
-		out.println("JSP");
-		messages = userInterface.messages;
+		messages.remove(0);
 	}
 	
 	if(!messages.isEmpty()){
-		String message = messages.remove(0);		
+		String message = messages.get(0);
 		if(message.contains("-")){
 			String[] splitMessage = message.split("-");
 			String name = splitMessage[0];
@@ -137,14 +134,14 @@ Players <%= players %>
 					String[] splitData = data.split(" ");
 					out.println("You have bangs: " + splitData[0] + " misses:" + splitData[1] + " required:" + splitData[2]);
 					%>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="0">
 					<input type="submit" value="Bang">
 					</form>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
@@ -154,7 +151,7 @@ Players <%= players %>
 					<% 
 					if(splitData[2].equals("2")){
 					%>
-						<form>
+						<form method="POST">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="user" value="<%=user%>">
@@ -164,7 +161,7 @@ Players <%= players %>
 					<%
 					}
 					%>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
@@ -177,7 +174,7 @@ Players <%= players %>
 					String data = commandData.substring(commandIndex + 1);
 					splitData = data.split(", ");
 					%>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
@@ -198,7 +195,7 @@ Players <%= players %>
 					String data = commandData.substring(commandIndex + 1);
 					splitData = data.split(", ");
 					%>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
@@ -229,7 +226,7 @@ Players <%= players %>
 					if(command.equals("askOthersCard")){
 						if(splitData[0].equals("true")){
 						%>
-						<form>
+						<form method="POST">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
@@ -240,7 +237,7 @@ Players <%= players %>
 						}
 						if(splitData[1].equals("true")){
 						%>
-						<form>
+						<form method="POST">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-2">
@@ -254,7 +251,7 @@ Players <%= players %>
 						splitData = tempSplitData;
 					} else if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
 						%>
-						<form>
+						<form method="POST">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
@@ -283,7 +280,7 @@ Players <%= players %>
 						}
 						if(!"".equals(splitData[i].trim())){
 							%>
-							<form>
+							<form method="POST">
 							<input type="hidden" name="countPlayers" value="<%=players%>">
 							<input type="hidden" name="gameStarted" value="true">
 							<input type="hidden" name="result" value="<%=i%>">
@@ -298,14 +295,14 @@ Players <%= players %>
 				out.println("Command: " + commandData);
 				if(commandData.equals("chooseFromPlayer") || commandData.equals("chooseDiscard")){
 					%>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="true">
 					<input type="submit" value="true">
 					</form>
-					<form>
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="result" value="false">
@@ -324,7 +321,12 @@ Players <%= players %>
 	}
 }
 %>
-
+<form method="POST">
+<input type="hidden" name="countPlayers" value="<%=players%>">
+<input type="hidden" name="gameStarted" value="true">
+<input type="hidden" name="user" value="<%=user%>">
+<input type="submit" value="refresh" id="refresh">
+</form>
 </p>
 
 
