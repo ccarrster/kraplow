@@ -60,12 +60,32 @@ Players <%= players %>
 	}
 	List<GameStatePlayer> gameStatePlayers = gameState.getPlayers();
 	for(GameStatePlayer player : gameStatePlayers){
-		out.println("name " + player.name);
-		out.println("ability " + player.specialAbility);
-		out.println("health " + player.health);
-		out.println("max health " + player.maxHealth);
-		out.println("hand size " + player.handSize);
-		out.println("is sheriff " + player.isSheriff);
+		%><div style="border: 1px solid #000"><%
+		out.println(player.name);
+		if(player.isSheriff){
+			%>
+			<img src="sheriff.png" width="20">
+			<%
+		}
+		%><div><%
+		for(int i = 0; i < player.health; i++){
+			%>
+			<img src="bullet.png" width="20">
+			<%
+		}		
+		for(int i = player.health; i < player.maxHealth; i++){
+			%>
+			<img src="emptybullet.png" width="20">
+			<%
+		}
+		%></div><div><%
+		for(int i = 0; i < player.handSize; i++){
+			%>
+			<img src="card.png" width="20">
+			<%
+		}
+		%></div><%
+		out.println(" - " + player.specialAbility);
 		GameStateCard gun = player.gun;
 		if(gun != null){
 			out.println("gun name " + gun.name);
@@ -74,6 +94,7 @@ Players <%= players %>
 		for(GameStateCard inPlayCard : inPlay){
 			out.println("in play name " + inPlayCard.name);
 		}
+		%></div><%
 	}
 	
 
