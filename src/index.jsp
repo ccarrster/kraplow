@@ -317,6 +317,7 @@ Players <%= players %>
 			
 		} else {
 			out.println("info: " + message);
+			messages.remove(0);
 		}
 	}
 }
