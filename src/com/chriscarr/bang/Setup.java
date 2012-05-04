@@ -26,6 +26,11 @@ public class Setup {
 		turn.setSheriff();
 	}
 
+	public Setup(List<String> players2, UserInterface userInterface,
+			GameStateListener gameStateListener) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public static Deck setupDeck(){
 		Deck deck = new Deck();
 		List<Card> cards = BangDeck.makeDeck();

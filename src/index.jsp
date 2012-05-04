@@ -10,7 +10,19 @@
 <h1>Kraplow!</h1>
 <% String players = request.getParameter("countPlayers");
 String gameStarted = request.getParameter("gameStarted");
-if(players == null){%>
+String webStart = request.getParameter("webStart");
+String user = request.getParameter("user");
+if(webStart != null){
+	WebGame.start();
+	%>
+	<form>
+	<input type="hidden" name="user" value="<%=user%>">
+	<input type="hidden" name="countPlayers" value="<%=players%>">
+	<input type="hidden" name="gameStarted" value="true">
+	<input type="submit">
+	</form>
+	<%
+} else if(players == null){%>
 <form>
 <select id="countPlayers" name="countPlayers">
 <option value="4">4</option>
@@ -99,8 +111,18 @@ Players <%= players %>
 		}
 	}
 	
-	if(!userInterface.messages.isEmpty()){
-		String message = userInterface.messages.remove(0);
+	List<String> messages;
+	out.println("user: " + user);
+	if(user != null){
+		out.println("WebGame");
+		messages = ((WebGameUserInterface)userInterface).getMessages(user);
+	} else {
+		out.println("JSP");
+		messages = userInterface.messages;
+	}
+	
+	if(!messages.isEmpty()){
+		String message = messages.remove(0);		
 		if(message.contains("-")){
 			String[] splitMessage = message.split("-");
 			String name = splitMessage[0];
@@ -118,12 +140,14 @@ Players <%= players %>
 					<form>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="0">
 					<input type="submit" value="Bang">
 					</form>
 					<form>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="1">
 					<input type="submit" value="Miss">
 					</form>
@@ -133,6 +157,7 @@ Players <%= players %>
 						<form>
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
+						<input type="hidden" name="user" value="<%=user%>">
 						<input type="hidden" name="result" value="3">
 						<input type="submit" value="One each">
 						</form>
@@ -142,6 +167,7 @@ Players <%= players %>
 					<form>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="2">
 					<input type="submit" value="None">
 					</form>
@@ -154,6 +180,7 @@ Players <%= players %>
 					<form>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="twoForLife" value="true">
 					<%
 					for(int i = 0; i < splitData.length; i++){
@@ -174,6 +201,7 @@ Players <%= players %>
 					<form>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="twoMisses" value="true">
 					<%
 					for(int i = 0; i < splitData.length; i++){
@@ -205,6 +233,7 @@ Players <%= players %>
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
+						<input type="hidden" name="user" value="<%=user%>">
 						<input type="submit" value="Hand">
 						</form>
 						<%
@@ -215,6 +244,7 @@ Players <%= players %>
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-2">
+						<input type="hidden" name="user" value="<%=user%>">
 						<input type="submit" value="Gun">
 						</form>
 						<%
@@ -228,6 +258,7 @@ Players <%= players %>
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
+						<input type="hidden" name="user" value="<%=user%>">
 						<input type="submit" value="Done Playing">
 						</form>
 						<%
@@ -256,6 +287,7 @@ Players <%= players %>
 							<input type="hidden" name="countPlayers" value="<%=players%>">
 							<input type="hidden" name="gameStarted" value="true">
 							<input type="hidden" name="result" value="<%=i%>">
+							<input type="hidden" name="user" value="<%=user%>">
 							<input type="submit" value="<%=splitData[i]%>" <% if(!canPlay){out.print("disabled='true'");}%>><%= targets %>
 							</form>
 							<%
@@ -269,6 +301,7 @@ Players <%= players %>
 					<form>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="true">
 					<input type="submit" value="true">
 					</form>
@@ -276,6 +309,7 @@ Players <%= players %>
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="result" value="false">
+					<input type="hidden" name="user" value="<%=user%>">
 					<input type="submit" value="false">
 					</form>
 					<%

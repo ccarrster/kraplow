@@ -1,9 +1,10 @@
 package com.chriscarr.bang;
 
+
 public class WebInit {
 	
 	public static UserInterface userInterface;
-	public static GameStateListener gameStateListener;
+	public static GameStateListener gameStateListener;	
 	
 	public void setup(int numPlayers, UserInterface userInterface, GameStateListener gameStateListener){
 		Thread gameThread = new Banana(numPlayers, userInterface, gameStateListener);
