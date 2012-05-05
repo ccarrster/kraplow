@@ -49,25 +49,26 @@ public class Turn {
 	}
 	
 	private void turnLoop(Player currentPlayer){
-		try{
+		Player localCurrentPlayer = currentPlayer;
+		try{			
 			if(isDynamiteExplode()){
 				Player explodePlayer = currentPlayer;
 				userInterface.printInfo("Dynamite Exploded on " + explodePlayer.getName());
-				damagePlayer(explodePlayer, players, currentPlayer, 3, null, deck, discard, userInterface);			
+				damagePlayer(explodePlayer, players, localCurrentPlayer, 3, null, deck, discard, userInterface);			
 			} else {			
 				passDynamite();
 			}
-			if(!isInJail() && players.contains(currentPlayer)){
-				this.drawCards(currentPlayer, deck);
-				while(!donePlaying && players.contains(currentPlayer)){
+			if(!isInJail() && players.contains(localCurrentPlayer)){
+				this.drawCards(localCurrentPlayer, deck);
+				while(!donePlaying && players.contains(localCurrentPlayer)){
 					play();
 				}
 			}
 		}catch(EndOfGameException e){
 			return;
 		}
-		if(players.contains(currentPlayer)){
-			discard(currentPlayer);
+		if(players.contains(localCurrentPlayer)){
+			discard(localCurrentPlayer);
 		}
 		nextTurn();
 	}
