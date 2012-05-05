@@ -51,50 +51,68 @@ Players <%= players %>
 } else {
 	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
 	GameState gameState = userInterface.getGameState();
-	out.println("deck size: " + gameState.getDeckSize());
-	out.println("is game over: " + gameState.isGameOver());
-	out.println("current turn: " + gameState.getCurrentName());
+	out.println(gameState.getDeckSize());
+	if(gameState.getDeckSize() != 0){
+	%>
+	<img src="card.png" width="30">
+	<%
+	}
 	GameStateCard discardTopCard = gameState.discardTopCard();
 	if(discardTopCard != null){
-		out.println("discard top card: " + discardTopCard.name);
+		%>
+		<img src="cardface.png" width="30">
+		<%
+		out.println(discardTopCard.name);
+	}
+	if(gameState.isGameOver()){
+		out.println("Game over");	
 	}
 	List<GameStatePlayer> gameStatePlayers = gameState.getPlayers();
 	for(GameStatePlayer player : gameStatePlayers){
-		%><div style="border: 1px solid #000"><%
+		if(gameState.getCurrentName().equals(player.name)){
+			%><div style="border: 2px solid #0F0"><%	
+		} else {
+			%><div style="border: 2px solid #000"><%
+		}
 		out.println(player.name);
 		if(player.isSheriff){
 			%>
-			<img src="sheriff.png" width="20">
+			<img src="sheriff.png" width="30">
 			<%
 		}
 		%><div><%
 		for(int i = 0; i < player.health; i++){
 			%>
-			<img src="bullet.png" width="20">
+			<img src="bullet.png" width="30">
 			<%
 		}		
 		for(int i = player.health; i < player.maxHealth; i++){
 			%>
-			<img src="emptybullet.png" width="20">
+			<img src="emptybullet.png" width="30">
 			<%
 		}
 		%></div><div><%
 		for(int i = 0; i < player.handSize; i++){
 			%>
-			<img src="card.png" width="20">
+			<img src="card.png" width="30">
 			<%
 		}
-		%></div><%
-		out.println(" - " + player.specialAbility);
+		%></div><div><%		
 		GameStateCard gun = player.gun;
 		if(gun != null){
-			out.println("gun name " + gun.name);
+			%>
+			<img src="cardface.png" width="30">
+			<%
+			out.println(gun.name);
 		}
 		List<GameStateCard> inPlay = player.inPlay;
 		for(GameStateCard inPlayCard : inPlay){
-			out.println("in play name " + inPlayCard.name);
+			%>
+			<img src="cardface.png" width="30">
+			<%
+			out.println(inPlayCard.name);
 		}
-		%></div><%
+		%></div><div><%= player.specialAbility %></div></div><%
 	}
 	
 
