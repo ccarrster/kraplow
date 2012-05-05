@@ -466,5 +466,15 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 			}
 		}
 	}
+	
+
+	@Override
+	public String getRoleForName(String name) {
+		return turn.getRoleForName(name);
+	}
+	
+	public String getGoalForName(String name){
+		return turn.roleToGoal(name);
+	}
 
 }

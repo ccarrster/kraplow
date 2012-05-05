@@ -163,11 +163,30 @@ Players <%= players %>
 			String[] splitMessage = message.split("-");
 			String name = splitMessage[0];
 			String commandData = splitMessage[1];
-			out.println("Name: " + name);
+			out.println(name);
+			String role = userInterface.getRoleForName(name);
+			if(role.equals("Sheriff")){
+				%>
+				<img src="sheriff.png" width="30">
+				<%				
+			} else if(role.equals("Outlaw")){
+				%>
+				<img src="outlaw.png" width="30">
+				<%				
+			} else if(role.equals("Deputy")){
+				%>
+				<img src="deputy.png" width="30">
+				<%
+			} else if(role.equals("Renegade")){
+				%>
+				<img src="renegade.png" width="30">
+				<%
+			}
+			out.println(userInterface.getGoalForName(name));
 			int commandIndex = commandData.indexOf(" ");
 			if(commandIndex != -1){
 				String command = commandData.substring(0, commandIndex);
-				out.println("Command: " + command);				
+				out.println(command);
 				if(command.equals("respondBangMiss")){
 					String data = commandData.substring(commandIndex + 1);
 					String[] splitData = data.split(" ");
@@ -261,7 +280,6 @@ Players <%= players %>
 					String[] splitData;
 					String data = commandData.substring(commandIndex + 1);
 					splitData = data.split(", ");
-					out.println("Data: ");
 					if(command.equals("askOthersCard")){
 						if(splitData[0].equals("true")){
 						%>

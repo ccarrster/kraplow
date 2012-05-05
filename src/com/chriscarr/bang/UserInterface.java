@@ -33,5 +33,7 @@ public interface UserInterface {
 
 	int chooseDrawCard(Player player, List<Object> cards);
 
-	int chooseCardToPutBack(Player player, List<Object> cards);	
+	int chooseCardToPutBack(Player player, List<Object> cards);
+	
+	String getRoleForName(String name);
 }

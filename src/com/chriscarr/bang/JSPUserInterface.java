@@ -230,4 +230,13 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		return responses.remove(0);
 	}
 
+	@Override
+	public String getRoleForName(String name) {
+		return turn.getRoleForName(name);
+	}
+	
+	public String getGoalForName(String name){
+		return turn.roleToGoal(name);
+	}
+
 }

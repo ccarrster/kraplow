@@ -78,6 +78,20 @@ public class Player {
 			throw new RuntimeException("Invalid Role");
 		}
 	}
+	
+	public static String roleToGoal(int role) {
+		if(role == SHERIFF){
+			return "Kill the outlaws and renegade";
+		} else if(role == OUTLAW){
+			return "Kill the sheriff";
+		} else if(role == DEPUTY){
+			return "Kill the outlaws and renegade";
+		} else if(role == RENEGADE){
+			return "Be the last one alive";
+		} else { 
+			throw new RuntimeException("Invalid Role");
+		}
+	}
 
 	public void addInPlay(Card card) {
 		inPlay.add(card);

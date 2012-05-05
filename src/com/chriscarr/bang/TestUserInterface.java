@@ -106,4 +106,14 @@ public class TestUserInterface implements UserInterface {
 	public List<Object> respondTwoMiss(Player player) {
 		return new ArrayList<Object>();
 	}
+	
+
+	@Override
+	public String getRoleForName(String name) {
+		return null;
+	}
+	
+	public String getGoalForName(String name){
+		return null;
+	}
 }

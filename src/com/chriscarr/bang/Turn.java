@@ -673,4 +673,22 @@ public class Turn {
 		}
 		return cards;
 	}
+
+	public String getRoleForName(String name) {
+		for(Player player : players){
+			if(player.getName().equals(name)){
+				return Player.roleToString(player.getRole());
+			}
+		}
+		return null;
+	}
+
+	public String roleToGoal(String name) {
+		for(Player player : players){
+			if(player.getName().equals(name)){
+				return Player.roleToGoal(player.getRole());
+			}
+		}
+		return null;
+	}
 }
