@@ -52,6 +52,7 @@ public class Turn {
 		Player localCurrentPlayer = currentPlayer;
 		try{			
 			if(isDynamiteExplode()){
+				discardDynamite();
 				Player explodePlayer = currentPlayer;
 				userInterface.printInfo("Dynamite Exploded on " + explodePlayer.getName());
 				damagePlayer(explodePlayer, players, localCurrentPlayer, 3, null, deck, discard, userInterface);			
@@ -282,6 +283,14 @@ public class Turn {
 			InPlay nextInPlay = nextPlayer.getInPlay();
 			userInterface.printInfo("Dynamite Passed to " + nextPlayer.getName());
 			nextInPlay.add(dynamiteCard);
+		}
+	}
+	
+	public void discardDynamite() {
+		InPlay currentInPlay = currentPlayer.getInPlay();
+		if(currentInPlay.hasItem(Card.CARDDYNAMITE)){
+			Object dynamiteCard = currentInPlay.removeDynamite();
+			discard.add(dynamiteCard);
 		}
 	}
 
