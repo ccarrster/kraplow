@@ -49,57 +49,57 @@ Players <%= players %>
 	</form>
 	<%
 } else {
-	int cardSize = 50;
 	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
-	GameState gameState = userInterface.getGameState();
-	%><div style="position:absolute; top:350px; left:290px;"><%
+	GameState gameState = userInterface.getGameState();	
 	if(gameState.getDeckSize() != 0){
-	%><img src="card.png" width="<%=cardSize%>" alt="Draw pile" title="<%=gameState.getDeckSize()%>"><%
+	%>
+	<img src="card.png" width="30" alt="Draw pile" title="<%=gameState.getDeckSize()%>">
+	<%
 	}
 	GameStateCard discardTopCard = gameState.discardTopCard();
 	if(discardTopCard != null){
 		String image = getImageForCard(discardTopCard.name);
-		%><img src="<%=image%>" width="<%=cardSize%>" alt="Discard pile" title="<%=discardTopCard.name%>"><%
+		%>
+		<img src="<%=image%>" width="30" alt="Discard pile" title="<%=discardTopCard.name%>">
+		<%
 	}
 	if(gameState.isGameOver()){
 		out.println("Game over");	
-	}	
-	%></div><div style="position:relative;"><%			
+	}
+	%><div><%
 	List<GameStatePlayer> gameStatePlayers = gameState.getPlayers();
-	int count = gameStatePlayers.size();
-	int scale = 250;
-	double inc = (2 * Math.PI) / count;
-	double angleSum = 0.0;
 	for(GameStatePlayer player : gameStatePlayers){
-		double x = 260 + scale * Math.sin(angleSum);
-		double y = 300 + scale * Math.cos(angleSum);		
-		%><div style="position:absolute; left:<%=x%>px; top:<%=y%>px;"><%
-		angleSum += inc;
-		%><div style="position:absolute;"><img src="<%=getImageForPlayer(player.name)%>" width="<%=cardSize%>" alt="Player" title="<%=player.name%> <%= player.specialAbility %>"><%
-		if(player.isSheriff){
-			%><img src="sheriff.png" width="10" alt="Role Sheriff" style="position:absolute; left:16px; bottom:5px;"><%
+		if(gameState.getCurrentName().equals(player.name)){
+			%><div style="border: 2px solid #0F0; position:relative; float:left;"><%	
+		} else {
+			%><div style="border: 2px solid #000; position:relative; float:left;"><%
 		}
-		%></div><div style="position:relative;"><%
+		
+		%><img src="<%=getImageForPlayer(player.name)%>" width="30" alt="Player" title="<%=player.name%> <%= player.specialAbility %>"><%
+		if(player.isSheriff){
+			%><img src="sheriff.png" width="10" alt="Role Sheriff" style="position:relative; left:-14px; bottom:5px;"><%
+		}
+		%><div style="position:relative;"><%
 		for(int i = 0; i < player.health; i++){
-			%><img src="vbullet.png" width="10" alt="Health token" style="position:absolute; left:<%= (i * 10) + cardSize%>px;"><%
+			%><img src="vbullet.png" width="10" alt="Health token" style="position:relative; left:<%= i * -7%>px;"><%
 		}		
 		for(int i = player.health; i < player.maxHealth; i++){
-			%><img src="vemptybullet.png" width="10" alt="Empty health token" style="position:absolute; left:<%= (i * cardSize) + cardSize%>px;"><%
+			%><img src="vemptybullet.png" width="10" alt="Empty health token" style="position:relative; left:<%= i * -7%>px;"><%
 		}
 		%></div><div style="position:relative;"><%
-		for(int i = 0; i < player.handSize; i++){			
-			%><img src="card.png" style="position:absolute; left:<%= (10 * (i + player.maxHealth) + cardSize) %>px; width:<%=cardSize%>px;"><%
+		for(int i = 0; i < player.handSize; i++){
+			%><img src="card.png" width="30" alt="Hand card" style="position:relative; left:<%= i * -20%>px;"><%
 		}
 		%></div><div><%		
 		GameStateCard gun = player.gun;
 		if(gun != null){
 			String image = getImageForCard(gun.name);
-			%><img src="<%=image%>" width="<%=cardSize%>" alt="In play gun" title="<%=gun.name%>"><%
+			%><img src="<%=image%>" width="30" alt="In play gun" title="<%=gun.name%>"><%
 		}
 		List<GameStateCard> inPlay = player.inPlay;
 		for(GameStateCard inPlayCard : inPlay){
 			String image = getImageForCard(inPlayCard.name);
-			%><img src="<%=image%>" width="<%=cardSize%>" alt="In play card" title="<%=inPlayCard.name%>"><%
+			%><img src="<%=image%>" width="30" alt="In play card" title="<%=inPlayCard.name%>"><%
 		}
 		%></div></div><%
 	}
@@ -152,31 +152,27 @@ Players <%= players %>
 			String[] splitMessage = message.split("-");
 			String name = splitMessage[0];
 			String commandData = splitMessage[1];
-			%><div style="float:left;"><%			
-			%><img src="<%=getImageForPlayer(name)%>" width="<%=cardSize%>" alt="Player" title="<%=name%>"><%
+			%><img src="<%=getImageForPlayer(name)%>" width="30" alt="Player" title="<%=name%>"><%
 			String role = userInterface.getRoleForName(name);
 			if(role.equals("Sheriff")){
-				%><img src="sheriff.png" width="15" alt="Role sheriff" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-20px; bottom:10px;"><%				
+				%><img src="sheriff.png" width="10" alt="Role sheriff" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-14px; bottom:5px;"><%				
 			} else if(role.equals("Outlaw")){
-				%><img src="outlaw.png" width="25" alt="Role outlaw" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-36px; bottom:23px;"><%				
+				%><img src="outlaw.png" width="15" alt="Role outlaw" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-21px; bottom:13px;"><%				
 			} else if(role.equals("Deputy")){
-				%><img src="deputy.png" width="15" alt="Role deputy" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-20px; bottom:10px;"><%
+				%><img src="deputy.png" width="10" alt="Role deputy" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-14px; bottom:5px;"><%
 			} else if(role.equals("Renegade")){
-				%><img src="renegade.png" width="30" alt="Role renegade" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-38px; bottom:35px;"><%
+				%><img src="renegade.png" width="20" alt="Role renegade" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-24px; bottom:20px;"><%
 			}			
-			%></div><%
 			int commandIndex = commandData.indexOf(" ");
 			if(commandIndex != -1){
 				String command = commandData.substring(0, commandIndex);
-				%><div style="float:left;"><%
 				out.println(command);
-				%></div><%
 				if(command.equals("chooseTwoDiscardForLife")){
 					String[] splitData;
 					String data = commandData.substring(commandIndex + 1);
 					splitData = data.split(", ");
 					%>
-					<form method="POST" style="float:left;">
+					<form method="POST">
 					<input type="hidden" name="countPlayers" value="<%=players%>">
 					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
@@ -186,7 +182,8 @@ Players <%= players %>
 						String image = getImageForCard(splitData[i]);
 						%>
 						<input type="checkbox" name="result" value="<%=i%>">
-						<img src="<%=image%>" width="<%=cardSize%>" alt="Discard for life card" title="<%=splitData[i]%>">					
+						<img src="<%=image%>" width="30" alt="Discard for life card" title="<%=splitData[i]%>">
+						<br/>					
 						<%
 					}
 					%>
@@ -215,7 +212,7 @@ Players <%= players %>
 						}
 						%>
 						<input type="checkbox" name="result" value="<%=i%>" <%= disabled %>>
-						<img src="cardface.png" width="<%=cardSize%>" alt="Respond card" title="<%=cardName%>">
+						<img src="cardface.png" width="30" alt="Respond card" title="<%=cardName%>">
 						<br/>					
 						<%
 					}
@@ -231,23 +228,23 @@ Players <%= players %>
 					if(command.equals("askOthersCard")){
 						if(splitData[0].equals("true")){
 						%>
-						<form method="POST" name="hand" style="float:left;">
+						<form method="POST" name="hand">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
 						<input type="hidden" name="user" value="<%=user%>">
-						<img src="card.png" width="<%=cardSize%>" alt="Players hand" onclick="document.hand.submit();">
+						<img src="card.png" width="30" alt="Players hand" onclick="document.hand.submit();">
 						</form>
 						<%
 						}
 						if(splitData[1].equals("true")){
 						%>
-						<form method="POST" name="gun" style="float:left;">
+						<form method="POST" name="gun">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-2">
 						<input type="hidden" name="user" value="<%=user%>">
-						<img src="cardface.png" width="<%=cardSize%>" alt="Players gun" onclick="document.gun.submit();">
+						<img src="cardface.png" width="30" alt="Players gun" onclick="document.gun.submit();">
 						</form>
 						<%
 						}
@@ -256,7 +253,7 @@ Players <%= players %>
 						splitData = tempSplitData;
 					} else if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
 						%>
-						<form method="POST" style="float:left;">
+						<form method="POST">
 						<input type="hidden" name="countPlayers" value="<%=players%>">
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
@@ -292,16 +289,16 @@ Players <%= players %>
 								image = getImageForCard(cardName);
 							}
 							%>
-							<form method="POST" name="play<%=i%>" style="float:left;">
+							<form method="POST" name="play<%=i%>">
 							<input type="hidden" name="countPlayers" value="<%=players%>">
 							<input type="hidden" name="gameStarted" value="true">
 							<input type="hidden" name="result" value="<%=i%>">
 							<input type="hidden" name="user" value="<%=user%>">
 							<%
 							if(canPlay){
-								%><img src="<%=image%>" width="<%=cardSize%>" alt="Action" title="<%=splitData[i]%> <%= targets %>" onclick="document.play<%=i%>.submit();"><%
+								%><img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" onclick="document.play<%=i%>.submit();"><%
 							} else {
-								%><img src="<%=image%>" width="<%=cardSize%>" alt="Action" title="<%=splitData[i]%> <%= targets %>" style="opacity:0.4;"><%
+								%><img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" style="opacity:0.4;"><%
 							}
 							%>
 							</form>
