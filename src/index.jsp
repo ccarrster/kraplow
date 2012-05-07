@@ -74,7 +74,8 @@ Players <%= players %>
 		} else {
 			%><div style="border: 2px solid #000; position:relative; float:left;"><%
 		}
-		%><img src="player.png" width="30" alt="Player" title="<%=player.name%> <%= player.specialAbility %>"><%
+		
+		%><img src="<%=getImageForPlayer(player.name)%>" width="30" alt="Player" title="<%=player.name%> <%= player.specialAbility %>"><%
 		if(player.isSheriff){
 			%><img src="sheriff.png" width="10" alt="Role Sheriff" style="position:relative; left:-14px; bottom:5px;"><%
 		}
@@ -151,7 +152,7 @@ Players <%= players %>
 			String[] splitMessage = message.split("-");
 			String name = splitMessage[0];
 			String commandData = splitMessage[1];
-			%><img src="player.png" width="30" alt="Player" title="<%=name%>"><%
+			%><img src="<%=getImageForPlayer(name)%>" width="30" alt="Player" title="<%=name%>"><%
 			String role = userInterface.getRoleForName(name);
 			if(role.equals("Sheriff")){
 				%><img src="sheriff.png" width="10" alt="Role sheriff" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-14px; bottom:5px;"><%				
@@ -232,7 +233,7 @@ Players <%= players %>
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-1">
 						<input type="hidden" name="user" value="<%=user%>">
-						<input type="submit" value="Hand"><img src="card.png" width="30" alt="Players hand" onclick="document.hand.submit();">
+						<img src="card.png" width="30" alt="Players hand" onclick="document.hand.submit();">
 						</form>
 						<%
 						}
@@ -243,7 +244,7 @@ Players <%= players %>
 						<input type="hidden" name="gameStarted" value="true">
 						<input type="hidden" name="result" value="-2">
 						<input type="hidden" name="user" value="<%=user%>">
-						<input type="submit" value="Gun"><img src="cardface.png" width="30" alt="Players gun" onclick="document.gun.submit();">>
+						<img src="cardface.png" width="30" alt="Players gun" onclick="document.gun.submit();">
 						</form>
 						<%
 						}
@@ -282,7 +283,7 @@ Players <%= players %>
 						if(!"".equals(splitData[i].trim())){
 							String image;
 							if(command.equals("askPlayer")){
-								image = "player.png";
+								image = getImageForPlayer(splitData[i]);
 							} else {
 								String cardName = splitData[i];
 								image = getImageForCard(cardName);
@@ -293,8 +294,13 @@ Players <%= players %>
 							<input type="hidden" name="gameStarted" value="true">
 							<input type="hidden" name="result" value="<%=i%>">
 							<input type="hidden" name="user" value="<%=user%>">
-							<input type="submit" value="<%=splitData[i]%>" <% if(!canPlay){out.print("disabled='true'");}%>>
-							<img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" onclick="document.play<%=i%>.submit();">
+							<%
+							if(canPlay){
+								%><img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" onclick="document.play<%=i%>.submit();"><%
+							} else {
+								%><img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" style="opacity:0.4;"><%
+							}
+							%>
 							</form>
 							<%
 						}
@@ -333,52 +339,90 @@ Players <%= players %>
 %>
 <%!
 public String getImageForCard(String cardName){
-	if(cardName.equals("Bang!")){
+	if(cardName.contains("Bang!")){
 		return "bang.png";
-	} else if(cardName.equals("Missed!")){
+	} else if(cardName.contains("Missed!")){
 		return "missed.png";
-	} else if(cardName.equals("Beer")){
+	} else if(cardName.contains("Beer")){
 		return "beer.png";
-	} else if(cardName.equals("Barrel")){
+	} else if(cardName.contains("Barrel")){
 		return "barrel.png";
-	} else if(cardName.equals("Appaloosa")){
+	} else if(cardName.contains("Appaloosa")){
 		return "appaloosa.png";
-	} else if(cardName.equals("Mustang")){
+	} else if(cardName.contains("Mustang")){
 		return "mustang.png";
-	} else if(cardName.equals("Schofield")){
+	} else if(cardName.contains("Schofield")){
 		return "schofield.png";
-	} else if(cardName.equals("Remington")){
+	} else if(cardName.contains("Remington")){
 		return "remington.png";
-	} else if(cardName.equals("Winchester")){
+	} else if(cardName.contains("Winchester")){
 		return "winchester.png";
-	} else if(cardName.equals("Volcanic")){
+	} else if(cardName.contains("Volcanic")){
 		return "volcanic.png";
-	} else if(cardName.equals("Rev. Carbine")){
+	} else if(cardName.contains("Rev. Carbine")){
 		return "carbine.png";
-	} else if(cardName.equals("Jail")){
+	} else if(cardName.contains("Jail")){
 		return "jail.png";
-	} else if(cardName.equals("Dynamite")){
+	} else if(cardName.contains("Dynamite")){
 		return "dynamite.png";
-	} else if(cardName.equals("Gatling")){
+	} else if(cardName.contains("Gatling")){
 		return "gatling.png";
-	} else if(cardName.equals("Saloon")){
+	} else if(cardName.contains("Saloon")){
 		return "saloon.png";
-	} else if(cardName.equals("Panic!")){
+	} else if(cardName.contains("Panic!")){
 		return "panic.png";
-	} else if(cardName.equals("General Store")){
+	} else if(cardName.contains("General Store")){
 		return "generalstore.png";
-	} else if(cardName.equals("Indians!")){
+	} else if(cardName.contains("Indians!")){
 		return "indians.png";
-	} else if(cardName.equals("Duel")){
+	} else if(cardName.contains("Duel")){
 		return "duel.png";
-	} else if(cardName.equals("Stagecoach")){
+	} else if(cardName.contains("Stagecoach")){
 		return "stagecoach.png";
-	} else if(cardName.equals("Wells Fargo")){
+	} else if(cardName.contains("Wells Fargo")){
 		return "wellsfargo.png";
-	} else if(cardName.equals("Cat Balou")){
+	} else if(cardName.contains("Cat Balou")){
 		return "catbalou.png";
 	} else {
 		return "cardface.png";
+	}
+}
+
+public String getImageForPlayer(String playerName){
+	if(playerName.equals("Bart Cassidy")){
+		return "bartcassidy.png";
+	} else if(playerName.equals("Black Jack")){
+		return "blackjack.png";
+	} else if(playerName.equals("Calamity Janet")){
+		return "calamityjanet.png";
+	} else if(playerName.equals("El Gringo")){
+		return "elgringo.png";
+	} else if(playerName.equals("Jesse Jones")){
+		return "jessejones.png";
+	} else if(playerName.equals("Jourdonnais")){
+		return "jourdonnais.png";
+	} else if(playerName.equals("Kit Carlson")){
+		return "kitcarlson.png";
+	} else if(playerName.equals("Lucky Duke")){
+		return "luckyduke.png";
+	} else if(playerName.equals("Paul Regret")){
+		return "paulregret.png";
+	} else if(playerName.equals("Pedro Ramirez")){
+		return "pedroramierz.png";
+	} else if(playerName.equals("Rose Doolan")){
+		return "rosedoolan.png";
+	} else if(playerName.equals("Sid Ketchum")){
+		return "sidketchum.png";
+	} else if(playerName.equals("Slab the Killer")){
+		return "slabthekiller.png";
+	} else if(playerName.equals("Suzy Lafayette")){
+		return "suzylafayette.png";
+	} else if(playerName.equals("Vulture Sam")){
+		return "vulturesam.png";
+	} else if(playerName.equals("Willy the Kid")){
+		return "willythekid.png";
+	} else {
+		return "player.png";
 	}
 }
 %>
