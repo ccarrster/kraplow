@@ -5,7 +5,7 @@
 <head>
 <title>Kraplow!</title>
 </head>
-<body>
+<body onload="timedCount();">
 <p>
 <h1>Kraplow!</h1>
 <% String players = request.getParameter("countPlayers");
@@ -53,7 +53,7 @@ Players <%= players %>
 	GameState gameState = userInterface.getGameState();	
 	if(gameState.getDeckSize() != 0){
 	%>
-	<img src="card.png" width="30" alt="Draw pile" title="<%=gameState.getDeckSize()%>">
+	<img id="draw_pile" src="card.png" width="30" alt="Draw pile" title="<%=gameState.getDeckSize()%>">
 	<%
 	}
 	GameStateCard discardTopCard = gameState.discardTopCard();
@@ -434,5 +434,53 @@ public String getImageForPlayer(String playerName){
 </form>
 </div>
 </p>
+<script language="javascript">
+   function getServletUrl(){
+       return "/bang/chat";
+   }
+   
+   function initRequest() {
+       if (window.XMLHttpRequest) {
+	   return new XMLHttpRequest();
+       } else if (window.ActiveXObject) {
+	   isIE = true;
+	   return new ActiveXObject("Microsoft.XMLHTTP");
+       }
+   }
+
+   function sendXMLHttp(url, responseHandler){
+	var req = initRequest();
+	req.onreadystatechange = function() {
+	   if (req.readyState == 4) {
+		   if (req.status == 200) {
+			   responseHandler(req.responseXML);
+		   } else if (req.status == 204){
+			   alert('error');
+		   }
+	   }
+	};
+	req.open("GET", url, true);
+	req.send(null);
+   }
+   
+   function parseGetGameState(responseXML) {
+	var deckSize = responseXML.getElementsByTagName("decksize")[0];
+	var size = deckSize.childNodes[0].nodeValue;
+	if(size != -1){
+		document.getElementById('draw_pile').title = size;
+	}
+   }
+   
+   function getGameState(servletUrl, responseHandler) {
+   	sendXMLHttp(servletUrl + "?messageType=GETGAMESTATE", responseHandler);
+   }
+   
+   function timedCount()
+   {
+        getGameState(getServletUrl(), parseGetGameState);
+	var t=setTimeout("timedCount()",10000);
+   }
+   
+</script>
 </body>
 </html>
