@@ -620,7 +620,6 @@ public class Turn {
 		card.suit = Card.suitToString(fromCard.getSuit());
 		card.value = Card.valueToString(fromCard.getValue());
 		card.type = Card.typeToString(fromCard.getType());
-		card.description = fromCard.getDescription();
 		return card;
 	}
 

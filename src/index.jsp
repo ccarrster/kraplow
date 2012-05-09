@@ -49,61 +49,11 @@ Players <%= players %>
 	</form>
 	<%
 } else {
-	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
-	GameState gameState = userInterface.getGameState();	
-	if(gameState.getDeckSize() != 0){
 	%>
-	<img id="draw_pile" src="card.png" width="30" alt="Draw pile" title="<%=gameState.getDeckSize()%>">
+	<div id="gameState"></div>
 	<%
-	}
-	GameStateCard discardTopCard = gameState.discardTopCard();
-	if(discardTopCard != null){
-		String image = getImageForCard(discardTopCard.name);
-		%>
-		<img src="<%=image%>" width="30" alt="Discard pile" title="<%=discardTopCard.name%>">
-		<%
-	}
-	if(gameState.isGameOver()){
-		out.println("Game over");	
-	}
-	%><div><%
-	List<GameStatePlayer> gameStatePlayers = gameState.getPlayers();
-	for(GameStatePlayer player : gameStatePlayers){
-		if(gameState.getCurrentName().equals(player.name)){
-			%><div style="border: 2px solid #0F0; position:relative; float:left;"><%	
-		} else {
-			%><div style="border: 2px solid #000; position:relative; float:left;"><%
-		}
-		
-		%><img src="<%=getImageForPlayer(player.name)%>" width="30" alt="Player" title="<%=player.name%> <%= player.specialAbility %>"><%
-		if(player.isSheriff){
-			%><img src="sheriff.png" width="10" alt="Role Sheriff" style="position:relative; left:-14px; bottom:5px;"><%
-		}
-		%><div style="position:relative;"><%
-		for(int i = 0; i < player.health; i++){
-			%><img src="vbullet.png" width="10" alt="Health token" style="position:relative; left:<%= i * -7%>px;"><%
-		}		
-		for(int i = player.health; i < player.maxHealth; i++){
-			%><img src="vemptybullet.png" width="10" alt="Empty health token" style="position:relative; left:<%= i * -7%>px;"><%
-		}
-		%></div><div style="position:relative;"><%
-		for(int i = 0; i < player.handSize; i++){
-			%><img src="card.png" width="30" alt="Hand card" style="position:relative; left:<%= i * -20%>px;"><%
-		}
-		%></div><div><%		
-		GameStateCard gun = player.gun;
-		if(gun != null){
-			String image = getImageForCard(gun.name);
-			%><img src="<%=image%>" width="30" alt="In play gun" title="<%=gun.name%>"><%
-		}
-		List<GameStateCard> inPlay = player.inPlay;
-		for(GameStateCard inPlayCard : inPlay){
-			String image = getImageForCard(inPlayCard.name);
-			%><img src="<%=image%>" width="30" alt="In play card" title="<%=inPlayCard.name%>"><%
-		}
-		%></div></div><%
-	}
-	%></div><div style="clear:both;"></div><div style="float:left;"><%
+	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
+	%><div style="float:left;"><%
 
 	List<String> messages;
 	if(user != null){
@@ -464,10 +414,65 @@ public String getImageForPlayer(String playerName){
    }
    
    function parseGetGameState(responseXML) {
-	var deckSize = responseXML.getElementsByTagName("decksize")[0];
-	var size = deckSize.childNodes[0].nodeValue;
-	if(size != -1){
-		document.getElementById('draw_pile').title = size;
+	var gameStateDiv = document.getElementById('gameState');
+	if(gameStateDiv != null){
+		var result = "";
+		var deckSize = responseXML.getElementsByTagName("decksize")[0];
+		var size = deckSize.childNodes[0].nodeValue;
+		if(size > 0){
+			result += '<img id="draw_pile" src="card.png" width="30" alt="Draw pile" title="' + size + '">';
+		}
+		
+		var discardCard = responseXML.getElementsByTagName("discardtopcard")[0];
+		if(discardCard != null){
+			var discardName = discardCard.getElementsByTagName("name")[0];
+			var cardName = discardName.childNodes[0].nodeValue;
+			result += '<img id="discard_pile" src="' + getImageForCard(cardName) + '" width="30" alt="Discard pile" title="' + cardName + '">';
+		}
+	
+		var currentName = responseXML.getElementsByTagName("currentname")[0];
+		var name = currentName.childNodes[0].nodeValue;
+		result += 'Current Player: ' + name;
+		
+		var gameOverNode = responseXML.getElementsByTagName("gameover")[0];
+		if(gameOverNode != null){
+			result += 'Game Over';
+		}
+		
+		var playerNodes = responseXML.getElementsByTagName("player");
+		for(var playerIndex = 0; playerIndex < playerNodes.length; playerIndex++){
+			result += '<div>';
+			var playerName = playerNodes[playerIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+			result += '<img src="' + getImageForPlayer(playerName) + '" width="30" alt="Player" title="' + playerName + '">';
+			if(playerNodes[playerIndex].getElementsByTagName("issheriff")[0] != null){
+				result += '<img src="sheriff.png" width="10" alt="Role Sheriff">';
+			}
+			var playerHealth = playerNodes[playerIndex].getElementsByTagName("health")[0].childNodes[0].nodeValue;
+			var playerMaxHealth = playerNodes[playerIndex].getElementsByTagName("maxhealth")[0].childNodes[0].nodeValue;
+			result += playerHealth + '/' + playerMaxHealth;
+			for(var healthIndex = 0; healthIndex < playerHealth; healthIndex++){
+				result += '<img src="vbullet.png" width="10" alt="Health token">';
+			}
+			for(var maxHealthIndex = healthIndex; maxHealthIndex < playerMaxHealth; maxHealthIndex++){
+				result += '<img src="vemptybullet.png" width="10" alt="Health token">';
+			}
+			var handSize = playerNodes[playerIndex].getElementsByTagName("handsize")[0].childNodes[0].nodeValue;
+			for(var handIndex = 0; handIndex < handSize; handIndex++){
+				result += '<img src="card.png" width="30" alt="Hand card">'
+			}
+			var gunNode = playerNodes[playerIndex].getElementsByTagName("gun")[0];
+			if(gunNode != null){
+				var gunName = gunNode.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+				result += '<img src="' + getImageForCard(gunName) + '" width="30" alt="Gun" title="' + gunName + '">';
+			}
+			var inPlayNodes = playerNodes[playerIndex].getElementsByTagName("inplaycard");
+			for(var inPlayIndex = 0; inPlayIndex < inPlayNodes.length; inPlayIndex++){
+				var inPlayName = inPlayNodes[inPlayIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+				result += '<img src="' + getImageForCard(inPlayName) + '" width="30" alt="In Play" title="' + inPlayName + '">';
+			}
+			result += '</div>';
+		}
+		gameStateDiv.innerHTML = result;		
 	}
    }
    
@@ -480,6 +485,95 @@ public String getImageForPlayer(String playerName){
         getGameState(getServletUrl(), parseGetGameState);
 	var t=setTimeout("timedCount()",10000);
    }
+   
+   function getImageForCard(cardName){
+   	if(cardName == "Bang!"){
+   		return "bang.png";
+   	} else if(cardName == "Missed!"){
+   		return "missed.png";
+   	} else if(cardName == "Beer"){
+   		return "beer.png";
+   	} else if(cardName == "Barrel"){
+   		return "barrel.png";
+   	} else if(cardName == "Appaloosa"){
+   		return "appaloosa.png";
+   	} else if(cardName == "Mustang"){
+   		return "mustang.png";
+   	} else if(cardName == "Schofield"){
+   		return "schofield.png";
+   	} else if(cardName == "Remington"){
+   		return "remington.png";
+   	} else if(cardName == "Winchester"){
+   		return "winchester.png";
+   	} else if(cardName == "Volcanic"){
+   		return "volcanic.png";
+   	} else if(cardName == "Rev. Carbine"){
+   		return "carbine.png";
+   	} else if(cardName == "Jail"){
+   		return "jail.png";
+   	} else if(cardName == "Dynamite"){
+   		return "dynamite.png";
+   	} else if(cardName == "Gatling"){
+   		return "gatling.png";
+   	} else if(cardName == "Saloon"){
+   		return "saloon.png";
+   	} else if(cardName == "Panic!"){
+   		return "panic.png";
+   	} else if(cardName == "General Store"){
+   		return "generalstore.png";
+   	} else if(cardName == "Indians!"){
+   		return "indians.png";
+   	} else if(cardName == "Duel"){
+   		return "duel.png";
+   	} else if(cardName == "Stagecoach"){
+   		return "stagecoach.png";
+   	} else if(cardName == "Wells Fargo"){
+   		return "wellsfargo.png";
+   	} else if(cardName == "Cat Balou"){
+   		return "catbalou.png";
+   	} else {
+   		return "cardface.png";
+   	}
+   }
+   
+   function getImageForPlayer(playerName){
+   	if(playerName == "Bart Cassidy"){
+   		return "bartcassidy.png";
+   	} else if(playerName == "Black Jack"){
+   		return "blackjack.png";
+   	} else if(playerName == "Calamity Janet"){
+   		return "calamityjanet.png";
+   	} else if(playerName == "El Gringo"){
+   		return "elgringo.png";
+   	} else if(playerName == "Jesse Jones"){
+   		return "jessejones.png";
+   	} else if(playerName == "Jourdonnais"){
+   		return "jourdonnais.png";
+   	} else if(playerName == "Kit Carlson"){
+   		return "kitcarlson.png";
+   	} else if(playerName == "Lucky Duke"){
+   		return "luckyduke.png";
+   	} else if(playerName == "Paul Regret"){
+   		return "paulregret.png";
+   	} else if(playerName == "Pedro Ramirez"){
+   		return "pedroramierz.png";
+   	} else if(playerName == "Rose Doolan"){
+   		return "rosedoolan.png";
+   	} else if(playerName == "Sid Ketchum"){
+   		return "sidketchum.png";
+   	} else if(playerName == "Slab the Killer"){
+   		return "slabthekiller.png";
+   	} else if(playerName == "Suzy Lafayette"){
+   		return "suzylafayette.png";
+   	} else if(playerName == "Vulture Sam"){
+   		return "vulturesam.png";
+   	} else if(playerName == "Willy the Kid"){
+   		return "willythekid.png";
+   	} else {
+   		return "player.png";
+   	}
+   }
+   
    
 </script>
 </body>

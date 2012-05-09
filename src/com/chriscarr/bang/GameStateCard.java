@@ -5,5 +5,4 @@ public class GameStateCard {
 	public String suit;
 	public String value;
 	public String type;
-	public String description;
 }

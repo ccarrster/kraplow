@@ -413,7 +413,6 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 			if(gun != null){
 				System.out.println("Discard top card: " + gun.name);
 				System.out.println("Discard top card: " + gun.suit);
-				System.out.println("Discard top card: " + gun.description);
 				System.out.println("Discard top card: " + gun.type);
 				System.out.println("Discard top card: " + gun.value);
 			}
@@ -421,7 +420,6 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 			for(GameStateCard card : cards){
 				System.out.println("name: " + card.name);
 				System.out.println("suit: " + card.suit);
-				System.out.println("desc: " + card.description);
 				System.out.println("type: " + card.type);
 				System.out.println("value: " + card.value);
 			}

@@ -187,10 +187,6 @@ public class Card implements Playable{
 		return targets;
 	}
 
-	public String getDescription() {
-		return null;
-	}
-
 	public static String typeToString(int type) {
 		if(TYPEGUN == type || TYPEITEM == type){
 			return "Item";

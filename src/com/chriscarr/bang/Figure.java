@@ -27,7 +27,6 @@ public class Figure {
 	public static int PLAYONEEACH = 3;
 	
 	private String name;
-	private String description;
 	
 	public void setName(String name) {
 		this.name = name;
@@ -35,14 +34,6 @@ public class Figure {
 
 	public String getName() {
 		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	
 	public static int getStartingHealth(String name) {
