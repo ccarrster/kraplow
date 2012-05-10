@@ -17,34 +17,62 @@ public class AjaxServlet extends HttpServlet {
       response.setHeader("Cache-Control", "no-cache");
       
       String messageType = request.getParameter("messageType");
-      if(messageType != null && !messageType.equals("")){    	
-    	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
-    	if(userInterface != null){
-    		GameState gameState = userInterface.getGameState();
-    		response.getWriter().write("<gamestate>");
-	    		response.getWriter().write("<players>");
-	    		for(GameStatePlayer player : gameState.getPlayers()){
-	    			writePlayer(player, response);
-	    		}
-	    		response.getWriter().write("</players>");
-	    		if(gameState.isGameOver()){
-	    			response.getWriter().write("<gameover/>");
-	    		}
-	    		response.getWriter().write("<currentname>");
-	    		response.getWriter().write(gameState.getCurrentName());
-	    		response.getWriter().write("</currentname>");
-	    		response.getWriter().write("<decksize>");
-	    		response.getWriter().write(Integer.toString(gameState.getDeckSize()));
-	    		response.getWriter().write("</decksize>");
-	    		GameStateCard topCard = gameState.discardTopCard();
-	    		if(topCard != null){
-	    			response.getWriter().write("<discardtopcard>");
-	    			writeCard(topCard, response);
-	    			response.getWriter().write("</discardtopcard>");
-	    		}
-    		response.getWriter().write("</gamestate>");
-    	} else {
-    		response.getWriter().write("<gamestate/>");
+      if(messageType != null && !messageType.equals("")){
+    	if(messageType.equals("GETGAMESTATE")){
+	    	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
+	    	if(userInterface != null){
+	    		GameState gameState = userInterface.getGameState();
+	    		response.getWriter().write("<gamestate>");
+		    		response.getWriter().write("<players>");
+		    		for(GameStatePlayer player : gameState.getPlayers()){
+		    			writePlayer(player, response);
+		    		}
+		    		response.getWriter().write("</players>");
+		    		if(gameState.isGameOver()){
+		    			response.getWriter().write("<gameover/>");
+		    		}
+		    		response.getWriter().write("<currentname>");
+		    		response.getWriter().write(gameState.getCurrentName());
+		    		response.getWriter().write("</currentname>");
+		    		response.getWriter().write("<decksize>");
+		    		response.getWriter().write(Integer.toString(gameState.getDeckSize()));
+		    		response.getWriter().write("</decksize>");
+		    		GameStateCard topCard = gameState.discardTopCard();
+		    		if(topCard != null){
+		    			response.getWriter().write("<discardtopcard>");
+		    			writeCard(topCard, response);
+		    			response.getWriter().write("</discardtopcard>");
+		    		}
+	    		response.getWriter().write("</gamestate>");
+	    	} else {
+	    		response.getWriter().write("<gamestate/>");
+	    	}
+    	} else if(messageType.equals("JOIN")){
+    		String user = WebGame.join();
+    		if(user != null){
+    			response.getWriter().write("<user>");
+    			response.getWriter().write(user);
+    			response.getWriter().write("</user>");
+    		} else {
+    			response.getWriter().write("<fail/>");
+    		}
+    	} else if(messageType.equals("LEAVE")){
+    		String user = request.getParameter("user");
+    		WebGame.leave(user);
+    		response.getWriter().write("<ok/>");
+    	} else if(messageType.equals("COUNTPLAYERS")){
+    		response.getWriter().write("<playercount>");
+    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers()));
+    		response.getWriter().write("</playercount>");
+    	} else if(messageType.equals("CANSTART")){
+    		if(WebGame.canStart()){
+    			response.getWriter().write("<yes/>");
+    		} else {
+    			response.getWriter().write("<no/>");
+    		}
+    	} else if(messageType.equals("START")){
+    		WebGame.start();
+    		response.getWriter().write("<ok/>");
     	}
       }
   }

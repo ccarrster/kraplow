@@ -8,59 +8,19 @@
 <body onload="timedCount();">
 <p>
 <h1>Kraplow!</h1>
-<% String players = request.getParameter("countPlayers");
-String gameStarted = request.getParameter("gameStarted");
-String webStart = request.getParameter("webStart");
+<% 
 String user = request.getParameter("user");
-if(webStart != null){
-	WebGame.start();
-	%>
-	<form method="POST">
-	<input type="hidden" name="user" value="<%=user%>">
-	<input type="hidden" name="countPlayers" value="<%=players%>">
-	<input type="hidden" name="gameStarted" value="true">
-	<input type="submit">
-	</form>
-	<%
-} else if(players == null){%>
-<form method="POST">
-<select id="countPlayers" name="countPlayers">
-<option value="4">4</option>
-<option value="5">5</option>
-<option value="6">6</option>
-<option value="7">7</option>
-</select>
-<input type="submit">
-</form>
-<%
-} else if(gameStarted == null) {
 %>
-Players <%= players %>
+<div id="gameSetup"></div>
+<div id="gameState"></div>
 <%
-	//This needs to be on its own thread so waiting is ok
-	WebInit webInit = new WebInit();
-	JSPUserInterface x = new JSPUserInterface();
-	webInit.setup(Integer.parseInt(players), x, x);
-	%>
-	<form method="POST">
-	<input type="hidden" name="countPlayers" value="<%=players%>">
-	<input type="hidden" name="gameStarted" value="true">
-	<input type="submit">
-	</form>
-	<%
-} else {
-	%>
-	<div id="gameState"></div>
-	<%
+
+String webStart = null;
+if(webStart != null){	
 	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
 	%><div style="float:left;"><%
 
-	List<String> messages;
-	if(user != null){
-		messages = ((WebGameUserInterface)userInterface).getMessages(user);
-	} else {
-		messages = userInterface.messages;
-	}
+	List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
 	
 	String previousResult = request.getParameter("result");	
 	if(previousResult != null){		
@@ -72,27 +32,15 @@ Players <%= players %>
 			}
 			previousResult = tempResult;
 		}
-		if(user == null){
-			userInterface.responses.add(previousResult);
-		} else {
-			((WebGameUserInterface)userInterface).addResponse(user, previousResult);
-		}
+		((WebGameUserInterface)userInterface).addResponse(user, previousResult);		
 		messages.remove(0);
 	} else if(request.getParameter("twoForLife") != null){
 		//Hack no result checkboxes checked, no result param sent.
-		if(user == null){
-			userInterface.responses.add("");
-		} else {
-			((WebGameUserInterface)userInterface).addResponse(user, "");
-		}
+		((WebGameUserInterface)userInterface).addResponse(user, "");
 		messages.remove(0);
 	} else if(request.getParameter("twoMisses") != null){
 		//Hack no result checkboxes checked, no result param sent.
-		if(user == null){
-			userInterface.responses.add("");
-		} else {
-			((WebGameUserInterface)userInterface).addResponse(user, "");
-		}
+		((WebGameUserInterface)userInterface).addResponse(user, "");
 		messages.remove(0);
 	}
 	
@@ -123,8 +71,6 @@ Players <%= players %>
 					splitData = data.split(", ");
 					%>
 					<form method="POST">
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
 					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="twoForLife" value="true">
 					<%
@@ -147,8 +93,8 @@ Players <%= players %>
 					splitData = data.split(", ");
 					%>
 					<form method="POST">
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
+					
+					
 					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="twoMisses" value="true">
 					<%
@@ -179,8 +125,8 @@ Players <%= players %>
 						if(splitData[0].equals("true")){
 						%>
 						<form method="POST" name="hand">
-						<input type="hidden" name="countPlayers" value="<%=players%>">
-						<input type="hidden" name="gameStarted" value="true">
+						
+						
 						<input type="hidden" name="result" value="-1">
 						<input type="hidden" name="user" value="<%=user%>">
 						<img src="card.png" width="30" alt="Players hand" onclick="document.hand.submit();">
@@ -190,8 +136,8 @@ Players <%= players %>
 						if(splitData[1].equals("true")){
 						%>
 						<form method="POST" name="gun">
-						<input type="hidden" name="countPlayers" value="<%=players%>">
-						<input type="hidden" name="gameStarted" value="true">
+						
+						
 						<input type="hidden" name="result" value="-2">
 						<input type="hidden" name="user" value="<%=user%>">
 						<img src="cardface.png" width="30" alt="Players gun" onclick="document.gun.submit();">
@@ -204,8 +150,8 @@ Players <%= players %>
 					} else if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
 						%>
 						<form method="POST">
-						<input type="hidden" name="countPlayers" value="<%=players%>">
-						<input type="hidden" name="gameStarted" value="true">
+						
+						
 						<input type="hidden" name="result" value="-1">
 						<input type="hidden" name="user" value="<%=user%>">
 						<input type="submit" value="Done Playing">
@@ -240,8 +186,8 @@ Players <%= players %>
 							}
 							%>
 							<form method="POST" name="play<%=i%>">
-							<input type="hidden" name="countPlayers" value="<%=players%>">
-							<input type="hidden" name="gameStarted" value="true">
+							
+							
 							<input type="hidden" name="result" value="<%=i%>">
 							<input type="hidden" name="user" value="<%=user%>">
 							<%
@@ -261,15 +207,15 @@ Players <%= players %>
 				if(commandData.equals("chooseFromPlayer") || commandData.equals("chooseDiscard")){
 					%>
 					<form method="POST">
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
+					
+					
 					<input type="hidden" name="user" value="<%=user%>">
 					<input type="hidden" name="result" value="true">
 					<input type="submit" value="true">
 					</form>
 					<form method="POST">
-					<input type="hidden" name="countPlayers" value="<%=players%>">
-					<input type="hidden" name="gameStarted" value="true">
+					
+					
 					<input type="hidden" name="result" value="false">
 					<input type="hidden" name="user" value="<%=user%>">
 					<input type="submit" value="false">
@@ -377,8 +323,8 @@ public String getImageForPlayer(String playerName){
 }
 %>
 <form method="POST">
-<input type="hidden" name="countPlayers" value="<%=players%>">
-<input type="hidden" name="gameStarted" value="true">
+
+
 <input type="hidden" name="user" value="<%=user%>">
 <input type="submit" value="refresh" id="refresh">
 </form>
@@ -418,6 +364,11 @@ public String getImageForPlayer(String playerName){
 	if(gameStateDiv != null){
 		var result = "";
 		var deckSize = responseXML.getElementsByTagName("decksize")[0];
+		if(deckSize == undefined){
+			return;
+		} else {
+			started = true;
+		}
 		var size = deckSize.childNodes[0].nodeValue;
 		if(size > 0){
 			result += '<img id="draw_pile" src="card.png" width="30" alt="Draw pile" title="' + size + '">';
@@ -475,15 +426,97 @@ public String getImageForPlayer(String playerName){
 		gameStateDiv.innerHTML = result;		
 	}
    }
-   
+         
    function getGameState(servletUrl, responseHandler) {
    	sendXMLHttp(servletUrl + "?messageType=GETGAMESTATE", responseHandler);
+   }
+   
+   function parseJoin(responseXML){
+   	var userNode = responseXML.getElementsByTagName("user")[0];
+   	if(userNode != null){
+   		user = userNode.childNodes[0].nodeValue;
+   	}
+   	setup();
+   }
+   
+   function join(servletUrl, responseHandler) {
+      	sendXMLHttp(servletUrl + "?messageType=JOIN", responseHandler);
+   }
+   
+   function parseLeave(responseXML){
+   	var okNode = responseXML.getElementsByTagName("ok")[0];
+      	if(okNode != null){      		
+      		user = null;
+   	}
+   	setup();
+   }
+   
+   function leave(servletUrl, responseHandler, user) {
+      	sendXMLHttp(servletUrl + "?messageType=LEAVE&user=" + user, responseHandler);
+   }
+   
+   function parseCountPlayers(responseXML){
+   	playerCount = responseXML.getElementsByTagName("playercount")[0].childNodes[0].nodeValue;   
+   }
+   
+   function countPlayers(servletUrl, responseHandler) {
+      	sendXMLHttp(servletUrl + "?messageType=COUNTPLAYERS", responseHandler);
+   }
+   
+   function parseCanStart(responseXML){
+      var yesNode = responseXML.getElementsByTagName("yes")[0];
+	if(yesNode != null){      		
+		startable = true;
+   	} else {
+   		startable = false;
+   	}
+   }
+      
+   function canStart(servletUrl, responseHandler) {
+      sendXMLHttp(servletUrl + "?messageType=CANSTART", responseHandler);
+   }
+   
+   function parseStart(responseXML){
+   	
+   }
+   
+   function start(servletUrl, responseHandler) {
+      	sendXMLHttp(servletUrl + "?messageType=START", responseHandler);
+   }
+   
+   
+   var user = null;
+   var playerCount = null;
+   var startable = null;
+   var started = false;
+   
+   function setup(){
+   	var gameSetupDiv = document.getElementById('gameSetup');
+   	var result = "";
+   	if(!started){   	
+		if(user == null){
+			result += '<div onclick="join(getServletUrl(), parseJoin);">Join</div>';
+		} else {
+			result += user;
+			result += '<div onclick="leave(getServletUrl(), parseLeave, user);">Leave</div>';
+		}
+		if(playerCount != null){
+			result += '<div>Player count: ' + playerCount + '</div>';
+		}   	
+		if(startable != null && startable == true){
+			result += '<div onclick="start(getServletUrl(), parseStart);">Start</div>';
+		}
+		countPlayers(getServletUrl(), parseCountPlayers);
+		canStart(getServletUrl(), parseCanStart);
+   	}
+	gameSetupDiv.innerHTML = result;
    }
    
    function timedCount()
    {
         getGameState(getServletUrl(), parseGetGameState);
 	var t=setTimeout("timedCount()",10000);
+	setup();	
    }
    
    function getImageForCard(cardName){
