@@ -12,6 +12,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	Map<String, List<String>> messages;
 	Map<String, List<String>> responses;
 	Map<String, String> userFigureNames = null;
+	Map<String, String> figureNamesUser = null;
 	
 	public WebGameUserInterface(List<String> users){
 		messages = new HashMap<String, List<String>>();
@@ -57,8 +58,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 		Set<String> keys = messages.keySet();
 		Iterator<String> userIter = keys.iterator();
 		userFigureNames = new HashMap<String, String>();
+		figureNamesUser = new HashMap<String, String>();
 		for(GameStatePlayer player : players){
-			userFigureNames.put(player.name, userIter.next());
+			String user = userIter.next();
+			userFigureNames.put(player.name, user);
+			figureNamesUser.put(user, player.name);
 		}
 	}
 	
@@ -70,5 +74,9 @@ public class WebGameUserInterface extends JSPUserInterface {
 	
 	public String removeResponse(String player){
 		return responses.get(userFigureNames.get(player)).remove(0);
+	}
+	
+	public String getPlayerForUser(String user){
+		return figureNamesUser.get(user);
 	}
 }

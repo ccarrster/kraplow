@@ -43,291 +43,8 @@ if(webStart != null){
 		((WebGameUserInterface)userInterface).addResponse(user, "");
 		messages.remove(0);
 	}
-	
-	if(!messages.isEmpty()){
-		String message = messages.get(0);
-		if(message.contains("-")){
-			String[] splitMessage = message.split("-");
-			String name = splitMessage[0];
-			String commandData = splitMessage[1];
-			%><img src="<%=getImageForPlayer(name)%>" width="30" alt="Player" title="<%=name%>"><%
-			String role = userInterface.getRoleForName(name);
-			if(role.equals("Sheriff")){
-				%><img src="sheriff.png" width="10" alt="Role sheriff" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-14px; bottom:5px;"><%				
-			} else if(role.equals("Outlaw")){
-				%><img src="outlaw.png" width="15" alt="Role outlaw" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-21px; bottom:13px;"><%				
-			} else if(role.equals("Deputy")){
-				%><img src="deputy.png" width="10" alt="Role deputy" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-14px; bottom:5px;"><%
-			} else if(role.equals("Renegade")){
-				%><img src="renegade.png" width="20" alt="Role renegade" title="<%=userInterface.getGoalForName(name)%>" style="position:relative; left:-24px; bottom:20px;"><%
-			}			
-			int commandIndex = commandData.indexOf(" ");
-			if(commandIndex != -1){
-				String command = commandData.substring(0, commandIndex);
-				out.println(command);
-				if(command.equals("chooseTwoDiscardForLife")){
-					String[] splitData;
-					String data = commandData.substring(commandIndex + 1);
-					splitData = data.split(", ");
-					%>
-					<form method="POST">
-					<input type="hidden" name="user" value="<%=user%>">
-					<input type="hidden" name="twoForLife" value="true">
-					<%
-					for(int i = 0; i < splitData.length; i++){
-						String image = getImageForCard(splitData[i]);
-						%>
-						<input type="checkbox" name="result" value="<%=i%>">
-						<img src="<%=image%>" width="30" alt="Discard for life card" title="<%=splitData[i]%>">
-						<br/>					
-						<%
-					}
-					%>
-					<input type="submit">
-					</form>
-					<%
-							
-				} else if(command.equals("respondTwoMiss")){
-					String[] splitData;
-					String data = commandData.substring(commandIndex + 1);
-					splitData = data.split(", ");
-					%>
-					<form method="POST">
-					
-					
-					<input type="hidden" name="user" value="<%=user%>">
-					<input type="hidden" name="twoMisses" value="true">
-					<%
-					for(int i = 0; i < splitData.length; i++){
-						String[] nameCanPlaySplit = splitData[i].split("@");
-						String cardName = nameCanPlaySplit[0];
-						String canPlay = nameCanPlaySplit[1];
-						String disabled = "";
-						if("false".equals(canPlay)){
-							disabled = "disabled='true'";
-						}
-						%>
-						<input type="checkbox" name="result" value="<%=i%>" <%= disabled %>>
-						<img src="cardface.png" width="30" alt="Respond card" title="<%=cardName%>">
-						<br/>					
-						<%
-					}
-					%>
-					<input type="submit">
-					</form>
-					<%
-							
-				} else {
-					String[] splitData;
-					String data = commandData.substring(commandIndex + 1);
-					splitData = data.split(", ");
-					if(command.equals("askOthersCard")){
-						if(splitData[0].equals("true")){
-						%>
-						<form method="POST" name="hand">
-						
-						
-						<input type="hidden" name="result" value="-1">
-						<input type="hidden" name="user" value="<%=user%>">
-						<img src="card.png" width="30" alt="Players hand" onclick="document.hand.submit();">
-						</form>
-						<%
-						}
-						if(splitData[1].equals("true")){
-						%>
-						<form method="POST" name="gun">
-						
-						
-						<input type="hidden" name="result" value="-2">
-						<input type="hidden" name="user" value="<%=user%>">
-						<img src="cardface.png" width="30" alt="Players gun" onclick="document.gun.submit();">
-						</form>
-						<%
-						}
-						String[] tempSplitData = new String[splitData.length - 2];
-						System.arraycopy(splitData, 2, tempSplitData, 0, splitData.length - 2);
-						splitData = tempSplitData;
-					} else if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
-						%>
-						<form method="POST">
-						
-						
-						<input type="hidden" name="result" value="-1">
-						<input type="hidden" name="user" value="<%=user%>">
-						<input type="submit" value="Done Playing">
-						</form>
-						<%
-					}					
-					for(int i = 0; i < splitData.length; i++){
-						String targets = "";
-						Boolean canPlay = true;
-						if(command.equals("askPlay") || command.equals("respondBeer") || command.equals("respondBang") || command.equals("respondMiss")){
-							String[] canPlayTargets = splitData[i].split("@");							
-							splitData[i] = canPlayTargets[0];							
-							if(canPlayTargets.length == 3){
-								if("false".equals(canPlayTargets[1])){
-									canPlay = false;
-								} else {
-									targets = canPlayTargets[2];
-								}
-							} else if(canPlayTargets.length == 2){
-								if("false".equals(canPlayTargets[1])){
-									canPlay = false;
-								}
-							}
-						}
-						if(!"".equals(splitData[i].trim())){
-							String image;
-							if(command.equals("askPlayer")){
-								image = getImageForPlayer(splitData[i]);
-							} else {
-								String cardName = splitData[i];
-								image = getImageForCard(cardName);
-							}
-							%>
-							<form method="POST" name="play<%=i%>">
-							
-							
-							<input type="hidden" name="result" value="<%=i%>">
-							<input type="hidden" name="user" value="<%=user%>">
-							<%
-							if(canPlay){
-								%><img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" onclick="document.play<%=i%>.submit();"><%
-							} else {
-								%><img src="<%=image%>" width="30" alt="Action" title="<%=splitData[i]%> <%= targets %>" style="opacity:0.4;"><%
-							}
-							%>
-							</form>
-							<%
-						}
-					}
-				}				
-			} else {
-				out.println("Command: " + commandData);
-				if(commandData.equals("chooseFromPlayer") || commandData.equals("chooseDiscard")){
-					%>
-					<form method="POST">
-					
-					
-					<input type="hidden" name="user" value="<%=user%>">
-					<input type="hidden" name="result" value="true">
-					<input type="submit" value="true">
-					</form>
-					<form method="POST">
-					
-					
-					<input type="hidden" name="result" value="false">
-					<input type="hidden" name="user" value="<%=user%>">
-					<input type="submit" value="false">
-					</form>
-					<%
-				}
-			}
-			
-			
-			
-		} else {
-			out.println("info: " + message);
-			messages.remove(0);
-		}
-	}
 }
 %>
-<%!
-public String getImageForCard(String cardName){
-	if(cardName.contains("Bang!")){
-		return "bang.png";
-	} else if(cardName.contains("Missed!")){
-		return "missed.png";
-	} else if(cardName.contains("Beer")){
-		return "beer.png";
-	} else if(cardName.contains("Barrel")){
-		return "barrel.png";
-	} else if(cardName.contains("Appaloosa")){
-		return "appaloosa.png";
-	} else if(cardName.contains("Mustang")){
-		return "mustang.png";
-	} else if(cardName.contains("Schofield")){
-		return "schofield.png";
-	} else if(cardName.contains("Remington")){
-		return "remington.png";
-	} else if(cardName.contains("Winchester")){
-		return "winchester.png";
-	} else if(cardName.contains("Volcanic")){
-		return "volcanic.png";
-	} else if(cardName.contains("Rev. Carbine")){
-		return "carbine.png";
-	} else if(cardName.contains("Jail")){
-		return "jail.png";
-	} else if(cardName.contains("Dynamite")){
-		return "dynamite.png";
-	} else if(cardName.contains("Gatling")){
-		return "gatling.png";
-	} else if(cardName.contains("Saloon")){
-		return "saloon.png";
-	} else if(cardName.contains("Panic!")){
-		return "panic.png";
-	} else if(cardName.contains("General Store")){
-		return "generalstore.png";
-	} else if(cardName.contains("Indians!")){
-		return "indians.png";
-	} else if(cardName.contains("Duel")){
-		return "duel.png";
-	} else if(cardName.contains("Stagecoach")){
-		return "stagecoach.png";
-	} else if(cardName.contains("Wells Fargo")){
-		return "wellsfargo.png";
-	} else if(cardName.contains("Cat Balou")){
-		return "catbalou.png";
-	} else {
-		return "cardface.png";
-	}
-}
-
-public String getImageForPlayer(String playerName){
-	if(playerName.equals("Bart Cassidy")){
-		return "bartcassidy.png";
-	} else if(playerName.equals("Black Jack")){
-		return "blackjack.png";
-	} else if(playerName.equals("Calamity Janet")){
-		return "calamityjanet.png";
-	} else if(playerName.equals("El Gringo")){
-		return "elgringo.png";
-	} else if(playerName.equals("Jesse Jones")){
-		return "jessejones.png";
-	} else if(playerName.equals("Jourdonnais")){
-		return "jourdonnais.png";
-	} else if(playerName.equals("Kit Carlson")){
-		return "kitcarlson.png";
-	} else if(playerName.equals("Lucky Duke")){
-		return "luckyduke.png";
-	} else if(playerName.equals("Paul Regret")){
-		return "paulregret.png";
-	} else if(playerName.equals("Pedro Ramirez")){
-		return "pedroramierz.png";
-	} else if(playerName.equals("Rose Doolan")){
-		return "rosedoolan.png";
-	} else if(playerName.equals("Sid Ketchum")){
-		return "sidketchum.png";
-	} else if(playerName.equals("Slab the Killer")){
-		return "slabthekiller.png";
-	} else if(playerName.equals("Suzy Lafayette")){
-		return "suzylafayette.png";
-	} else if(playerName.equals("Vulture Sam")){
-		return "vulturesam.png";
-	} else if(playerName.equals("Willy the Kid")){
-		return "willythekid.png";
-	} else {
-		return "player.png";
-	}
-}
-%>
-<form method="POST">
-
-
-<input type="hidden" name="user" value="<%=user%>">
-<input type="submit" value="refresh" id="refresh">
-</form>
 </div>
 </p>
 <script language="javascript">
@@ -426,6 +143,109 @@ public String getImageForPlayer(String playerName){
 		gameStateDiv.innerHTML = result;		
 	}
    }
+   
+   function formatMessage(message){
+   	var result = "";
+		if(message.indexOf("-") != -1){
+			var splitMessage = message.split("-");
+			var name = splitMessage[0];
+			var commandData = splitMessage[1];
+			
+			result += '<img src="' + getImageForPlayer(name) + '" width="30" alt="Player" title="' + name + '">';
+			result += getImageForRole(role, goal);
+			
+			var commandIndex = commandData.indexOf(" ");
+			if(commandIndex != -1){
+				var command = commandData.substring(0, commandIndex);
+				result += command;
+				var data = commandData.substring(commandIndex + 1);
+				var splitData = data.split(", ");				
+								
+				if(command.indexOf("chooseTwoDiscardForLife") != -1){
+					//var selected = new Array();
+					var selected = "not implemented";
+					for(var i = 0; i < splitData.length; i++){
+						var image = getImageForCard(splitData[i]);
+						//TODO onclick populate array and then format array on submit to comma separated
+						result += '<img src="' + image + '" width="30" alt="Discard for life card" title="' + splitData[i] + '">';						
+					}
+					result += "<div onclick='sendResponse(selected);'>Discard Selected</div>";
+				} else if(command.indexOf("respondTwoMiss") != -1){
+					//var selected = new Array();
+					var selected = "not implemented";
+					for(var i = 0; i < splitData.length; i++){
+						var nameCanPlaySplit = splitData[i].split("@");
+						var cardName = nameCanPlaySplit[0];
+						var canPlay = nameCanPlaySplit[1];
+						var disabled = "";
+						if(canPlay.indexOf("false") != -1){
+							disabled = "disabled='true'";
+						}
+						var image = getImageForCard(cardName);
+						//TODO onclick populate array and then format array on submit to comma separated						
+						result += '<img src="' + image + '" width="30" alt="Respond card" title="' + cardName + '">';
+					}
+					result += "<div onclick='sendResponse(selected);'>Misses Selected</div>";
+				} else {
+					if(command.indexOf("askOthersCard") != -1){
+						if(splitData[0].indexOf("true") != -1){						
+							result += "<img src='card.png' width='30' alt='Players hand' onclick='sendResponse(\"hand\");'>";
+						}
+						if(splitData[1].indexOf("true") != -1){						
+							result += "<img src='cardface.png' width='30' alt='Players gun' onclick='sendResponse(\"gun\");'>";
+						}
+						splitData = splitData.slice(2, splitData.length);
+					} else if(command.indexOf("askPlay") != -1 || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
+						result += "<div onclick='sendResponse(\"-1\");'>Done Playing</div>";
+					}
+					for(var i = 0; i < splitData.length; i++){						
+						var targets = "";
+						var canPlay = true;
+						if(command.indexOf("askPlay") != -1 || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
+							var canPlayTargets = splitData[i].split("@");							
+							splitData[i] = canPlayTargets[0];							
+							if(canPlayTargets.length == 3){
+								if(canPlayTargets[1].indexOf("false") != -1){
+									canPlay = false;
+								} else {
+									targets = canPlayTargets[2];
+								}
+							} else if(canPlayTargets.length == 2){
+								if(canPlayTargets[1].indexOf("false") != -1){
+									canPlay = false;
+								}
+							}							
+						}
+						if("" != splitData[i].trim()){
+							var image;
+							if(command.indexOf("askPlayer") != -1){
+								image = getImageForPlayer(splitData[i]);
+							} else {
+								var cardName = splitData[i];
+								image = getImageForCard(cardName);
+							}
+							if(canPlay){
+								result += '<img src="' + image + '" width="30" alt="Action" title="' + splitData[i] + ' ' + targets + '" onclick="onclick=\'sendResponse(i);\'">';
+							} else {
+								result += '<img src="' + image + '" width="30" alt="Action" title="' + splitData[i] + ' ' + targets + '" style="opacity:0.4;">';
+							}
+						}
+					}
+				}
+
+			} else {
+				result += commandData;
+				result += "<div onclick='sendResponse(\"true\");'>true</div>";
+				result += "<div onclick='sendResponse(\"false\");'>false</div>";
+			}
+		} else {
+			result += 'info: ' + message;			
+			//messages.remove(0);
+		}
+	
+   	
+   	return result;
+   }
          
    function getGameState(servletUrl, responseHandler) {
    	sendXMLHttp(servletUrl + "?messageType=GETGAMESTATE", responseHandler);
@@ -484,11 +304,49 @@ public String getImageForPlayer(String playerName){
       	sendXMLHttp(servletUrl + "?messageType=START", responseHandler);
    }
    
+   function parseGetMessage(responseXML){
+      	var messageNode = responseXML.getElementsByTagName("message")[0];
+      	if(messageNode != null){
+      		message = messageNode.childNodes[0].nodeValue;      		
+      	}
+   }
+   
+   function getMessage(servletUrl, responseHandler, user) {
+         sendXMLHttp(servletUrl + "?messageType=GETMESSAGE&user=" + user, responseHandler);
+   }
+   
+   function sendResponse(response){
+   	alert("sent " + response);
+   }
+   
+   function parseGetPlayerInfo(responseXML){
+	var nameNode = responseXML.getElementsByTagName("name")[0];
+	if(nameNode != null){
+		playerName = nameNode.childNodes[0].nodeValue;      		
+	}
+	var roleNode = responseXML.getElementsByTagName("role")[0];
+	if(roleNode != null){
+		role = roleNode.childNodes[0].nodeValue;      		
+	}
+	var goalNode = responseXML.getElementsByTagName("goal")[0];
+	if(goalNode != null){
+		goal = goalNode.childNodes[0].nodeValue;      		
+	}
+   }
+
+   function getPlayerInfo(servletUrl, responseHandler, user) {
+        sendXMLHttp(servletUrl + "?messageType=GETPLAYERINFO&user=" + user, responseHandler);
+   }
    
    var user = null;
    var playerCount = null;
    var startable = null;
    var started = false;
+   var message = null;
+   
+   var playerName = null;
+   var role = null;
+   var goal = null;
    
    function setup(){
    	var gameSetupDiv = document.getElementById('gameSetup');
@@ -505,9 +363,18 @@ public String getImageForPlayer(String playerName){
 		}   	
 		if(startable != null && startable == true){
 			result += '<div onclick="start(getServletUrl(), parseStart);">Start</div>';
-		}
+		}		
 		countPlayers(getServletUrl(), parseCountPlayers);
 		canStart(getServletUrl(), parseCanStart);
+   	} else {
+   		if(playerName == null){
+   			getPlayerInfo(getServletUrl(), parseGetPlayerInfo, user);
+   		} else {
+			if(message != null){				
+				result += formatMessage(message);
+			}
+		}
+   		getMessage(getServletUrl(), parseGetMessage, user);
    	}
 	gameSetupDiv.innerHTML = result;
    }
@@ -607,6 +474,17 @@ public String getImageForPlayer(String playerName){
    	}
    }
    
+   function getImageForRole(role, goal){
+	if(role =="Sheriff"){
+		return '<img src="sheriff.png" width="10" alt="Role sheriff" title="' + goal + '">';
+	} else if(role == "Outlaw"){
+		return '<img src="outlaw.png" width="15" alt="Role outlaw" title="' + goal + '">';
+	} else if(role == "Deputy"){
+		return '<img src="deputy.png" width="10" alt="Role deputy" title="' + goal + '">';
+	} else if(role == "Renegade"){
+		return '<img src="renegade.png" width="20" alt="Role renegade" title="' + goal + '">';
+	}
+   }
    
 </script>
 </body>

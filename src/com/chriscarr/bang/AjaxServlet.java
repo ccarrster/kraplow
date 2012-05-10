@@ -73,6 +73,34 @@ public class AjaxServlet extends HttpServlet {
     	} else if(messageType.equals("START")){
     		WebGame.start();
     		response.getWriter().write("<ok/>");
+    	} else if(messageType.equals("GETMESSAGE")){
+    		String user = request.getParameter("user");
+    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
+    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
+    		if(!messages.isEmpty()){
+    			response.getWriter().write("<message>");
+    			response.getWriter().write(messages.get(0));
+    			response.getWriter().write("</message>");
+    		} else {
+    			response.getWriter().write("<ok/>");
+    		}
+    	} else if(messageType.equals("GETPLAYERINFO")){
+    		String user = request.getParameter("user");
+    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;    		
+    		String name = ((WebGameUserInterface)userInterface).getPlayerForUser(user);
+    		String role = userInterface.getRoleForName(name);
+    		String goal = userInterface.getGoalForName(name);
+    		response.getWriter().write("<userinfo>");
+    			response.getWriter().write("<name>");
+    			response.getWriter().write(name);
+    			response.getWriter().write("</name>");
+    			response.getWriter().write("<role>");
+    			response.getWriter().write(role);
+    			response.getWriter().write("</role>");
+    			response.getWriter().write("<goal>");
+    			response.getWriter().write(goal);
+    			response.getWriter().write("</goal>");
+    		response.getWriter().write("</userinfo>");
     	}
       }
   }
