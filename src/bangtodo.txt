@@ -1,0 +1,23 @@
+Bang
+
+TODO:
+
+ENUM your bang constants
+Respond code very much duplicated in manual user interface
+50% cpu not using proper locks
+
+Damage notes
+Played notes
+Who are you?
+WHo's turn is it?
+
+How many cards in the discard
+
+Make an auto refresh ajax poll for an id/timestamp of last(Don't send unnessisary data)update... then get data if things have changed
+Muti-select Ajax
+Action log
+
+Make sexy web interface
+Cards suits
+info pictures
+Send gun name with pick hand/gun/inplay card

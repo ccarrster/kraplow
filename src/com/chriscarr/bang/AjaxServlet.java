@@ -84,6 +84,14 @@ public class AjaxServlet extends HttpServlet {
     		} else {
     			response.getWriter().write("<ok/>");
     		}
+    	} else if(messageType.equals("SENDRESPONSE")){
+    		String user = request.getParameter("user");
+    		String responseMessage = request.getParameter("response");
+    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
+    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
+    		messages.remove(0);
+    		((WebGameUserInterface)userInterface).addResponse(user, responseMessage);		    		
+    		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("GETPLAYERINFO")){
     		String user = request.getParameter("user");
     		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;    		
