@@ -125,12 +125,10 @@
 				var splitData = data.split(", ");				
 								
 				if(command.indexOf("chooseTwoDiscardForLife") != -1){
-					//var selected = new Array();
 					var selected = "not implemented";
 					for(var i = 0; i < splitData.length; i++){
-						var image = getImageForCard(splitData[i]);
-						//TODO onClick populate array and then format array on submit to comma separated
-						result += '<img src="' + image + '" width="30" alt="Discard for life card" title="' + splitData[i] + '" onClick="this.className=\'selected\';")>';						
+						var image = getImageForCard(splitData[i]);						
+						result += '<img src="' + image + '" width="30" alt="Discard for life card" title="' + splitData[i] + '" id="result' + i + '" onClick="document.getElementById(\'result' + i + '\').className=\'selected\';")>';
 					}
 					result += "<div onClick='sendResponse(selected);'>Discard Selected</div>";
 				} else if(command.indexOf("respondTwoMiss") != -1){
@@ -158,7 +156,7 @@
 							result += "<img src='cardface.png' width='30' alt='Players gun' onClick='sendResponse(-2);'>";
 						}
 						splitData = splitData.slice(2, splitData.length);
-					} else if(command.indexOf("askPlay") != -1 || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
+					} else if((command.indexOf("askPlay") != -1 && command.indexOf("askPlayer") == -1) || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
 						result += "<div onClick='sendResponse(\"-1\");'>Done Playing</div>";
 					}
 					for(var i = 0; i < splitData.length; i++){						
@@ -369,49 +367,49 @@
    }
    
    function getImageForCard(cardName){
-   	if(cardName == "Bang!"){
+   	if(cardName.indexOf("Bang!") != -1){
    		return "bang.png";
-   	} else if(cardName == "Missed!"){
+   	} else if(cardName.indexOf("Missed!") != -1){
    		return "missed.png";
-   	} else if(cardName == "Beer"){
+   	} else if(cardName.indexOf("Beer") != -1){
    		return "beer.png";
-   	} else if(cardName == "Barrel"){
+   	} else if(cardName.indexOf("Barrel") != -1){
    		return "barrel.png";
-   	} else if(cardName == "Appaloosa"){
+   	} else if(cardName.indexOf("Appaloosa") != -1){
    		return "appaloosa.png";
-   	} else if(cardName == "Mustang"){
+   	} else if(cardName.indexOf("Mustang") != -1){
    		return "mustang.png";
-   	} else if(cardName == "Schofield"){
+   	} else if(cardName.indexOf("Schofield") != -1){
    		return "schofield.png";
-   	} else if(cardName == "Remington"){
+   	} else if(cardName.indexOf("Remington") != -1){
    		return "remington.png";
-   	} else if(cardName == "Winchester"){
+   	} else if(cardName.indexOf("Winchester") != -1){
    		return "winchester.png";
-   	} else if(cardName == "Volcanic"){
+   	} else if(cardName.indexOf("Volcanic") != -1){
    		return "volcanic.png";
-   	} else if(cardName == "Rev. Carbine"){
+   	} else if(cardName.indexOf("Rev. Carbine") != -1){
    		return "carbine.png";
-   	} else if(cardName == "Jail"){
+   	} else if(cardName.indexOf("Jail") != -1){
    		return "jail.png";
-   	} else if(cardName == "Dynamite"){
+   	} else if(cardName.indexOf("Dynamite") != -1){
    		return "dynamite.png";
-   	} else if(cardName == "Gatling"){
+   	} else if(cardName.indexOf("Gatling") != -1){
    		return "gatling.png";
-   	} else if(cardName == "Saloon"){
+   	} else if(cardName.indexOf("Saloon") != -1){
    		return "saloon.png";
-   	} else if(cardName == "Panic!"){
+   	} else if(cardName.indexOf("Panic!") != -1){
    		return "panic.png";
-   	} else if(cardName == "General Store"){
+   	} else if(cardName.indexOf("General Store") != -1){
    		return "generalstore.png";
-   	} else if(cardName == "Indians!"){
+   	} else if(cardName.indexOf("Indians!") != -1){
    		return "indians.png";
-   	} else if(cardName == "Duel"){
+   	} else if(cardName.indexOf("Duel") != -1){
    		return "duel.png";
-   	} else if(cardName == "Stagecoach"){
+   	} else if(cardName.indexOf("Stagecoach") != -1){
    		return "stagecoach.png";
-   	} else if(cardName == "Wells Fargo"){
+   	} else if(cardName.indexOf("Wells Fargo") != -1){
    		return "wellsfargo.png";
-   	} else if(cardName == "Cat Balou"){
+   	} else if(cardName.indexOf("Cat Balou") != -1){
    		return "catbalou.png";
    	} else {
    		return "cardface.png";
