@@ -488,6 +488,9 @@ public class Turn {
 						discard.add(card);
 					}
 					player.setHealth(player.getHealth() + (cardsToDiscard.size() / 2));
+					if(player.getHealth() > player.getMaxHealth()){
+						player.setHealth(player.getMaxHealth());
+					}
 				}
 			}
 		}

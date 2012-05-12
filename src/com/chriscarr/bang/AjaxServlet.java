@@ -90,7 +90,9 @@ public class AjaxServlet extends HttpServlet {
     		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
     		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
     		messages.remove(0);
-    		((WebGameUserInterface)userInterface).addResponse(user, responseMessage);		    		
+    		if(!"".equals(responseMessage)){
+    			((WebGameUserInterface)userInterface).addResponse(user, responseMessage);
+    		}
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("GETPLAYERINFO")){
     		String user = request.getParameter("user");

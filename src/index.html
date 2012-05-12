@@ -13,7 +13,7 @@
    function getServletUrl(){
        return "/bang/chat";
    }
-   
+
    function initRequest() {
        if (window.XMLHttpRequest) {
 	   return new XMLHttpRequest();
@@ -37,7 +37,7 @@
 	req.open("GET", url, true);
 	req.send(null);
    }
-   
+
    function parseGetGameState(responseXML) {
 	var gameStateDiv = document.getElementById('gameState');
 	if(gameStateDiv != null){
@@ -51,120 +51,130 @@
 		}
 		var size = deckSize.childNodes[0].nodeValue;
 		if(size > 0){
-			result += '<img id="draw_pile" src="card.png" width="30" alt="Draw pile" title="' + size + '">';
+			result += '<img id="draw_pile" src="card.png" alt="Draw pile" title="' + size + '">';
 		}
-		
+
 		var discardCard = responseXML.getElementsByTagName("discardtopcard")[0];
 		if(discardCard != null){
 			var discardName = discardCard.getElementsByTagName("name")[0];
 			var cardName = discardName.childNodes[0].nodeValue;
-			result += '<img id="discard_pile" src="' + getImageForCard(cardName) + '" width="30" alt="Discard pile" title="' + cardName + '">';
+			result += '<img id="discard_pile" src="' + getImageForCard(cardName) + '" alt="Discard pile" title="' + cardName + '">';
 		}
-	
+
 		var currentName = responseXML.getElementsByTagName("currentname")[0];
 		var name = currentName.childNodes[0].nodeValue;
 		result += 'Current Player: ' + name;
-		
+
 		var gameOverNode = responseXML.getElementsByTagName("gameover")[0];
 		if(gameOverNode != null){
 			result += 'Game Over';
 		}
-		
+
 		var playerNodes = responseXML.getElementsByTagName("player");
 		for(var playerIndex = 0; playerIndex < playerNodes.length; playerIndex++){
 			result += '<div>';
-			var playerName = playerNodes[playerIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
-			result += '<img src="' + getImageForPlayer(playerName) + '" width="30" alt="Player" title="' + playerName + '">';
+			var loopPlayerName = playerNodes[playerIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+			var border_color = "FFF";
+			if(loopPlayerName == playerName && name == loopPlayerName){
+				border_color = "F0F";
+			} else if(name == loopPlayerName){
+				border_color = "F00";
+			} else if(loopPlayerName == playerName){
+				border_color = "00F";
+			}
+
+			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="Player" title="' + loopPlayerName + '" style="border:2px solid #' + border_color + ';">';
 			if(playerNodes[playerIndex].getElementsByTagName("issheriff")[0] != null){
-				result += '<img src="sheriff.png" width="10" alt="Role Sheriff">';
+				result += '<img src="sheriff.png" alt="Role Sheriff">';
 			}
 			var playerHealth = playerNodes[playerIndex].getElementsByTagName("health")[0].childNodes[0].nodeValue;
 			var playerMaxHealth = playerNodes[playerIndex].getElementsByTagName("maxhealth")[0].childNodes[0].nodeValue;
 			result += playerHealth + '/' + playerMaxHealth;
 			for(var healthIndex = 0; healthIndex < playerHealth; healthIndex++){
-				result += '<img src="vbullet.png" width="10" alt="Health token">';
+				result += '<img src="vbullet.png" alt="Health token">';
 			}
 			for(var maxHealthIndex = healthIndex; maxHealthIndex < playerMaxHealth; maxHealthIndex++){
-				result += '<img src="vemptybullet.png" width="10" alt="Health token">';
+				result += '<img src="vemptybullet.png" alt="Health token">';
 			}
 			var handSize = playerNodes[playerIndex].getElementsByTagName("handsize")[0].childNodes[0].nodeValue;
 			for(var handIndex = 0; handIndex < handSize; handIndex++){
-				result += '<img src="card.png" width="30" alt="Hand card">'
+				result += '<img src="card.png" alt="Hand card">'
 			}
 			var gunNode = playerNodes[playerIndex].getElementsByTagName("gun")[0];
 			if(gunNode != null){
 				var gunName = gunNode.getElementsByTagName("name")[0].childNodes[0].nodeValue;
-				result += '<img src="' + getImageForCard(gunName) + '" width="30" alt="Gun" title="' + gunName + '">';
+				result += '<img src="' + getImageForCard(gunName) + '" alt="Gun" title="' + gunName + '">';
 			}
 			var inPlayNodes = playerNodes[playerIndex].getElementsByTagName("inplaycard");
 			for(var inPlayIndex = 0; inPlayIndex < inPlayNodes.length; inPlayIndex++){
 				var inPlayName = inPlayNodes[inPlayIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
-				result += '<img src="' + getImageForCard(inPlayName) + '" width="30" alt="In Play" title="' + inPlayName + '">';
+				result += '<img src="' + getImageForCard(inPlayName) + '" alt="In Play" title="' + inPlayName + '">';
 			}
 			result += '</div>';
 		}
-		gameStateDiv.innerHTML = result;		
+		gameStateDiv.innerHTML = result;
 	}
    }
-   
+
    function formatMessage(message){
    	var result = "";
 		if(message.indexOf("-") != -1){
 			var splitMessage = message.split("-");
 			var name = splitMessage[0];
 			var commandData = splitMessage[1];
-			
-			result += '<img src="' + getImageForPlayer(name) + '" width="30" alt="Player" title="' + name + '">';
+
+			result += '<img src="' + getImageForPlayer(name) + '" alt="Player" title="' + name + '">';
 			result += getImageForRole(role, goal);
-			
+
 			var commandIndex = commandData.indexOf(" ");
 			if(commandIndex != -1){
 				var command = commandData.substring(0, commandIndex);
 				result += command;
 				var data = commandData.substring(commandIndex + 1);
-				var splitData = data.split(", ");				
-								
+				var splitData = data.split(", ");
 				if(command.indexOf("chooseTwoDiscardForLife") != -1){
-					var selected = "not implemented";
 					for(var i = 0; i < splitData.length; i++){
-						var image = getImageForCard(splitData[i]);						
-						result += '<img src="' + image + '" width="30" alt="Discard for life card" title="' + splitData[i] + '" id="result' + i + '" onClick="document.getElementById(\'result' + i + '\').className=\'selected\';")>';
+						if(splitData[i] != ""){
+							var image = getImageForCard(splitData[i]);
+							result += '<img src="' + image + '" alt="Discard for life card" title="' + splitData[i] + '" id="result' + i + '" onClick="document.getElementById(\'result' + i + '\').style.display = \'none\'; document.getElementById(\'discard' + i + '\').style.display = \'inline\'; selected += \'' + i + ',\';")>';
+							result += '<img src="card.png" style="display:none;" alt="Discard for life card" title="' + splitData[i] + '" id="discard' + i + '" onClick="document.getElementById(\'discard' + i + '\').style.display = \'none\'; document.getElementById(\'result' + i + '\').style.display = \'inline\'; selected = selected.replace(\',' + i + ',\', \',\');")>';
+						}
 					}
 					result += "<div onClick='sendResponse(selected);'>Discard Selected</div>";
 				} else if(command.indexOf("respondTwoMiss") != -1){
-					//var selected = new Array();
-					var selected = "not implemented";
 					for(var i = 0; i < splitData.length; i++){
-						var nameCanPlaySplit = splitData[i].split("@");
-						var cardName = nameCanPlaySplit[0];
-						var canPlay = nameCanPlaySplit[1];
-						var disabled = "";
-						if(canPlay.indexOf("false") != -1){
-							disabled = "disabled='true'";
+						if(splitData[i] != ""){
+							var nameCanPlaySplit = splitData[i].split("@");
+							var cardName = nameCanPlaySplit[0];
+							var canPlay = nameCanPlaySplit[1];
+							var image = getImageForCard(cardName);
+							if(canPlay.indexOf("false") != -1){
+								result += '<img src="' + image + '" alt="Discard for life card" title="' + splitData[i] + '" id="result' + i + '" style="opacity:0.4;">';
+							} else {
+								result += '<img src="' + image + '" alt="Discard for life card" title="' + splitData[i] + '" id="result' + i + '" onClick="document.getElementById(\'result' + i + '\').style.display = \'none\'; document.getElementById(\'discard' + i + '\').style.display = \'inline\';  selected += \'' + i + ',\';">';
+								result += '<img src="card.png" style="display:none;" alt="Discard for life card" title="' + splitData[i] + '" id="discard' + i + '" onClick="document.getElementById(\'discard' + i + '\').style.display = \'none\'; document.getElementById(\'result' + i + '\').style.display = \'inline\'; selected = selected.replace(\',' + i + ',\', \',\');">';
+							}
 						}
-						var image = getImageForCard(cardName);
-						//TODO onClick populate array and then format array on submit to comma separated						
-						result += '<img src="' + image + '" width="30" alt="Respond card" title="' + cardName + '"  onClick="this.className=\'selected\';>';
 					}
 					result += "<div onClick='sendResponse(selected);'>Misses Selected</div>";
 				} else {
 					if(command.indexOf("askOthersCard") != -1){
-						if(splitData[0].indexOf("true") != -1){						
-							result += "<img src='card.png' width='30' alt='Players hand' onClick='sendResponse(-1);'>";
+						if(splitData[0].indexOf("true") != -1){
+							result += "<img src='card.png' width='100' alt='Players hand' onClick='sendResponse(-1);'>";
 						}
-						if(splitData[1].indexOf("true") != -1){						
-							result += "<img src='cardface.png' width='30' alt='Players gun' onClick='sendResponse(-2);'>";
+						if(splitData[1].indexOf("true") != -1){
+							result += "<img src='cardface.png' width='100' alt='Players gun' onClick='sendResponse(-2);'>";
 						}
 						splitData = splitData.slice(2, splitData.length);
 					} else if((command.indexOf("askPlay") != -1 && command.indexOf("askPlayer") == -1) || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
 						result += "<div onClick='sendResponse(\"-1\");'>Done Playing</div>";
 					}
-					for(var i = 0; i < splitData.length; i++){						
+					for(var i = 0; i < splitData.length; i++){
 						var targets = "";
 						var canPlay = true;
 						if(command.indexOf("askPlay") != -1 || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
-							var canPlayTargets = splitData[i].split("@");							
-							splitData[i] = canPlayTargets[0];							
+							var canPlayTargets = splitData[i].split("@");
+							splitData[i] = canPlayTargets[0];
 							if(canPlayTargets.length == 3){
 								if(canPlayTargets[1].indexOf("false") != -1){
 									canPlay = false;
@@ -175,7 +185,7 @@
 								if(canPlayTargets[1].indexOf("false") != -1){
 									canPlay = false;
 								}
-							}							
+							}
 						}
 						if("" != splitData[i].trim()){
 							var image;
@@ -186,9 +196,9 @@
 								image = getImageForCard(cardName);
 							}
 							if(canPlay){
-								result += '<img src="' + image + '" width="30" alt="Action" title="' + splitData[i] + ' ' + targets + '" onClick="sendResponse(' + i + ');">';
+								result += '<img src="' + image + '" alt="Action" title="' + splitData[i] + ' ' + targets + '" onClick="sendResponse(' + i + ');">';
 							} else {
-								result += '<img src="' + image + '" width="30" alt="Action" title="' + splitData[i] + ' ' + targets + '" style="opacity:0.4;">';
+								result += '<img src="' + image + '" alt="Action" title="' + splitData[i] + ' ' + targets + '" style="opacity:0.4;">';
 							}
 						}
 					}
@@ -200,18 +210,18 @@
 				result += "<div onClick='sendResponse(\"false\");'>false</div>";
 			}
 		} else {
-			result += 'info: ' + message;			
+			result += 'info: ' + message;
 			sendResponse("");
 		}
-	
-   	
+
+
    	return result;
    }
-   
+
    function getGameState(servletUrl, responseHandler) {
    	sendXMLHttp(servletUrl + "?messageType=GETGAMESTATE", responseHandler);
    }
-   
+
    function parseJoin(responseXML){
    	var userNode = responseXML.getElementsByTagName("user")[0];
    	if(userNode != null){
@@ -219,66 +229,74 @@
    	}
    	setup();
    }
-   
+
    function join(servletUrl, responseHandler) {
       	sendXMLHttp(servletUrl + "?messageType=JOIN", responseHandler);
    }
-   
+
    function parseLeave(responseXML){
    	var okNode = responseXML.getElementsByTagName("ok")[0];
-      	if(okNode != null){      		
+      	if(okNode != null){
       		user = null;
    	}
    	setup();
    }
-   
+
    function leave(servletUrl, responseHandler, user) {
       	sendXMLHttp(servletUrl + "?messageType=LEAVE&user=" + user, responseHandler);
    }
-   
+
    function parseCountPlayers(responseXML){
    	playerCount = responseXML.getElementsByTagName("playercount")[0].childNodes[0].nodeValue;
    }
-   
+
    function countPlayers(servletUrl, responseHandler) {
       	sendXMLHttp(servletUrl + "?messageType=COUNTPLAYERS", responseHandler);
    }
-   
+
    function parseCanStart(responseXML){
       var yesNode = responseXML.getElementsByTagName("yes")[0];
-	if(yesNode != null){      		
+	if(yesNode != null){
 		startable = true;
    	} else {
    		startable = false;
    	}
    }
-      
+
    function canStart(servletUrl, responseHandler) {
       sendXMLHttp(servletUrl + "?messageType=CANSTART", responseHandler);
    }
-   
+
    function parseStart(responseXML){
    	setup();
    }
-   
+
    function start(servletUrl, responseHandler) {
       	sendXMLHttp(servletUrl + "?messageType=START", responseHandler);
    }
-   
+
+   var message = null;
+
    function parseGetMessage(responseXML){
-      	var messageNode = responseXML.getElementsByTagName("message")[0];      	      	
+      	var messageNode = responseXML.getElementsByTagName("message")[0];
       	var gameMessagesDiv = document.getElementById('gameMessages');
-	var result = "";
       	if(messageNode != null){
-      		result += formatMessage(messageNode.childNodes[0].nodeValue);      		
+      		var newMessage = messageNode.childNodes[0].nodeValue;
+      		if(newMessage != message){
+      			message = newMessage;
+      			gameMessagesDiv.innerHTML = formatMessage(newMessage);
+      		}
+      	} else {
+      		message = null;
+      		gameMessagesDiv.innerHTML = "";
       	}
-      	gameMessagesDiv.innerHTML = result;
+
    }
-   
+
    function getMessage(servletUrl, responseHandler, user) {
          sendXMLHttp(servletUrl + "?messageType=GETMESSAGE&user=" + user, responseHandler);
    }
-   
+
    function parseSendResponse(responseXML){
 	var okNode = responseXML.getElementsByTagName("ok")[0];
 	if(okNode != null){
@@ -289,48 +307,48 @@
 		getGameState(getServletUrl(), parseGetGameState);
 	}
    }
-   
+
    function sendResponse(message){
-   	sendResponseXML(getServletUrl(), parseSendResponse, user, message);   	
+   	sendResponseXML(getServletUrl(), parseSendResponse, user, message);
    }
-   
+
    function sendResponseXML(servletUrl, responseHandler, user, response){
    	sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response, responseHandler);
    }
-   
+
    function parseGetPlayerInfo(responseXML){
 	var nameNode = responseXML.getElementsByTagName("name")[0];
 	if(nameNode != null){
-		playerName = nameNode.childNodes[0].nodeValue;      		
+		playerName = nameNode.childNodes[0].nodeValue;
 	}
 	var roleNode = responseXML.getElementsByTagName("role")[0];
 	if(roleNode != null){
-		role = roleNode.childNodes[0].nodeValue;      		
+		role = roleNode.childNodes[0].nodeValue;
 	}
 	var goalNode = responseXML.getElementsByTagName("goal")[0];
 	if(goalNode != null){
-		goal = goalNode.childNodes[0].nodeValue;      		
+		goal = goalNode.childNodes[0].nodeValue;
 	}
    }
 
    function getPlayerInfo(servletUrl, responseHandler, user) {
         sendXMLHttp(servletUrl + "?messageType=GETPLAYERINFO&user=" + user, responseHandler);
    }
-   
+
    var user = null;
    var playerCount = null;
    var startable = null;
    var started = false;
-   var message = null;
-   
+
    var playerName = null;
    var role = null;
    var goal = null;
-   
+   var selected = ",";
+
    function setup(){
    	var gameSetupDiv = document.getElementById('gameSetup');
    	var result = "";
-   	if(!started){   	
+   	if(!started){
 		if(user == null){
 			result += '<div onClick="join(getServletUrl(), parseJoin);">Join</div>';
 		} else {
@@ -339,33 +357,33 @@
 		}
 		if(playerCount != null){
 			result += '<div>Player count: ' + playerCount + '</div>';
-		}   	
+		}
 		if(startable != null && startable == true){
 			result += '<div onClick="start(getServletUrl(), parseStart);">Start</div>';
-		}		
+		}
 		countPlayers(getServletUrl(), parseCountPlayers);
 		canStart(getServletUrl(), parseCanStart);
    	}
 	gameSetupDiv.innerHTML = result;
    }
-   
+
    function pollMessages(){
-   	if(started){		
+   	if(started){
 		if(playerName == null){
 			getPlayerInfo(getServletUrl(), parseGetPlayerInfo, user);
 		}
 		getMessage(getServletUrl(), parseGetMessage, user);
 	}
    }
-   
+
    function timedCount()
    {
         getGameState(getServletUrl(), parseGetGameState);
-	var t=setTimeout("timedCount()",10000);
+	var t=setTimeout("timedCount()",1000);
 	setup();
 	pollMessages();
    }
-   
+
    function getImageForCard(cardName){
    	if(cardName.indexOf("Bang!") != -1){
    		return "bang.png";
@@ -415,7 +433,7 @@
    		return "cardface.png";
    	}
    }
-   
+
    function getImageForPlayer(playerName){
    	if(playerName == "Bart Cassidy"){
    		return "bartcassidy.png";
@@ -453,19 +471,19 @@
    		return "player.png";
    	}
    }
-   
+
    function getImageForRole(role, goal){
 	if(role =="Sheriff"){
-		return '<img src="sheriff.png" width="10" alt="Role sheriff" title="' + goal + '">';
+		return '<img src="sheriff.png" alt="Role sheriff" title="' + goal + '">';
 	} else if(role == "Outlaw"){
-		return '<img src="outlaw.png" width="15" alt="Role outlaw" title="' + goal + '">';
+		return '<img src="outlaw.png" alt="Role outlaw" title="' + goal + '">';
 	} else if(role == "Deputy"){
-		return '<img src="deputy.png" width="10" alt="Role deputy" title="' + goal + '">';
+		return '<img src="deputy.png" alt="Role deputy" title="' + goal + '">';
 	} else if(role == "Renegade"){
-		return '<img src="renegade.png" width="20" alt="Role renegade" title="' + goal + '">';
+		return '<img src="renegade.png" alt="Role renegade" title="' + goal + '">';
 	}
    }
-   
+
 </script>
 </body>
 </html>
