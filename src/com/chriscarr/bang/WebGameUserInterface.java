@@ -68,7 +68,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 	
 	protected void waitForResponse(String player){
 		while(responses.get(userFigureNames.get(player)).isEmpty()){
-			Thread.yield();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				//ignore
+			}
 		}
 	}
 	
