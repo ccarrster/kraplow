@@ -50,7 +50,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	public GameState getGameState(){		
-		GameState gameState = super.getGameState(gameOver);		
+		GameState gameState = super.getGameState(gameOver);
 		return gameState;
 	}
 	

@@ -19,7 +19,8 @@ public class AjaxServlet extends HttpServlet {
       String messageType = request.getParameter("messageType");
       if(messageType != null && !messageType.equals("")){
     	if(messageType.equals("GETGAMESTATE")){
-	    	JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
+    		String gameId = request.getParameter("gameId");
+	    	JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
 	    	if(userInterface != null){
 	    		GameState gameState = userInterface.getGameState();
 	    		response.getWriter().write("<gamestate>");
@@ -30,6 +31,8 @@ public class AjaxServlet extends HttpServlet {
 		    		response.getWriter().write("</players>");
 		    		if(gameState.isGameOver()){
 		    			response.getWriter().write("<gameover/>");
+		    			Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
+		    			cleanup.start();
 		    		}
 		    		response.getWriter().write("<currentname>");
 		    		response.getWriter().write(gameState.getCurrentName());
@@ -48,69 +51,104 @@ public class AjaxServlet extends HttpServlet {
 	    		response.getWriter().write("<gamestate/>");
 	    	}
     	} else if(messageType.equals("JOIN")){
-    		String user = WebGame.join();
+    		String gameId = request.getParameter("gameId");
+    		String user = WebGame.join(Integer.parseInt(gameId));
     		if(user != null){
+    			response.getWriter().write("<joininfo>");
     			response.getWriter().write("<user>");
     			response.getWriter().write(user);
     			response.getWriter().write("</user>");
+    			response.getWriter().write("<gameid>");
+    			response.getWriter().write(gameId);
+    			response.getWriter().write("</gameid>");
+    			response.getWriter().write("</joininfo>");
     		} else {
     			response.getWriter().write("<fail/>");
     		}
     	} else if(messageType.equals("LEAVE")){
     		String user = request.getParameter("user");
-    		WebGame.leave(user);
+    		String gameId = request.getParameter("gameId");
+    		WebGame.leave(Integer.parseInt(gameId), user);
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("COUNTPLAYERS")){
+    		String gameId = request.getParameter("gameId");
     		response.getWriter().write("<playercount>");
-    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers()));
+    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
     		response.getWriter().write("</playercount>");
+    	} else if(messageType.equals("AVAILABLEGAMES")){
+    		response.getWriter().write("<gameids>");
+    		List<Integer> availableGames = WebGame.getAvailableGames();
+    		for(int i = 0; i < availableGames.size(); i++){
+	    		response.getWriter().write("<gameid>");
+	    		response.getWriter().write(Integer.toString(availableGames.get(i)));
+	    		response.getWriter().write("</gameid>");
+    		}
+    		response.getWriter().write("</gameids>");
     	} else if(messageType.equals("CANSTART")){
-    		if(WebGame.canStart()){
+    		String gameId = request.getParameter("gameId");
+    		if(WebGame.canStart(Integer.parseInt(gameId))){
     			response.getWriter().write("<yes/>");
     		} else {
     			response.getWriter().write("<no/>");
     		}
     	} else if(messageType.equals("START")){
-    		WebGame.start();
+    		String gameId = request.getParameter("gameId");
+    		WebGame.start(Integer.parseInt(gameId));
+    		response.getWriter().write("<ok/>");
+    	} else if(messageType.equals("CREATE")){    		
+    		WebGame.create();
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("GETMESSAGE")){
     		String user = request.getParameter("user");
-    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
-    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
-    		if(!messages.isEmpty()){
-    			response.getWriter().write("<message>");
-    			response.getWriter().write(messages.get(0));
-    			response.getWriter().write("</message>");
+    		String gameId = request.getParameter("gameId");
+    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
+    		if(userInterface != null){
+	    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
+	    		if(!messages.isEmpty()){
+	    			response.getWriter().write("<message>");
+	    			response.getWriter().write(messages.get(0));
+	    			response.getWriter().write("</message>");
+	    		} else {
+	    			response.getWriter().write("<ok/>");
+	    		}
     		} else {
     			response.getWriter().write("<ok/>");
     		}
     	} else if(messageType.equals("SENDRESPONSE")){
     		String user = request.getParameter("user");
     		String responseMessage = request.getParameter("response");
-    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;
-    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
-    		messages.remove(0);
-    		if(!"".equals(responseMessage)){
-    			((WebGameUserInterface)userInterface).addResponse(user, responseMessage);
+    		String gameId = request.getParameter("gameId");
+    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
+    		if(userInterface != null){
+	    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
+	    		messages.remove(0);
+	    		if(!"".equals(responseMessage)){
+	    			((WebGameUserInterface)userInterface).addResponse(user, responseMessage);
+	    		}
     		}
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("GETPLAYERINFO")){
     		String user = request.getParameter("user");
-    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.userInterface;    		
-    		String name = ((WebGameUserInterface)userInterface).getPlayerForUser(user);
-    		String role = userInterface.getRoleForName(name);
-    		String goal = userInterface.getGoalForName(name);
-    		response.getWriter().write("<userinfo>");
-    			response.getWriter().write("<name>");
-    			response.getWriter().write(name);
-    			response.getWriter().write("</name>");
-    			response.getWriter().write("<role>");
-    			response.getWriter().write(role);
-    			response.getWriter().write("</role>");
-    			response.getWriter().write("<goal>");
-    			response.getWriter().write(goal);
-    			response.getWriter().write("</goal>");
-    		response.getWriter().write("</userinfo>");
+    		String gameId = request.getParameter("gameId");
+    		JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
+    		if(userInterface != null){
+	    		String name = ((WebGameUserInterface)userInterface).getPlayerForUser(user);
+	    		String role = userInterface.getRoleForName(name);
+	    		String goal = userInterface.getGoalForName(name);
+	    		response.getWriter().write("<userinfo>");
+	    			response.getWriter().write("<name>");
+	    			response.getWriter().write(name);
+	    			response.getWriter().write("</name>");
+	    			response.getWriter().write("<role>");
+	    			response.getWriter().write(role);
+	    			response.getWriter().write("</role>");
+	    			response.getWriter().write("<goal>");
+	    			response.getWriter().write(goal);
+	    			response.getWriter().write("</goal>");
+	    		response.getWriter().write("</userinfo>");
+    		} else {
+    			response.getWriter().write("<ok/>");
+    		}
     	}
       }
   }
@@ -167,4 +205,19 @@ public class AjaxServlet extends HttpServlet {
 		response.getWriter().write(card.type);
 		response.getWriter().write("</type>");
   }
+  
+  class Cleanup extends Thread{		
+		int gameId;
+		Cleanup(int gameId){
+				this.gameId = gameId;
+		}
+		public void run(){
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				//ignore
+			}
+			WebInit.remove(gameId);
+		}
+	}
 }

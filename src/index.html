@@ -79,7 +79,7 @@
 				foundSelf = true;
 			}
 		}
-		if(foundSelf == false){
+		if(foundSelf == false && playerName != null){;
 			result += "You dead";
 		}
 
@@ -292,40 +292,64 @@
    		}
    }
 
-   function getGameState(servletUrl, responseHandler) {
-   	sendXMLHttp(servletUrl + "?messageType=GETGAMESTATE", responseHandler);
+   function getGameState(servletUrl, responseHandler, gameId) {
+   	sendXMLHttp(servletUrl + "?messageType=GETGAMESTATE&gameId=" + gameId, responseHandler);
+   }
+
+   function parseCreate(responseXML){
+		//do nothing
+   }
+
+   function create(servletUrl, responseHandler) {
+      	sendXMLHttp(servletUrl + "?messageType=CREATE" , responseHandler);
    }
 
    function parseJoin(responseXML){
    	var userNode = responseXML.getElementsByTagName("user")[0];
    	if(userNode != null){
    		user = userNode.childNodes[0].nodeValue;
+   		gameId = responseXML.getElementsByTagName("gameid")[0].childNodes[0].nodeValue;
    	}
    	setup();
    }
 
-   function join(servletUrl, responseHandler) {
-      	sendXMLHttp(servletUrl + "?messageType=JOIN", responseHandler);
+   function join(servletUrl, responseHandler, gameId) {
+      	sendXMLHttp(servletUrl + "?messageType=JOIN&gameId=" + gameId , responseHandler);
    }
 
    function parseLeave(responseXML){
    	var okNode = responseXML.getElementsByTagName("ok")[0];
-      	if(okNode != null){
-      		user = null;
-   	}
+	if(okNode != null){
+		user = null;
+		gameId = null;
+		playerCount = null;
+	}
    	setup();
    }
 
-   function leave(servletUrl, responseHandler, user) {
-      	sendXMLHttp(servletUrl + "?messageType=LEAVE&user=" + user, responseHandler);
+   function leave(servletUrl, responseHandler, user, gameId) {
+      	sendXMLHttp(servletUrl + "?messageType=LEAVE&user=" + user + "&gameId=" + gameId, responseHandler);
    }
 
    function parseCountPlayers(responseXML){
    	playerCount = responseXML.getElementsByTagName("playercount")[0].childNodes[0].nodeValue;
    }
 
-   function countPlayers(servletUrl, responseHandler) {
-      	sendXMLHttp(servletUrl + "?messageType=COUNTPLAYERS", responseHandler);
+   function countPlayers(servletUrl, responseHandler, gameId) {
+      	sendXMLHttp(servletUrl + "?messageType=COUNTPLAYERS&gameId=" + gameId, responseHandler);
+   }
+
+  function parseGetAvailableGame(responseXML){
+		var gameIdNodes = responseXML.getElementsByTagName("gameid");
+		availableGames = new Array();
+		for(i = 0; i < gameIdNodes.length; i++){
+			var availableGameId = gameIdNodes[i].childNodes[0].nodeValue;
+			availableGames.push(availableGameId);
+		}
+  }
+
+  function getAvailableGame(servletUrl, responseHandler) {
+		sendXMLHttp(servletUrl + "?messageType=AVAILABLEGAMES", responseHandler);
    }
 
    function parseCanStart(responseXML){
@@ -337,16 +361,16 @@
    	}
    }
 
-   function canStart(servletUrl, responseHandler) {
-      sendXMLHttp(servletUrl + "?messageType=CANSTART", responseHandler);
+   function canStart(servletUrl, responseHandler, gameId) {
+      sendXMLHttp(servletUrl + "?messageType=CANSTART&gameId=" + gameId, responseHandler);
    }
 
    function parseStart(responseXML){
    	setup();
    }
 
-   function start(servletUrl, responseHandler) {
-      	sendXMLHttp(servletUrl + "?messageType=START", responseHandler);
+   function start(servletUrl, responseHandler, gameId) {
+      	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId, responseHandler);
    }
 
    var message = null;
@@ -367,8 +391,8 @@
 
    }
 
-   function getMessage(servletUrl, responseHandler, user) {
-         sendXMLHttp(servletUrl + "?messageType=GETMESSAGE&user=" + user, responseHandler);
+   function getMessage(servletUrl, responseHandler, user, gameId) {
+         sendXMLHttp(servletUrl + "?messageType=GETMESSAGE&user=" + user + "&gameId=" + gameId, responseHandler);
    }
 
    function parseSendResponse(responseXML){
@@ -377,17 +401,19 @@
 		var gameSetupDiv = document.getElementById('gameSetup');
 		var result = "";
 		gameSetupDiv.innerHTML = result;
-		getMessage(getServletUrl(), parseGetMessage, user);
-		getGameState(getServletUrl(), parseGetGameState);
+		if(gameId != null){
+			getMessage(getServletUrl(), parseGetMessage, user, gameId);
+			getGameState(getServletUrl(), parseGetGameState, gameId);
+		}
 	}
    }
 
    function sendResponse(message){
-   	sendResponseXML(getServletUrl(), parseSendResponse, user, message);
+   	sendResponseXML(getServletUrl(), parseSendResponse, user, message, gameId);
    }
 
-   function sendResponseXML(servletUrl, responseHandler, user, response){
-   	sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response, responseHandler);
+   function sendResponseXML(servletUrl, responseHandler, user, response, gameId){
+   	sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response + "&gameId=" + gameId, responseHandler);
    }
 
    function parseGetPlayerInfo(responseXML){
@@ -405,8 +431,8 @@
 	}
    }
 
-   function getPlayerInfo(servletUrl, responseHandler, user) {
-        sendXMLHttp(servletUrl + "?messageType=GETPLAYERINFO&user=" + user, responseHandler);
+   function getPlayerInfo(servletUrl, responseHandler, user, gameId) {
+        sendXMLHttp(servletUrl + "?messageType=GETPLAYERINFO&user=" + user + "&gameId=" + gameId, responseHandler);
    }
 
    var user = null;
@@ -420,15 +446,23 @@
    var selected = ",";
 
    var gameOver = false;
+   var availableGames = null;
+   var gameId = null;
 
    function setup(){
    	var gameSetupDiv = document.getElementById('gameSetup');
    	var result = "";
    	if(!started){
 		if(user == null){
-			result += '<img src="join.png" alt="Join" onClick="join(getServletUrl(), parseJoin);">';
+			result += '<img src="ok.png" alt="Create" onClick="create(getServletUrl(), parseCreate);">';
+			if(availableGames != null){
+				for(var i = 0; i < availableGames.length; i++){
+					result += '<img src="join.png" alt="Join" onClick="join(getServletUrl(), parseJoin, ' + availableGames[i] + ');">';
+				}
+			}
+			getAvailableGame(getServletUrl(), parseGetAvailableGame);
 		} else {
-			result += '<img src="discard.png" alt="Leave" onClick="leave(getServletUrl(), parseLeave, user);">';
+			result += '<img src="discard.png" alt="Leave" onClick="leave(getServletUrl(), parseLeave, user, gameId);">';
 		}
 		if(playerCount != null){
 			for(var i = 0; i < playerCount; i++){
@@ -436,10 +470,12 @@
 			}
 		}
 		if(startable != null && startable == true){
-			result += '<img src="ok.png" onClick="start(getServletUrl(), parseStart);">';
+			result += '<img src="ok.png" onClick="start(getServletUrl(), parseStart, gameId);">';
 		}
-		countPlayers(getServletUrl(), parseCountPlayers);
-		canStart(getServletUrl(), parseCanStart);
+		if(gameId != null){
+			countPlayers(getServletUrl(), parseCountPlayers, gameId);
+			canStart(getServletUrl(), parseCanStart, gameId);
+		}
    	}
 	gameSetupDiv.innerHTML = result;
    }
@@ -447,16 +483,18 @@
    function pollMessages(){
    	if(started){
 		if(goal == null){
-			getPlayerInfo(getServletUrl(), parseGetPlayerInfo, user);
+			getPlayerInfo(getServletUrl(), parseGetPlayerInfo, user, gameId);
 		}
-		getMessage(getServletUrl(), parseGetMessage, user);
+		getMessage(getServletUrl(), parseGetMessage, user, gameId);
 	}
    }
 
    function timedCount()
    {
    	if(gameOver == false){
-        getGameState(getServletUrl(), parseGetGameState);
+   		if(gameId != null && startable == true){
+        	getGameState(getServletUrl(), parseGetGameState, gameId);
+        }
 		var t=setTimeout("timedCount()",1000);
 		setup();
 		pollMessages();
