@@ -8,6 +8,7 @@
 <div id="gameSetup"></div>
 <div id="gameMessages"></div>
 <div id="gameState"></div>
+<div id="gameLog"></div>
 </div>
 <script language="javascript">
    function getServletUrl(){
@@ -67,9 +68,21 @@
 		var gameOverNode = responseXML.getElementsByTagName("gameover")[0];
 		if(gameOverNode != null){
 			result += 'Game Over';
+			gameOver = true;
+		}
+		var playerNodes = responseXML.getElementsByTagName("player");
+
+		var foundSelf = false;
+		for(var playerIndex = 0; playerIndex < playerNodes.length; playerIndex++){
+			var loopPlayerName = playerNodes[playerIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+			if(loopPlayerName == playerName){
+				foundSelf = true;
+			}
+		}
+		if(foundSelf == false){
+			result += "You dead";
 		}
 
-		var playerNodes = responseXML.getElementsByTagName("player");
 		for(var playerIndex = 0; playerIndex < playerNodes.length; playerIndex++){
 			result += '<div>';
 			var loopPlayerName = playerNodes[playerIndex].getElementsByTagName("name")[0].childNodes[0].nodeValue;
@@ -81,6 +94,8 @@
 			} else if(loopPlayerName == playerName){
 				border_color = "00F";
 			}
+
+
 
 			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="Player" title="' + loopPlayerName + '" style="border:2px solid #' + border_color + ';">';
 			if(playerNodes[playerIndex].getElementsByTagName("issheriff")[0] != null){
@@ -232,13 +247,18 @@
 				result += "<img src='card.png' width='100' alt='Draw Pile' onClick='sendResponse(\"false\");'>";
 			}
 		} else {
-			result += 'info: ' + message;
+			var gameLogDiv = document.getElementById('gameLog');
+			info = '<div>' + message + '</div>' + info;
+			gameLogDiv.innerHTML = info;
 			sendResponse("");
 		}
 
 
    	return result;
    }
+
+   var info = "";
+
 
    function commandName(command){
    		if(command == "askDiscard"){
@@ -399,6 +419,8 @@
    var goal = null;
    var selected = ",";
 
+   var gameOver = false;
+
    function setup(){
    	var gameSetupDiv = document.getElementById('gameSetup');
    	var result = "";
@@ -433,10 +455,12 @@
 
    function timedCount()
    {
+   	if(gameOver == false){
         getGameState(getServletUrl(), parseGetGameState);
-	var t=setTimeout("timedCount()",1000);
-	setup();
-	pollMessages();
+		var t=setTimeout("timedCount()",1000);
+		setup();
+		pollMessages();
+	}
    }
 
    function getImageForCard(cardName){

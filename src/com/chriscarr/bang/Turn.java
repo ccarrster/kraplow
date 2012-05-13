@@ -701,4 +701,9 @@ public class Turn {
 		}
 		return null;
 	}
+
+	public GameState getGameState(boolean gameOver) {
+		GameState gameState = new TestGameState(this, gameOver);
+		return gameState;
+	}
 }

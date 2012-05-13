@@ -5,9 +5,15 @@ import java.util.List;
 public class TestGameState implements GameState {
 
 	Turn turn;
+	boolean gameOver = false;
 	
 	public TestGameState(Turn turn) {
 		this.turn = turn;
+	}
+	
+	public TestGameState(Turn turn, boolean gameOver) {
+		this.turn = turn;
+		this.gameOver = gameOver;
 	}
 
 	@Override
@@ -32,7 +38,11 @@ public class TestGameState implements GameState {
 
 	@Override
 	public boolean isGameOver() {
-		return turn.isGameOver();
+		if(gameOver){
+			return gameOver;
+		} else {
+			return turn.isGameOver();
+		}
 	}
 
 }

@@ -13,6 +13,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	Map<String, List<String>> responses;
 	Map<String, String> userFigureNames = null;
 	Map<String, String> figureNamesUser = null;
+	boolean gameOver = false;
 	
 	public WebGameUserInterface(List<String> users){
 		messages = new HashMap<String, List<String>>();
@@ -49,7 +50,8 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	public GameState getGameState(){		
-		return super.getGameState();
+		GameState gameState = super.getGameState(gameOver);		
+		return gameState;
 	}
 	
 	private void setupMap(){
@@ -67,9 +69,16 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	protected void waitForResponse(String player){
+		int maxWait = 180000;
+		int wait = 100;
+		int waitCount = 0;
 		while(responses.get(userFigureNames.get(player)).isEmpty()){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(wait);
+				waitCount += wait;
+				if(waitCount > maxWait){
+					gameOver = true;
+				}
 			} catch (InterruptedException e) {
 				//ignore
 			}

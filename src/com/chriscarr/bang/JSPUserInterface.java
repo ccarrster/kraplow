@@ -241,4 +241,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		return turn.roleToGoal(name);
 	}
 
+	public GameState getGameState(boolean gameOver) {
+		return turn.getGameState(gameOver);
+	}
+
 }
