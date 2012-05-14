@@ -79,9 +79,14 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("<gameids>");
     		List<Integer> availableGames = WebGame.getAvailableGames();
     		for(int i = 0; i < availableGames.size(); i++){
+    			response.getWriter().write("<game>");
 	    		response.getWriter().write("<gameid>");
 	    		response.getWriter().write(Integer.toString(availableGames.get(i)));
 	    		response.getWriter().write("</gameid>");
+	    		response.getWriter().write("<playercount>");
+	    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers(availableGames.get(i))));
+	    		response.getWriter().write("</playercount>");
+	    		response.getWriter().write("</game>");
     		}
     		response.getWriter().write("</gameids>");
     	} else if(messageType.equals("CANSTART")){
@@ -91,6 +96,19 @@ public class AjaxServlet extends HttpServlet {
     		} else {
     			response.getWriter().write("<no/>");
     		}
+    	} else if(messageType.equals("CHAT")){
+    		String chat = request.getParameter("chat");
+    		WebGame.addChat(chat);
+    		response.getWriter().write("<ok/>");
+    	} else if(messageType.equals("GETCHAT")){    		
+    		List<String> chatLog = WebGame.getChatLog();
+    		response.getWriter().write("<chats>");
+    		for(String chat : chatLog){
+    			response.getWriter().write("<chat>");
+    			response.getWriter().write(chat);
+    			response.getWriter().write("</chat>");
+    		}
+    		response.getWriter().write("</chats>");
     	} else if(messageType.equals("START")){
     		String gameId = request.getParameter("gameId");
     		WebGame.start(Integer.parseInt(gameId));

@@ -10,6 +10,5 @@ Played notes
 Graveyard... dead players and their roles... maybe off the bottom and greyed out
 Remove duplicate UI... play cards from your hand instead of a copy of your hand?
 Always put you in the middle of the screen... easy to see distance + and -
-Highlight targets
-Chat
-Cancel game.
+Highlight targets (onmouseover onmouseout)
+^ in game... cards with suits... should be removed

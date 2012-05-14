@@ -8,7 +8,19 @@
 <div id="gameSetup"></div>
 <div id="gameMessages"></div>
 <div id="gameState"></div>
-<div id="gameLog"></div>
+<div id="gameLog">
+	<p>Welcome to Kraplow! Clone of Bang!™</p>
+	<p><a href="http://www.dvgiochi.com/giochi/bang/?id=1&lang=eng">Buy from dV Giochi</a> <a href="http://well.ca/brand/bang-card-game.html">Buy from Well.ca(Canada/USA)</a></p>
+	<p>I played the game Bang! with friends. I bought my own copy and I also bought Dodge City. I have played with A Fistful Of Cars as well.</p>
+	<p>I have created many versions of the game. This is the first true multiplayer web version I created.</p>
+	<p>I only implemented the rules to the original game.</p>
+	<p>Any suggestions on how to improve the game, or bugs would be greatly appreciated.</p>
+	<p>Christopher Gordon Carr</p>
+	<p><a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</p>
+	<p><a href="http://174.94.63.5/bangs/bang.html">Info and source for the project</a></p>
+</div>
+<div id="chatInput"><form><input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
+<div id="chatLog"></div>
 </div>
 <script language="javascript">
    function getServletUrl(){
@@ -340,11 +352,14 @@
    }
 
   function parseGetAvailableGame(responseXML){
-		var gameIdNodes = responseXML.getElementsByTagName("gameid");
+		var gameNodes = responseXML.getElementsByTagName("game");
 		availableGames = new Array();
-		for(i = 0; i < gameIdNodes.length; i++){
-			var availableGameId = gameIdNodes[i].childNodes[0].nodeValue;
+		playerCounts = new Array();
+		for(i = 0; i < gameNodes.length; i++){
+			var availableGameId = gameNodes[i].getElementsByTagName("gameid")[0].childNodes[0].nodeValue;
+			var availablePlayerCount = gameNodes[i].getElementsByTagName("playercount")[0].childNodes[0].nodeValue;
 			availableGames.push(availableGameId);
+			playerCounts.push(availablePlayerCount);
 		}
   }
 
@@ -416,6 +431,28 @@
    	sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response + "&gameId=" + gameId, responseHandler);
    }
 
+   function parseSendChat(responseXML){
+   	//do nothing
+   }
+
+   function sendChat(servletUrl, responseHandler, chat){
+      	sendXMLHttp(servletUrl + "?messageType=CHAT&chat=" + chat, responseHandler);
+   }
+
+  function parseGetChat(responseXML){
+  	var chatLogDiv = document.getElementById('chatLog');
+  	var chatNodes = responseXML.getElementsByTagName("chat");
+  	var result = "";
+  	for(var i = chatNodes.length - 1; i >= 0; i--){
+  		result += '<p>' + chatNodes[i].childNodes[0].nodeValue + '</p>';
+  	}
+  	chatLogDiv.innerHTML = result;
+  }
+
+  function getChat(servletUrl, responseHandler){
+		sendXMLHttp(servletUrl + "?messageType=GETCHAT", responseHandler);
+   }
+
    function parseGetPlayerInfo(responseXML){
 	var nameNode = responseXML.getElementsByTagName("name")[0];
 	if(nameNode != null){
@@ -447,30 +484,52 @@
 
    var gameOver = false;
    var availableGames = null;
+   var playerCounts = null;
    var gameId = null;
+   var previousAvailable = null;
 
    function setup(){
    	var gameSetupDiv = document.getElementById('gameSetup');
    	var result = "";
    	if(!started){
 		if(user == null){
-			result += '<img src="ok.png" alt="Create" onClick="create(getServletUrl(), parseCreate);">';
+			result += '<div><div><img src="ok.png" alt="Create" onClick="create(getServletUrl(), parseCreate);"></div><div>Create New Game</div></div>';
+			var newAvailable = null;
 			if(availableGames != null){
+				newAvailable = "";
 				for(var i = 0; i < availableGames.length; i++){
-					result += '<img src="join.png" alt="Join" onClick="join(getServletUrl(), parseJoin, ' + availableGames[i] + ');">';
+					newAvailable += '<div style="border:2px solid #000;"><div><div style="float:left;"><div><img src="join.png" alt="Join" onClick="join(getServletUrl(), parseJoin, ' + availableGames[i] + ');"></div><div>Join this game</div></div>';
+					if(playerCounts[i] > 0){
+						newAvailable += '<div style="float:left;">';
+						for(var j = 0; j < playerCounts[i]; j++){
+							newAvailable += '<img src="player.png" alt="Other Player">';
+						}
+						newAvailable += '<div>Players in game</div></div>';
+					}
+					newAvailable += '</div><div style="clear:both;"></div></div>';
 				}
+				result += newAvailable;
 			}
 			getAvailableGame(getServletUrl(), parseGetAvailableGame);
+			if(newAvailable != null){
+				if(newAvailable == previousAvailable){
+					return;
+				} else {
+					previousAvailable = newAvailable;
+				}
+			}
 		} else {
-			result += '<img src="discard.png" alt="Leave" onClick="leave(getServletUrl(), parseLeave, user, gameId);">';
+			result += '<div><img src="discard.png" alt="Leave" onClick="leave(getServletUrl(), parseLeave, user, gameId);"></div><div>Leave this game</div>';
 		}
 		if(playerCount != null){
+			result += '<div>';
 			for(var i = 0; i < playerCount; i++){
 				result += '<img src="player.png" alt="Other Player">';
 			}
+			result += '</div><div>Players in game</div>'
 		}
 		if(startable != null && startable == true){
-			result += '<img src="ok.png" onClick="start(getServletUrl(), parseStart, gameId);">';
+			result += '<div><img src="card.png" onClick="start(getServletUrl(), parseStart, gameId);"></div><div>Start game</div>';
 		}
 		if(gameId != null){
 			countPlayers(getServletUrl(), parseCountPlayers, gameId);
@@ -498,6 +557,7 @@
 		var t=setTimeout("timedCount()",1000);
 		setup();
 		pollMessages();
+		getChat(getServletUrl(), parseGetChat);
 	}
    }
 
