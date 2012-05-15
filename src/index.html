@@ -1,25 +1,54 @@
 <html>
 <head>
 <title>Kraplow!</title>
+<style>
+borders_on{border:1px solid #0F0;}
+</style>
 </head>
 <body onload="timedCount();">
 <div>
 <h1>Kraplow!</h1>
 <div id="gameSetup"></div>
-<div id="gameMessages"></div>
+<div id="gameMessages" style="height:200px; display:none; border:1px solid #000;"></div>
 <div id="gameState"></div>
-<div id="gameLog">
-	<p>Welcome to Kraplow! Clone of Bang!™</p>
-	<p><a href="http://www.dvgiochi.com/giochi/bang/?id=1&lang=eng">Buy from dV Giochi</a> <a href="http://well.ca/brand/bang-card-game.html">Buy from Well.ca(Canada/USA)</a></p>
-	<p>I played the game Bang! with friends. I bought my own copy and I also bought Dodge City. I have played with A Fistful Of Cars as well.</p>
-	<p>I have created many versions of the game. This is the first true multiplayer web version I created.</p>
-	<p>I only implemented the rules to the original game.</p>
+<div id="gameLog"></div>
+<div id="gameInfo">
+	<p>Kraplow! An unofficial HTML/AJAX version of Bang!</p>
+	<p>Want to play Bang! but not enough people to play with?</p>
+	<p>
+	<ol>
+	<li>Create a game(If no games) <img src="ok.png" width="20"> (games removed once started or abandoned for 20 mintues)</li>
+	<li>Join a game <img src="join.png" width="20"> (Use multiple browser to join multiple games, or the same game multiple times)</li>
+	<li>Wait for other players to join that game (4 - 7 player games) <img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"> - <img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"></li>
+	<li>Start the game <img src="card.png" width="20"> </li>
+	<li>Play cards <img src="cardface.png" width="20"> (3 minutes without interaction - game will timeout)</li>
+	<li>When game is over return to this lobby</li>
+	</ol>
+	</p>
+	<p>
+	Buy the physical card game
+	<ul>
+	<li><a href="http://well.ca/brand/bang-card-game.html">Well.ca(Canada/USA)</a></li>
+	<li><a href="http://www.dvgiochi.com/?lang=eng">gV Goichi</a></li>
+	<li><a href="http://www.amazon.com/gp/product/B001RU7UNW">amazon</a></li>
+	</ul>
+	</p>
+	<p>
+	Other Bang! implementations
+	<ul>
+	<li><a href="http://www.bangvideogame.com/">Official Bang! Video Game</li>
+	<li><a href="http://boardgamingonlinetheindex.wordpress.com/2009/07/24/bang-online/">Bang! Online at Vassal</a></li>
+	<li><a href="http://bangbeta.neuralfirings.com/">Bang! at neuralfirings</a></li>
+	<li><a href="http://code.google.com/p/kbang/">KBang</a></li>
+	</ul>
+	</p>
+	<p><a href="http://www.dvgiochi.com/giochi/bang/?id=1&lang=eng">Bang</a> <a href="http://www.davincigames.net/bang/bang_rules.pdf">Rules</a> <a href="http://www.davincigames.net/bang/faq/bang_faq_eng.pdf">FAQ</a> <a href="http://bangcardgame.blogspot.ca/">Blog</a></p>
+	<p><a href="http://174.94.63.5/bangs/bang.html">Project Info, Source Code</a></p>
 	<p>Any suggestions on how to improve the game, or bugs would be greatly appreciated.</p>
 	<p>Christopher Gordon Carr</p>
-	<p><a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</p>
-	<p><a href="http://174.94.63.5/bangs/bang.html">Info and source for the project</a></p>
+	<p><a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a></p>
 </div>
-<div id="chatInput"><form><input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
+<div id="chatInput"><form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">Chat: <input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
 <div id="chatLog"></div>
 </div>
 <script language="javascript">
@@ -60,6 +89,8 @@
 			return;
 		} else {
 			started = true;
+			var gameMessagesDiv = document.getElementById('gameMessages');
+			gameMessagesDiv.style.display = "block";
 			setup();
 		}
 		var size = deckSize.childNodes[0].nodeValue;
@@ -79,7 +110,7 @@
 
 		var gameOverNode = responseXML.getElementsByTagName("gameover")[0];
 		if(gameOverNode != null){
-			result += 'Game Over';
+			result += 'Game Over <a href="/bang">Game Lobby</a>';
 			gameOver = true;
 		}
 		var playerNodes = responseXML.getElementsByTagName("player");
@@ -106,10 +137,7 @@
 			} else if(loopPlayerName == playerName){
 				border_color = "00F";
 			}
-
-
-
-			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="Player" title="' + loopPlayerName + '" style="border:2px solid #' + border_color + ';">';
+			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="Player" id="' + loopPlayerName + '" title="' + loopPlayerName + '" style="border:2px solid #' + border_color + ';">';
 			if(playerNodes[playerIndex].getElementsByTagName("issheriff")[0] != null){
 				result += '<img src="sheriff.png" alt="Role Sheriff">';
 			} else {
@@ -141,7 +169,9 @@
 			}
 			result += '</div>';
 		}
-		gameStateDiv.innerHTML = result;
+		if(gameStateDiv.innerHTML != result){
+			gameStateDiv.innerHTML = result;
+		}
 	}
    }
 
@@ -158,6 +188,7 @@
 				var data = commandData.substring(commandIndex + 1);
 				var splitData = data.split(", ");
 				if(command.indexOf("chooseTwoDiscardForLife") != -1){
+					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected);'>";
 					for(var i = 0; i < splitData.length; i++){
 						if(splitData[i] != ""){
 							var image = getImageForCard(splitData[i]);
@@ -165,8 +196,8 @@
 							result += '<img src="card.png" style="display:none;" alt="Discard" title="' + splitData[i] + '" id="discard' + i + '" onClick="document.getElementById(\'discard' + i + '\').style.display = \'none\'; document.getElementById(\'result' + i + '\').style.display = \'inline\'; selected = selected.replace(\',' + i + ',\', \',\');")>';
 						}
 					}
-					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected);'>";
 				} else if(command.indexOf("respondTwoMiss") != -1){
+					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected);'>";
 					for(var i = 0; i < splitData.length; i++){
 						if(splitData[i] != ""){
 							var nameCanPlaySplit = splitData[i].split("@");
@@ -181,7 +212,6 @@
 							}
 						}
 					}
-					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected);'>";
 				} else {
 					if(command.indexOf("askOthersCard") != -1){
 						if(splitData[0].indexOf("true") != -1){
@@ -195,7 +225,7 @@
 						result += "<img src='discard.png' width='100' alt='Done Playing' onClick='sendResponse(-1);'>";
 					}
 					for(var i = 0; i < splitData.length; i++){
-						var targets = "";
+						var targetCode = "";
 						var canPlay = true;
 						if(command.indexOf("askPlay") != -1 || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
 							var canPlayTargets = splitData[i].split("@");
@@ -204,7 +234,10 @@
 								if(canPlayTargets[1].indexOf("false") != -1){
 									canPlay = false;
 								} else {
-									targets = canPlayTargets[2];
+									var targets = canPlayTargets[2];
+									var splitTargets = targets.split("$");
+									targetCode = generateTargetCode(splitTargets);
+
 								}
 							} else if(canPlayTargets.length == 2){
 								if(canPlayTargets[1].indexOf("false") != -1){
@@ -223,15 +256,15 @@
 								image = getImageForCard(cardName);
 								var suits = cardName.split("^");
 								if(suits.length == 3){
-									cardName = suits[0];
+									splitData[i] = suits[0];
 									var suit = suits[1];
 									var value = suits[2];
 								}
 							}
 							if(canPlay){
-								result += '<img src="' + image + '" alt="Action" title="' + splitData[i] + ' ' + targets + '" onClick="sendResponse(' + i + ');">';
+								result += '<img src="' + image + '" alt="Action" title="' + splitData[i] + '" ' + targetCode + ' onClick="sendResponse(' + i + ');">';
 							} else {
-								result += '<img src="' + image + '" alt="Action" title="' + splitData[i] + ' ' + targets + '" style="opacity:0.4;">';
+								result += '<img src="' + image + '" alt="Action" title="' + splitData[i] + '" ' + targetCode + ' style="opacity:0.4;">';
 							}
 							if(suit != null && value != null){
 								result += value;
@@ -264,9 +297,19 @@
 			gameLogDiv.innerHTML = info;
 			sendResponse("");
 		}
-
-
    	return result;
+   }
+
+   function generateTargetCode(targets){
+     var result = "";
+     for(var i = 0; i < targets.length; i++){
+       var target = targets[i];
+       if(target != ""){
+       //single quotes changing to doubles!
+       	 result += "onmouseover='var player=document.getElementById(\"" + target + "\"); player.class=\"borders_on\";' onmouseout='var player=document.getElementById(\"" + target + "\"); player.class=\"\";'"
+       }
+     }
+     return result;
    }
 
    var info = "";
@@ -309,7 +352,7 @@
    }
 
    function parseCreate(responseXML){
-		//do nothing
+		getAvailableGame(getServletUrl(), parseGetAvailableGame);
    }
 
    function create(servletUrl, responseHandler) {
@@ -322,7 +365,8 @@
    		user = userNode.childNodes[0].nodeValue;
    		gameId = responseXML.getElementsByTagName("gameid")[0].childNodes[0].nodeValue;
    	}
-   	setup();
+   	writeInfo();
+   	countPlayers(getServletUrl(), parseCountPlayers, gameId);
    }
 
    function join(servletUrl, responseHandler, gameId) {
@@ -335,8 +379,10 @@
 		user = null;
 		gameId = null;
 		playerCount = null;
+		previousAvailable = null;
+		writeInfo();
+		setup();
 	}
-   	setup();
    }
 
    function leave(servletUrl, responseHandler, user, gameId) {
@@ -345,6 +391,8 @@
 
    function parseCountPlayers(responseXML){
    	playerCount = responseXML.getElementsByTagName("playercount")[0].childNodes[0].nodeValue;
+   	canStart(getServletUrl(), parseCanStart, gameId);
+   	setup();
    }
 
    function countPlayers(servletUrl, responseHandler, gameId) {
@@ -361,6 +409,7 @@
 			availableGames.push(availableGameId);
 			playerCounts.push(availablePlayerCount);
 		}
+		setup();
   }
 
   function getAvailableGame(servletUrl, responseHandler) {
@@ -368,12 +417,13 @@
    }
 
    function parseCanStart(responseXML){
-      var yesNode = responseXML.getElementsByTagName("yes")[0];
+	var yesNode = responseXML.getElementsByTagName("yes")[0];
 	if(yesNode != null){
 		startable = true;
-   	} else {
-   		startable = false;
-   	}
+	} else {
+		startable = false;
+	}
+	setup();
    }
 
    function canStart(servletUrl, responseHandler, gameId) {
@@ -381,7 +431,7 @@
    }
 
    function parseStart(responseXML){
-   	setup();
+   		getGameState(getServletUrl(), parseGetGameState, gameId);
    }
 
    function start(servletUrl, responseHandler, gameId) {
@@ -432,7 +482,7 @@
    }
 
    function parseSendChat(responseXML){
-   	//do nothing
+   	 getChat(getServletUrl(), parseGetChat);
    }
 
    function sendChat(servletUrl, responseHandler, chat){
@@ -446,7 +496,9 @@
   	for(var i = chatNodes.length - 1; i >= 0; i--){
   		result += '<p>' + chatNodes[i].childNodes[0].nodeValue + '</p>';
   	}
-  	chatLogDiv.innerHTML = result;
+  	if(chatLogDiv.innerHTML != result){
+  		chatLogDiv.innerHTML = result;
+  	}
   }
 
   function getChat(servletUrl, responseHandler){
@@ -481,11 +533,11 @@
    var role = null;
    var goal = null;
    var selected = ",";
+   var gameId = null;
 
    var gameOver = false;
    var availableGames = null;
    var playerCounts = null;
-   var gameId = null;
    var previousAvailable = null;
 
    function setup(){
@@ -510,7 +562,6 @@
 				}
 				result += newAvailable;
 			}
-			getAvailableGame(getServletUrl(), parseGetAvailableGame);
 			if(newAvailable != null){
 				if(newAvailable == previousAvailable){
 					return;
@@ -531,12 +582,10 @@
 		if(startable != null && startable == true){
 			result += '<div><img src="card.png" onClick="start(getServletUrl(), parseStart, gameId);"></div><div>Start game</div>';
 		}
-		if(gameId != null){
-			countPlayers(getServletUrl(), parseCountPlayers, gameId);
-			canStart(getServletUrl(), parseCanStart, gameId);
-		}
    	}
-	gameSetupDiv.innerHTML = result;
+   	if(gameSetupDiv.innerHTML != result){
+   		gameSetupDiv.innerHTML = result;
+   	}
    }
 
    function pollMessages(){
@@ -551,13 +600,22 @@
    function timedCount()
    {
    	if(gameOver == false){
-   		if(gameId != null && startable == true){
+   		if(gameId != null){
         	getGameState(getServletUrl(), parseGetGameState, gameId);
         }
 		var t=setTimeout("timedCount()",1000);
 		setup();
 		pollMessages();
 		getChat(getServletUrl(), parseGetChat);
+		writeInfo();
+		if(!started){
+			if(user == null){
+				getAvailableGame(getServletUrl(), parseGetAvailableGame);
+			}
+			if(gameId != null){
+				countPlayers(getServletUrl(), parseCountPlayers, gameId);
+			}
+		}
 	}
    }
 
@@ -610,6 +668,15 @@
    		return "cardface.png";
    	}
    }
+
+	function writeInfo(){
+		var gameInfoDiv = document.getElementById('gameInfo');
+		if(gameId == null){
+			gameInfoDiv.style.display = "block";
+		} else {
+			gameInfoDiv.style.display = "none";
+		}
+	}
 
    function getImageForPlayer(playerName){
    	if(playerName == "Bart Cassidy"){

@@ -69,7 +69,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			List<String> targets = turn.targets(player, card);
 			String targetString = "";
 			for(String otherName : targets){
-				targetString += otherName + " ";
+				targetString += otherName + "$";
 			}
 			handCards += name + "@" + canPlay + "@" + targetString + ", ";
 		}
