@@ -38,6 +38,7 @@ public class TestPlayOneUserInterface extends TestUserInterface implements UserI
 	@Override
 	public int askPlay(Player player) {
 		if(!askedPlay){
+			askedPlay = true;
 			return 0;	
 		}
 		return -1;

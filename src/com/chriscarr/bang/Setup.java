@@ -62,9 +62,6 @@ public class Setup {
 			player.setMaxHealth(maxHealth);
 						
 			Hand hand = new Hand();
-			if(Figure.SUZYLAFAYETTE.equals(figure.getName())){
-				hand.setEmptyListener(new DrawCardEmptyHandListener(deck, hand));
-			}
 			
 			player.setHand(hand);
 			

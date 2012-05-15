@@ -6,11 +6,6 @@ import java.util.List;
 public class Hand {
 
 	List<Object> cards = new ArrayList<Object>();
-	private EmptyHandListener emptyListener;
-	
-	public Hand(){
-		emptyListener = new DoNothingEmptyHandListener();
-	}
 	
 	public void add(Object object) {
 		cards.add(object);
@@ -26,9 +21,6 @@ public class Hand {
 
 	public Object remove(int card) {
 		Object removedCard = cards.remove(card);
-		if(cards.isEmpty()){
-			emptyListener.handleEmptyHand();
-		}
 		return removedCard;
 	}
 
@@ -56,9 +48,6 @@ public class Hand {
 		for(Object card : cards){
 			if(((Card)card).getName().equals(Card.CARDMISSED)){
 				cards.remove(card); 
-				if(cards.isEmpty()){
-					emptyListener.handleEmptyHand();
-				}
 				return card;
 			}
 		}
@@ -67,9 +56,6 @@ public class Hand {
 
 	public Object removeRandom() {
 		Object removedCard = cards.remove((int)(Math.random() * cards.size()));
-		if(cards.isEmpty()){
-			emptyListener.handleEmptyHand();
-		}
 		return removedCard;
 	}
 
@@ -87,17 +73,10 @@ public class Hand {
 		for(Object card : cards){
 			if(((Card)card).getName().equals(Card.CARDBEER)){
 				cards.remove(card); 
-				if(cards.isEmpty()){
-					emptyListener.handleEmptyHand();
-				}
 				return card;
 			}
 		}
 		return null;
-	}
-
-	public void setEmptyListener(EmptyHandListener emptyListener) {
-		this.emptyListener = emptyListener;
 	}
 
 	public void remove(Object card) {

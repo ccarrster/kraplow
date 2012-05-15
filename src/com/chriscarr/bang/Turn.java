@@ -167,6 +167,14 @@ public class Turn {
 	}
 
 	public void play() throws EndOfGameException {
+		for(Player player : players){
+			if(Figure.SUZYLAFAYETTE.equals(player.getName())){
+				Hand playerHand = player.getHand();
+				if(playerHand.isEmpty()){
+					playerHand.add(deck.pull());
+				}
+			}
+		}
 		Hand hand = currentPlayer.getHand();
 		int card = -2;
 		while(card < -1 || card > hand.size() - 1){
@@ -351,18 +359,7 @@ public class Turn {
 	
 	public static void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{
 		discardTwoCardsForLife(player, discard, userInterface);
-		player.setHealth(player.getHealth() - damage);
-		if(Figure.BARTCASSIDY.equals(player.getName())){
-			for(int i = 0; i < damage; i++){
-				player.getHand().add(deck.pull());
-			}
-		} else if(damager != null && Figure.ELGRINGO.equals(player.getName())){
-			Hand otherHand = damager.getHand();
-			if(otherHand.size() != 0){
-				Hand playerHand = player.getHand();
-				playerHand.add(otherHand.removeRandom());
-			}
-		}
+		player.setHealth(player.getHealth() - damage);		
 		if(player.getHealth() <= 0 && players.size() > 2){
 			boolean doNotPlayBeer = false;
 			while(!doNotPlayBeer && player.getHealth() <= 0){
@@ -377,6 +374,18 @@ public class Turn {
 		}
 		if(player.getHealth() <= 0){
 			handleDeath(player, damager, currentPlayer, players, userInterface, deck, discard);				
+		} else {
+			if(Figure.BARTCASSIDY.equals(player.getName())){
+				for(int i = 0; i < damage; i++){
+					player.getHand().add(deck.pull());
+				}
+			} else if(damager != null && Figure.ELGRINGO.equals(player.getName())){
+				Hand otherHand = damager.getHand();
+				if(otherHand.size() != 0){
+					Hand playerHand = player.getHand();
+					playerHand.add(otherHand.removeRandom());
+				}
+			}
 		}
 	}
 
@@ -386,6 +395,7 @@ public class Turn {
 		}
 		players.remove(player);
 		userInterface.printInfo(player.getName() + " is dead. Role was " + Player.roleToString(player.getRole()));
+		deadDiscardAll(player, players, discard);
 		if(damager != null){
 			if(damager.getRole() == Player.SHERIFF && player.getRole() == Player.DEPUTY){
 				userInterface.printInfo(damager.getName() + " killed own deputy, loses all cards");
@@ -394,8 +404,7 @@ public class Turn {
 				userInterface.printInfo(damager.getName() + " killed an outlaw, draws 3 cards");
 				deckToHand(damager.getHand(), deck, 3);
 			}
-		}
-		deadDiscardAll(player, players, discard);
+		}		
 		if(isGameOver(players)){
 			userInterface.printInfo("Winners are " + getWinners(players));
 			throw new EndOfGameException("Game over");
@@ -420,8 +429,7 @@ public class Turn {
 	
 	public static void deadDiscardAll(Player player, List<Player> players, Discard discard){
 		List<Object> discardCards = new ArrayList<Object>();
-		Hand hand = player.getHand();
-		hand.setEmptyListener(new DoNothingEmptyHandListener());
+		Hand hand = player.getHand();		
 		while(hand.size() != 0){
 			discardCards.add(hand.remove(0));
 		}

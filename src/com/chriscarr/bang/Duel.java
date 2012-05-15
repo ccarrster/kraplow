@@ -37,7 +37,7 @@ public class Duel extends Card implements Playable {
 			}		
 			int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
 			if(currentBangPlayed == -1){
-				Turn.damagePlayer(currentPlayer, players, currentPlayer, 1, other, deck, discard, userInterface);
+				Turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
 				return;						
 			} else {								
 				discard.add(currentPlayer.getHand().remove(currentBangPlayed));

@@ -2010,10 +2010,10 @@ public class TurnTest extends TestCase{
 		Figure figure = new Figure();
 		figure.setName(Figure.SUZYLAFAYETTE);
 		sheriff.setFigure(figure);
-		sheriff.getHand().add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
-		sheriff.getHand().setEmptyListener(new DrawCardEmptyHandListener(deck, sheriff.getHand()));
+		sheriff.getHand().add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));		
 		UserInterface testUserInterface = new TestPlayOneUserInterface();
 		turn.setUserInterface(testUserInterface);
+		turn.play();
 		turn.play();
 		assertEquals(1, sheriff.getHand().size());
 	}
