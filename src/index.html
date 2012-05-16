@@ -50,6 +50,88 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="chatInput"><form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">Chat: <input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
 <div id="chatLog"></div>
 <div id="gameLog"></div>
+<div id="showLegend" style="color:blue; text-decoration:underline" onClick="document.getElementById('legend').style.display='block'; document.getElementById('showLegend').style.display='none';">Show Legend</div>
+<div id="legend" style="display:none;">
+<h2>Legend</h2>
+<div style="color:blue; text-decoration:underline" onClick="document.getElementById('legend').style.display='none'; document.getElementById('showLegend').style.display='block';">Hide Legend</div>
+<h2>Roles</h2>
+<ol>
+<li>Sheriff <img src="sheriff.png"></li>
+<li>Deputy <img src="deputy.png"></li>
+<li>Outlaw <img src="outlaw.png"></li>
+<li>Renegade <img src="renegade.png"></li>
+</ol>
+<h2>Health</h2>
+<ol>
+<li>Heath <img src="vbullet.png"></li>
+<li>Lost Health <img src="vemptybullet.png"></li>
+</ol>
+<h2>Figures</h2>
+<ol>
+<li>Bart Cassidy <img src="bartcassidy.png"></li>
+<li>Black Jack <img src="blackjack.png"></li>
+<li>Calamity Janet <img src="calamityjanet.png"></li>
+<li>El Gringo <img src="elgringo.png"></li>
+<li>Jesse Jones <img src="jessejones.png"></li>
+<li>Joudonais <img src="jourdonnais.png"></li>
+<li>Kit Carlson <img src="kitcarlson.png"></li>
+<li>Lucky Duke <img src="luckyduke.png"></li>
+<li>Paul Regret <img src="paulregret.png"></li>
+<li>Pedro Ramierz <img src="pedroramierz.png"></li>
+<li>Rose Doolan <img src="rosedoolan.png"></li>
+<li>Sid Ketchum <img src="sidketchum.png"></li>
+<li>Slab The Killer <img src="slabthekiller.png"></li>
+<li>Suzy Lafayette<img src="suzylafayette.png"></li>
+</ol>
+<h2>Suits</h2>
+<ol>
+<li>Hearts <img src="hearts.png"></li>
+<li>Diamonds <img src="diamonds.png"></li>
+<li>Clubs <img src="clubs.png"></li>
+<li>Spades <img src="spades.png"></li>
+</ol>
+<h2>Guns</h2>
+<ol>
+<li>Volcanic <img src="volcanic.png"></li>
+<li>Schofield <img src="schofield.png"></li>
+<li>Remington <img src="remington.png"></li>
+<li>Winchester <img src="winchester.png"></li>
+<li>Rev. Carbine <img src="carbine.png"></li>
+</ol>
+<h2>Items</h2>
+<ol>
+<li>Appaloosa <img src="appaloosa.png"></li>
+<li>Barrel <img src="barrel.png"></li>
+<li>Dynamite <img src="dynamite.png"></li>
+<li>Mustang <img src="mustang.png"></li>
+<li>Jail <img src="jail.png"></li>
+</ol>
+<h2>Play Cards</h2>
+<ol>
+<li>Bang <img src="bang.png"></li>
+<li>Beer <img src="beer.png"></li>
+<li>Cat Balou <img src="catbalou.png"></li>
+<li>Duel <img src="duel.png"></li>
+<li>Gatling <img src="gatling.png"></li>
+<li>General Store <img src="generalstore.png"></li>
+<li>Indians <img src="indians.png"></li>
+<li>Missed <img src="missed.png"></li>
+<li>Panic <img src="panic.png"></li>
+<li>Saloon <img src="saloon.png"></li>
+<li>Stagecoach <img src="stagecoach.png"></li>
+<li>Wells Fargo <img src="wellsfargo.png"></li>
+</ol>
+<h2>Others</h2>
+<ol>
+<li>Hand or card in hand <img src="card.png"></li>
+<li>Draw from Discard <img src="cardface.png"></li>
+<li>Create/Start game/finish discarding 2 for life/finish playing 2 misses <img src="ok.png"></li>
+<li>Do not respond/finished play phase <img src="discard.png"></li>
+<li>Gun <img src="gun.png"></li>
+<li>Player <img src="player.png"></li>
+<li>Join Game <img src="join.png"></li>
+</ol>
+</div>
 </div>
 <script language="javascript">
    function getServletUrl(){
