@@ -2,7 +2,7 @@
 <head>
 <title>Kraplow!</title>
 <style>
-borders_on{border:1px solid #0F0;}
+borders_on{border:1px solid #0F0 !important;}
 </style>
 </head>
 <body onload="timedCount();">
@@ -80,6 +80,8 @@ borders_on{border:1px solid #0F0;}
 	req.send(null);
    }
 
+	var gameStateResult = null;
+
    function parseGetGameState(responseXML) {
 	var gameStateDiv = document.getElementById('gameState');
 	if(gameStateDiv != null){
@@ -137,7 +139,7 @@ borders_on{border:1px solid #0F0;}
 			} else if(loopPlayerName == playerName){
 				border_color = "00F";
 			}
-			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="Player" id="' + loopPlayerName + '" title="' + loopPlayerName + '" style="border:2px solid #' + border_color + ';">';
+			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="Player" id="' + loopPlayerName + '" title="' + loopPlayerName + '" style="border:2px solid #' + border_color + '; opacity:0.6;">';
 			if(playerNodes[playerIndex].getElementsByTagName("issheriff")[0] != null){
 				result += '<img src="sheriff.png" alt="Role Sheriff">';
 			} else {
@@ -169,7 +171,8 @@ borders_on{border:1px solid #0F0;}
 			}
 			result += '</div>';
 		}
-		if(gameStateDiv.innerHTML != result){
+		if(gameStateResult != result){
+			gameStateResult = result;
 			gameStateDiv.innerHTML = result;
 		}
 	}
@@ -302,14 +305,18 @@ borders_on{border:1px solid #0F0;}
 
    function generateTargetCode(targets){
      var result = "";
+     var mouseOver = 'onmouseover="';
+     var mouseOut = 'onmouseout="';
      for(var i = 0; i < targets.length; i++){
        var target = targets[i];
        if(target != ""){
-       //single quotes changing to doubles!
-       	 result += "onmouseover='var player=document.getElementById(\"" + target + "\"); player.class=\"borders_on\";' onmouseout='var player=document.getElementById(\"" + target + "\"); player.class=\"\";'"
+	       mouseOver += 'document.getElementById(\'' + target + '\').style.opacity = 1.0;';
+	       mouseOut += 'document.getElementById(\'' + target + '\').style.opacity = 0.6;';
        }
      }
-     return result;
+     mouseOver += '"';
+     mouseOut += '"';
+     return mouseOver + ' ' + mouseOut;
    }
 
    var info = "";
@@ -493,9 +500,11 @@ borders_on{border:1px solid #0F0;}
   	var chatLogDiv = document.getElementById('chatLog');
   	var chatNodes = responseXML.getElementsByTagName("chat");
   	var result = "";
-  	for(var i = chatNodes.length - 1; i >= 0; i--){
-  		result += '<p>' + chatNodes[i].childNodes[0].nodeValue + '</p>';
-  	}
+	for(var i = 0; i < chatNodes.length; i++){
+		if(chatNodes[i].childNodes.length > 0){
+			result += '<p>' + chatNodes[i].childNodes[0].nodeValue + '</p>';
+		}
+	}
   	if(chatLogDiv.innerHTML != result){
   		chatLogDiv.innerHTML = result;
   	}
