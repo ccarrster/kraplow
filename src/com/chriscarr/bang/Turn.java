@@ -190,7 +190,7 @@ public class Turn {
 			if(playedCard instanceof Bang || playedCard instanceof Missed){
 				bangsPlayed++;
 			}
-			playedCard.play(currentPlayer, players, userInterface, deck, discard);
+			playedCard.play(currentPlayer, players, userInterface, deck, discard, this);
 		}
 	}
 	
@@ -357,7 +357,7 @@ public class Turn {
 		return misses;
 	}
 	
-	public static void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{
+	public void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{
 		discardTwoCardsForLife(player, discard, userInterface);
 		player.setHealth(player.getHealth() - damage);		
 		if(player.getHealth() <= 0 && players.size() > 2){
@@ -389,7 +389,7 @@ public class Turn {
 		}
 	}
 
-	public static void handleDeath(Player player, Player damager, Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard) throws EndOfGameException {
+	public void handleDeath(Player player, Player damager, Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard) throws EndOfGameException {
 		if(player.equals(currentPlayer)){
 			currentPlayer = getPreviousPlayer(currentPlayer, players);
 		}
@@ -411,23 +411,28 @@ public class Turn {
 		}
 	}
 	
-	public static void discardAll(Player player, Discard discard){
+	public void discardAll(Player player, Discard discard){
 		List<Object> discardCards = new ArrayList<Object>();
 		Hand hand = player.getHand();
 		while(hand.size() != 0){
 			discardCards.add(hand.remove(0));
 		}
 		InPlay inPlay = player.getInPlay();
-		discardCards.add(inPlay.removeGun());
+		if(inPlay.hasGun()){
+			discardCards.add(inPlay.removeGun());
+		}
 		while(inPlay.count() > 0){
 			discardCards.add(inPlay.remove(0));
 		}
-		for(Object card : discardCards){
-			discard.add(card);
+		for(Object discardCard : discardCards){
+			hand.add(discardCard);
+		}
+		while(hand.size() != 0){
+			askPlayerToDiscard(player, discard);
 		}
 	}
 	
-	public static void deadDiscardAll(Player player, List<Player> players, Discard discard){
+	public void deadDiscardAll(Player player, List<Player> players, Discard discard){
 		List<Object> discardCards = new ArrayList<Object>();
 		Hand hand = player.getHand();		
 		while(hand.size() != 0){
@@ -446,9 +451,12 @@ public class Turn {
 				vultureSam = alivePlayer;
 			}
 		}
-		if(vultureSam == null){
-			for(Object card : discardCards){
-				discard.add(card);
+		if(vultureSam == null){		
+			for(Object discardCard : discardCards){
+				hand.add(discardCard);
+			}
+			while(hand.size() != 0){
+				askPlayerToDiscard(player, discard);
 			}
 		} else {
 			for(Object card : discardCards){

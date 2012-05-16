@@ -24,20 +24,20 @@ public class Duel extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){
+	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, Turn.others(currentPlayer, players), userInterface);				
 		while(true){
 			int bangPlayed = Turn.validPlayBang(other, userInterface);
 			if(bangPlayed == -1){
-				Turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+				turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				return;
 			} else {
 				discard.add(other.getHand().remove(bangPlayed));				
 			}		
 			int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
 			if(currentBangPlayed == -1){
-				Turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
+				turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
 				return;						
 			} else {								
 				discard.add(currentPlayer.getHand().remove(currentBangPlayed));

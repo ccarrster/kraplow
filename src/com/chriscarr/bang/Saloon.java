@@ -15,7 +15,7 @@ public class Saloon extends Card implements Playable {
 
 	@Override
 	public void play(Player currentPlayer, List<Player> players,
-			UserInterface userInterface, Deck deck, Discard discard) {
+			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		discard.add(this);
 		for(Player player : players){
 			if(!Turn.isMaxHealth(player)){

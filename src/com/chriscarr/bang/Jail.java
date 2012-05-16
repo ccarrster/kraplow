@@ -15,7 +15,7 @@ public class Jail extends Card implements Playable {
 
 	@Override
 	public void play(Player currentPlayer, List<Player> players,
-			UserInterface userInterface, Deck deck, Discard discard) {
+			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		Player targetPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		targetPlayer.addInPlay(this);
 	}

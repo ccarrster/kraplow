@@ -27,7 +27,7 @@ public class Bang extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){
+	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
 		List<Player> others = Turn.getPlayersWithinRange(currentPlayer, players, currentPlayer.getInPlay().getGunRange());
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, others, userInterface);
@@ -42,7 +42,7 @@ public class Bang extends Card implements Playable {
 		} else if(missesRequired == 1){
 			int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface); 
 			if(missPlayed == -1){
-				Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+				turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 			} else {
 				for(int i = 0; i < missesRequired; i++){
 					discard.add(otherPlayer.getHand().remove(missPlayed));
@@ -53,7 +53,7 @@ public class Bang extends Card implements Playable {
 			List<Object> cardsToDiscard = null;			
 			cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);			
 			if(cardsToDiscard.size() == 0){
-				Turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);	
+				turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);	
 			} else {
 				for(Object card : cardsToDiscard){
 					hand.remove(card);

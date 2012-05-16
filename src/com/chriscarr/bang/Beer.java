@@ -16,7 +16,7 @@ public class Beer extends Card implements Playable {
 
 	@Override
 	public void play(Player currentPlayer, List<Player> players,
-			UserInterface userInterface, Deck deck, Discard discard) {
+			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		discard.add(this);
 		if(Turn.isBeerGiveHealth(players)){
 			if(!Turn.isMaxHealth(currentPlayer)){

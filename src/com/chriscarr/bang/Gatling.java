@@ -24,7 +24,7 @@ public class Gatling extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard){
+	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
@@ -33,7 +33,7 @@ public class Gatling extends Card implements Playable {
 			}
 			int missPlayed = Turn.validPlayMiss(gatlingPlayer, userInterface);
 			if(missPlayed == -1){
-				Turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+				turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 			} else {
 				discard.add(gatlingPlayer.getHand().remove(missPlayed));
 			}

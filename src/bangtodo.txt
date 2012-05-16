@@ -1,12 +1,3 @@
 Bang
 
 TODO:
-
-ENUM your bang constants
-Respond code very much duplicated in manual user interface
-Damage notes
-Played notes
-Graveyard... dead players and their roles... maybe off the bottom and greyed out
-Remove duplicate UI... play cards from your hand instead of a copy of your hand?
-Always put you in the middle of the screen... easy to see distance + and -
-Highlight targets (onmouseover onmouseout)

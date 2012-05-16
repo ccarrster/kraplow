@@ -8,7 +8,7 @@ public class Gun extends Card {
 	}
 	
 	public void play(Player currentPlayer, List<Player> players,
-			UserInterface userInterface, Deck deck, Discard discard) {
+			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		if(currentPlayer.hasGun()){			
 			discard.add(currentPlayer.removeGun());
 		}

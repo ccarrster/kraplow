@@ -11,7 +11,6 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="gameSetup"></div>
 <div id="gameMessages" style="height:200px; display:none; border:1px solid #000;"></div>
 <div id="gameState"></div>
-<div id="gameLog"></div>
 <div id="gameInfo">
 	<p>Kraplow! An unofficial HTML/AJAX version of Bang!</p>
 	<p>Want to play Bang! but not enough people to play with?</p>
@@ -50,6 +49,7 @@ borders_on{border:1px solid #0F0 !important;}
 </div>
 <div id="chatInput"><form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">Chat: <input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
 <div id="chatLog"></div>
+<div id="gameLog"></div>
 </div>
 <script language="javascript">
    function getServletUrl(){
