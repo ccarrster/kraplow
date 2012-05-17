@@ -15,34 +15,10 @@ borders_on{border:1px solid #0F0 !important;}
 	<p>Kraplow! An unofficial HTML/AJAX version of Bang!</p>
 	<p>Want to play Bang! but not enough people to play with?</p>
 	<p>
-	<ol>
-	<li>Create a game(If no games) <img src="ok.png" width="20"> (games removed once started or abandoned for 20 mintues)</li>
-	<li>Join a game <img src="join.png" width="20"> (Use multiple browser to join multiple games, or the same game multiple times)</li>
-	<li>Wait for other players to join that game (4 - 7 player games) <img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"> - <img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"><img src="player.png" width="20"></li>
-	<li>Start the game <img src="card.png" width="20"> </li>
-	<li>Play cards <img src="cardface.png" width="20"> (3 minutes without interaction - game will timeout)</li>
-	<li>When game is over return to this lobby</li>
-	</ol>
+	<iframe width="420" height="315" src="http://www.youtube.com/embed/XgL6p6rWGNg" frameborder="0" allowfullscreen></iframe>
+	<iframe width="420" height="315" src="http://www.youtube.com/embed/LMfrCKZFOJ8" frameborder="0" allowfullscreen></iframe>
+	<iframe width="420" height="315" src="http://www.youtube.com/embed/EPlONB9cPno" frameborder="0" allowfullscreen></iframe>
 	</p>
-	<p>
-	Buy the physical card game
-	<ul>
-	<li><a href="http://well.ca/brand/bang-card-game.html">Well.ca(Canada/USA)</a></li>
-	<li><a href="http://www.dvgiochi.com/?lang=eng">gV Goichi</a></li>
-	<li><a href="http://www.amazon.com/gp/product/B001RU7UNW">amazon</a></li>
-	</ul>
-	</p>
-	<p>
-	Other Bang! implementations
-	<ul>
-	<li><a href="http://www.bangvideogame.com/">Official Bang! Video Game</li>
-	<li><a href="http://boardgamingonlinetheindex.wordpress.com/2009/07/24/bang-online/">Bang! Online at Vassal</a></li>
-	<li><a href="http://bangbeta.neuralfirings.com/">Bang! at neuralfirings</a></li>
-	<li><a href="http://code.google.com/p/kbang/">KBang</a></li>
-	</ul>
-	</p>
-	<p><a href="http://www.dvgiochi.com/giochi/bang/?id=1&lang=eng">Bang</a> <a href="http://www.davincigames.net/bang/bang_rules.pdf">Rules</a> <a href="http://www.davincigames.net/bang/faq/bang_faq_eng.pdf">FAQ</a> <a href="http://bangcardgame.blogspot.ca/">Blog</a></p>
-	<p><a href="http://174.94.63.5/bangs/bang.html">Project Info, Source Code</a></p>
 	<p>Any suggestions on how to improve the game, or bugs would be greatly appreciated.</p>
 	<p>Christopher Gordon Carr</p>
 	<p><a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a></p>
@@ -131,6 +107,25 @@ borders_on{border:1px solid #0F0 !important;}
 <li>Player <img src="player.png"></li>
 <li>Join Game <img src="join.png"></li>
 </ol>
+	<p>
+	Buy the physical card game
+	<ul>
+	<li><a href="http://well.ca/brand/bang-card-game.html">Well.ca(Canada/USA)</a></li>
+	<li><a href="http://www.dvgiochi.com/?lang=eng">gV Goichi</a></li>
+	<li><a href="http://www.amazon.com/gp/product/B001RU7UNW">amazon</a></li>
+	</ul>
+	</p>
+	<p>
+	Other Bang! implementations
+	<ul>
+	<li><a href="http://www.bangvideogame.com/">Official Bang! Video Game</li>
+	<li><a href="http://boardgamingonlinetheindex.wordpress.com/2009/07/24/bang-online/">Bang! Online at Vassal</a></li>
+	<li><a href="http://bangbeta.neuralfirings.com/">Bang! at neuralfirings</a></li>
+	<li><a href="http://code.google.com/p/kbang/">KBang</a></li>
+	</ul>
+	</p>
+	<p><a href="http://www.dvgiochi.com/giochi/bang/?id=1&lang=eng">Bang</a> <a href="http://www.davincigames.net/bang/bang_rules.pdf">Rules</a> <a href="http://www.davincigames.net/bang/faq/bang_faq_eng.pdf">FAQ</a> <a href="http://bangcardgame.blogspot.ca/">Blog</a></p>
+	<p><a href="http://174.94.63.5/bangs/bang.html">Project Info, Source Code</a></p>
 </div>
 </div>
 <script language="javascript">
@@ -469,6 +464,7 @@ borders_on{border:1px solid #0F0 !important;}
 		gameId = null;
 		playerCount = null;
 		previousAvailable = null;
+		startable = null;
 		writeInfo();
 		setup();
 	}
@@ -670,7 +666,7 @@ borders_on{border:1px solid #0F0 !important;}
 			}
 			result += '</div><div>Players in game</div>'
 		}
-		if(startable != null && startable == true){
+		if(startable != null && startable == true && gameId != null){
 			result += '<div><img src="card.png" onClick="start(getServletUrl(), parseStart, gameId);"></div><div>Start game</div>';
 		}
    	}
