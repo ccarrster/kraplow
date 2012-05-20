@@ -3,6 +3,9 @@ package com.chriscarr.bang;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.gamestate.GameStateCard;
+
 public class InPlay {
 
 	Object gun = null;

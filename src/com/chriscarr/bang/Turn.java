@@ -3,6 +3,15 @@ package com.chriscarr.bang;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chriscarr.bang.cards.Bang;
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.Missed;
+import com.chriscarr.bang.gamestate.GameState;
+import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.gamestate.GameStateImpl;
+import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.userinterface.UserInterface;
+
 public class Turn {
 
 	private List<Player> players;
@@ -194,7 +203,7 @@ public class Turn {
 		}
 	}
 	
-	static int validPlayMiss(Player player, UserInterface userInterface){
+	public static int validPlayMiss(Player player, UserInterface userInterface){
 		while(true){
 			int playedMiss = userInterface.respondMiss(player);
 			if(playedMiss == -1){
@@ -220,7 +229,7 @@ public class Turn {
 		}
 	}
 	
-	static int validPlayBang(Player player, UserInterface userInterface){
+	public static int validPlayBang(Player player, UserInterface userInterface){
 		while(true){
 			int playerShot = userInterface.respondBang(player);
 			if(playerShot == -1){
@@ -357,8 +366,7 @@ public class Turn {
 		return misses;
 	}
 	
-	public void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{
-		discardTwoCardsForLife(player, discard, userInterface);
+	public void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) throws EndOfGameException{		
 		player.setHealth(player.getHealth() - damage);		
 		if(player.getHealth() <= 0 && players.size() > 2){
 			boolean doNotPlayBeer = false;
@@ -372,6 +380,7 @@ public class Turn {
 				}
 			}
 		}
+		discardTwoCardsForLife(player, discard, userInterface);
 		if(player.getHealth() <= 0){
 			handleDeath(player, damager, currentPlayer, players, userInterface, deck, discard);				
 		} else {
@@ -618,7 +627,7 @@ public class Turn {
 	}
 
 	public GameState getGameState() {
-		GameState gameState = new TestGameState(this);
+		GameState gameState = new GameStateImpl(this);
 		return gameState;
 	}
 
@@ -719,7 +728,7 @@ public class Turn {
 	}
 
 	public GameState getGameState(boolean gameOver) {
-		GameState gameState = new TestGameState(this, gameOver);
+		GameState gameState = new GameStateImpl(this, gameOver);
 		return gameState;
 	}
 }

@@ -3,6 +3,8 @@ package com.chriscarr.bang;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chriscarr.bang.cards.Card;
+
 public class Hand {
 
 	List<Object> cards = new ArrayList<Object>();

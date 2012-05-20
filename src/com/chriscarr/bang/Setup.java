@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.chriscarr.bang.cards.BangDeck;
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.userinterface.UserInterface;
+
 public class Setup {
 	
 	private Deck deck;
