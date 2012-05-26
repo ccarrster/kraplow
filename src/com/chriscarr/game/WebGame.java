@@ -2,6 +2,7 @@ package com.chriscarr.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ public class WebGame {
 	private static int gameCounter = 0;
 	private static Map<Integer, GamePrep> gamePreps = new HashMap<Integer, GamePrep>();
 	private static List<String> chatLog = new ArrayList<String>();
+	private static Map<String, Long> sessions = new HashMap<String, Long>();
 	
 	public static int create(){
 		int gameId = gameCounter;
@@ -63,5 +65,20 @@ public class WebGame {
 	
 	public static List<String> getChatLog(){
 		return chatLog;
+	}
+
+	public static void cleanSessions(){
+		Iterator<String> sessionIter = sessions.keySet().iterator();
+		long now = System.currentTimeMillis();
+		while(sessionIter.hasNext()){
+			String sessionId = sessionIter.next();			
+			if((sessions.get(sessionId) + 60000) < now){
+				sessions.remove(sessionId);
+			}
+		}
+	}
+	
+	public static void updateSession(String sessionId) {
+		sessions.put(sessionId, System.currentTimeMillis());		
 	}
 }

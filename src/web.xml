@@ -125,7 +125,7 @@
     
     <servlet>
         <servlet-name>Grapes</servlet-name>
-        <servlet-class>com.chriscarr.bang.AjaxServlet</servlet-class>
+        <servlet-class>com.chriscarr.game.AjaxServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

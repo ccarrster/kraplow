@@ -104,9 +104,11 @@ public class AjaxServlet extends HttpServlet {
     		}
     	} else if(messageType.equals("CHAT")){
     		String chat = request.getParameter("chat");
+    		chat = chat.replace(">", "");
+    		chat = chat.replace("<", "");
     		WebGame.addChat(chat);
     		response.getWriter().write("<ok/>");
-    	} else if(messageType.equals("GETCHAT")){    		
+    	} else if(messageType.equals("GETCHAT")){     		
     		List<String> chatLog = WebGame.getChatLog();
     		response.getWriter().write("<chats>");
     		for(String chat : chatLog){
