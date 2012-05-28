@@ -10,6 +10,7 @@ import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
 public class WebGame {
 	private static int gameCounter = 0;
+	private static int guestCounter = 0;
 	private static Map<Integer, GamePrep> gamePreps = new HashMap<Integer, GamePrep>();
 	private static List<String> chatLog = new ArrayList<String>();
 	private static Map<String, Long> sessions = new HashMap<String, Long>();
@@ -72,13 +73,24 @@ public class WebGame {
 		long now = System.currentTimeMillis();
 		while(sessionIter.hasNext()){
 			String sessionId = sessionIter.next();			
-			if((sessions.get(sessionId) + 60000) < now){
+			if((sessions.get(sessionId) + 5000) < now){
 				sessions.remove(sessionId);
 			}
 		}
 	}
 	
 	public static void updateSession(String sessionId) {
-		sessions.put(sessionId, System.currentTimeMillis());		
+		if(!sessionId.equals("null")){
+			sessions.put(sessionId, System.currentTimeMillis());
+			cleanSessions();
+		}
+	}
+	
+	public static int getNextGuestCounter(){
+		return guestCounter++;
+	}
+
+	public static List<String> getSessions() {
+		return new ArrayList<String>(sessions.keySet());		
 	}
 }

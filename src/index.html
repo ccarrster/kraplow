@@ -19,6 +19,7 @@ borders_on{border:1px solid #0F0 !important;}
 </div>
 <div id="chatInput"><form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">Chat: <input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
 <div id="chatLog"></div>
+<div id="handleArea">Number of current users:<span id="numUsers"></span></div>
 <div id="gameLog"></div>
 <a href="legend.html" target="_blank">Show Legend</a>
 </div>
@@ -461,7 +462,7 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function parseSendChat(responseXML){
-   	 getChat(getServletUrl(), parseGetChat);
+   	 getChat(getServletUrl(), parseGetChat, guestCounter);
    }
 
    function sendChat(servletUrl, responseHandler, chat){
@@ -480,10 +481,13 @@ borders_on{border:1px solid #0F0 !important;}
   	if(chatLogDiv.innerHTML != result){
   		chatLogDiv.innerHTML = result;
   	}
+  	var sessionNodes = responseXML.getElementsByTagName("session");
+
+  	document.getElementById('numUsers').innerHTML = sessionNodes.length;
   }
 
-  function getChat(servletUrl, responseHandler){
-		sendXMLHttp(servletUrl + "?messageType=GETCHAT", responseHandler);
+  function getChat(servletUrl, responseHandler, guestCounter){
+		sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter, responseHandler);
    }
 
    function parseGetPlayerInfo(responseXML){
@@ -505,6 +509,14 @@ borders_on{border:1px solid #0F0 !important;}
         sendXMLHttp(servletUrl + "?messageType=GETPLAYERINFO&user=" + user + "&gameId=" + gameId, responseHandler);
    }
 
+   function parseGetGuestCounter(responseXML){
+   	guestCounter = responseXML.getElementsByTagName("guestcounter")[0].childNodes[0].nodeValue;
+   }
+
+   function getGuestCounter(servletUrl, responseHandler) {
+           sendXMLHttp(servletUrl + "?messageType=GETGUESTCOUNTER", responseHandler);
+   }
+
    var user = null;
    var playerCount = null;
    var startable = null;
@@ -520,6 +532,9 @@ borders_on{border:1px solid #0F0 !important;}
    var availableGames = null;
    var playerCounts = null;
    var previousAvailable = null;
+   var guestCounter = null;
+
+   var setupResult = null;
 
    function setup(){
    	var gameSetupDiv = document.getElementById('gameSetup');
@@ -564,8 +579,9 @@ borders_on{border:1px solid #0F0 !important;}
 			result += '<div><img src="card.png" onClick="start(getServletUrl(), parseStart, gameId); " height="40"></div><div>Start game</div>';
 		}
    	}
-   	if(gameSetupDiv.innerHTML != result){
+   	if(setupResult != result){
    		gameSetupDiv.innerHTML = result;
+   		setupResult = result;
    	}
    }
 
@@ -580,6 +596,9 @@ borders_on{border:1px solid #0F0 !important;}
 
    function timedCount()
    {
+   	if(guestCounter == null){
+   		getGuestCounter(getServletUrl(), parseGetGuestCounter);
+   	}
    	if(gameOver == false){
    		if(gameId != null){
         	getGameState(getServletUrl(), parseGetGameState, gameId);
@@ -587,7 +606,7 @@ borders_on{border:1px solid #0F0 !important;}
 		var t=setTimeout("timedCount()",1000);
 		setup();
 		pollMessages();
-		getChat(getServletUrl(), parseGetChat);
+		getChat(getServletUrl(), parseGetChat, guestCounter);
 		writeInfo();
 		if(!started){
 			if(user == null){

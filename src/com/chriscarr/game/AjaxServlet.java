@@ -81,6 +81,10 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("<playercount>");
     		response.getWriter().write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
     		response.getWriter().write("</playercount>");
+    	} else if(messageType.equals("GETGUESTCOUNTER")){
+    		response.getWriter().write("<guestcounter>");
+    		response.getWriter().write(Integer.toString(WebGame.getNextGuestCounter()));
+    		response.getWriter().write("</guestcounter>");
     	} else if(messageType.equals("AVAILABLEGAMES")){
     		response.getWriter().write("<gameids>");
     		List<Integer> availableGames = WebGame.getAvailableGames();
@@ -108,13 +112,21 @@ public class AjaxServlet extends HttpServlet {
     		chat = chat.replace("<", "");
     		WebGame.addChat(chat);
     		response.getWriter().write("<ok/>");
-    	} else if(messageType.equals("GETCHAT")){     		
+    	} else if(messageType.equals("GETCHAT")){
+    		String guestCounter = request.getParameter("guestCounter");
+    		WebGame.updateSession(guestCounter);
     		List<String> chatLog = WebGame.getChatLog();
     		response.getWriter().write("<chats>");
     		for(String chat : chatLog){
     			response.getWriter().write("<chat>");
     			response.getWriter().write(chat);
     			response.getWriter().write("</chat>");
+    		}
+    		List<String> sessions = WebGame.getSessions();
+    		for(String session : sessions){
+    			response.getWriter().write("<session>");
+    			response.getWriter().write(session);
+    			response.getWriter().write("</session>");
     		}
     		response.getWriter().write("</chats>");
     	} else if(messageType.equals("START")){
