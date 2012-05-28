@@ -96,6 +96,9 @@ public class AjaxServlet extends HttpServlet {
 	    		response.getWriter().write("<playercount>");
 	    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers(availableGames.get(i))));
 	    		response.getWriter().write("</playercount>");
+	    		response.getWriter().write("<canjoin>");
+	    		response.getWriter().write(Boolean.toString(WebGame.canJoin(availableGames.get(i))));
+	    		response.getWriter().write("</canjoin>");
 	    		response.getWriter().write("</game>");
     		}
     		response.getWriter().write("</gameids>");
@@ -134,8 +137,10 @@ public class AjaxServlet extends HttpServlet {
     		WebGame.start(Integer.parseInt(gameId));
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("CREATE")){    		
-    		WebGame.create();
-    		response.getWriter().write("<ok/>");
+    		int gameId = WebGame.create();    		
+    		response.getWriter().write("<gameid>");
+    		response.getWriter().write(Integer.toString(gameId));
+    		response.getWriter().write("</gameid>");
     	} else if(messageType.equals("GETMESSAGE")){
     		String user = request.getParameter("user");
     		String gameId = request.getParameter("gameId");

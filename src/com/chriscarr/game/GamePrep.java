@@ -12,8 +12,17 @@ public class GamePrep {
 		joinedPlayers = new ArrayList<String>();
 		lastUpdated = System.currentTimeMillis();
 	}
-	public String join(){
+	
+	public boolean canJoin(){
 		if(joinedPlayers.size() < 7){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public String join(){
+		if(canJoin()){
 			lastUpdated = System.currentTimeMillis();
 			String result = Integer.toString(counter);
 			joinedPlayers.add(result);

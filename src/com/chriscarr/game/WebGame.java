@@ -24,7 +24,11 @@ public class WebGame {
 	}
 	
 	public static String join(int gameId){
-			return gamePreps.get(gameId).join();
+		return gamePreps.get(gameId).join();
+	}
+	
+	public static boolean canJoin(int gameId){
+		return gamePreps.get(gameId).canJoin();
 	}
 	
 	public static void leave(int gameId, String joinNumber){
