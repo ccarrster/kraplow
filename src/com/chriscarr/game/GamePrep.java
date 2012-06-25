@@ -33,6 +33,18 @@ public class GamePrep {
 		}
 	}
 	
+	public String joinAI(){
+		if(canJoin()){
+			lastUpdated = System.currentTimeMillis();
+			String result = Integer.toString(counter) + "AI";
+			joinedPlayers.add(result);
+			counter = counter + 1;
+			return result;
+		} else {
+			return null;
+		}
+	}
+	
 	public void leave(String joinNumber){
 		joinedPlayers.remove(joinNumber);
 		lastUpdated = System.currentTimeMillis();

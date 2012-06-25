@@ -27,6 +27,10 @@ public class WebGame {
 		return gamePreps.get(gameId).join();
 	}
 	
+	public static String joinAI(int gameId){
+		return gamePreps.get(gameId).joinAI();
+	}
+	
 	public static boolean canJoin(int gameId){
 		return gamePreps.get(gameId).canJoin();
 	}

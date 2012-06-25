@@ -28,11 +28,28 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	public void sendMessage(String player, String message){
+		System.out.println(player + " " + message);
 		if(userFigureNames == null){
 			setupMap();
 		}
-		List<String> playerMessages = messages.get(userFigureNames.get(player));		
-		playerMessages.add(player + "-" + message);
+		if(!userFigureNames.get(player).contains("AI")){
+			List<String> playerMessages = messages.get(userFigureNames.get(player));
+			playerMessages.add(player + "-" + message);	
+		} else {
+			if(message.indexOf("askOthersCard") == 0){	
+				addResponse(userFigureNames.get(player), Integer.toString((int)Math.floor(Math.random() * -3)));
+				System.out.println("response ?");
+			} else if(message.indexOf("chooseDiscard") == 0 || message.indexOf("chooseFromPlayer") == 0){
+				addResponse(userFigureNames.get(player), "false");
+				System.out.println("response false");
+			} else if(message.indexOf("chooseGeneralStoreCard") == 0 || message.indexOf("chooseDrawCard") == 0 || message.indexOf("askDiscard") == 0 || message.indexOf("askPlayer") == 0 || message.indexOf("chooseCardToPutBack") == 0){
+				addResponse(userFigureNames.get(player), "0");
+				System.out.println("response 0");
+			} else if(message.indexOf("askPlay") == 0 || message.indexOf("chooseTwoDiscardForLife") == 0 || message.indexOf("respondBang") == 0 || message.indexOf("respondBeer") == 0 || message.indexOf("respondMiss") == 0 || message.indexOf("respondTwoMiss") == 0){
+				addResponse(userFigureNames.get(player), "-1");
+				System.out.println("response -1");
+			}
+		}
 	}
 	
 	public void addResponse(String user, String message){
@@ -43,8 +60,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 	public void printInfo(String info) {
 		Set<String> keys = messages.keySet();
 		for(String key : keys){
-			List<String> playerMessages = messages.get(key);		
-			playerMessages.add(info);
+			if(!key.contains("AI")){
+				List<String> playerMessages = messages.get(key);		
+				playerMessages.add(info);
+			}
 		}
 	}
 	

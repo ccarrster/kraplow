@@ -24,6 +24,13 @@ borders_on{border:1px solid #0F0 !important;}
 <a href="legend.html" target="_blank">Show Legend</a>
 </div>
 <script language="javascript">
+	var joinLocation = window.location.href.indexOf("join=");
+	if(joinLocation != -1){
+		var gameIdJoin = window.location.href.substring(joinLocation + 5, window.location.href.length);
+		join(getServletUrl(), parseJoin, gameIdJoin);
+	}
+
+
    function getServletUrl(){
        return "/bang/chat";
    }
@@ -348,6 +355,18 @@ borders_on{border:1px solid #0F0 !important;}
       	sendXMLHttp(servletUrl + "?messageType=CREATE" , responseHandler);
    }
 
+   function parseCreateSingle(responseXML){
+   		var gameId = responseXML.getElementsByTagName("gameid")[0].childNodes[0].nodeValue;
+		join(getServletUrl(), parseJoin, gameId);
+		joinAi(getServletUrl(), parseJoinAi, gameId, 0);
+		joinAi(getServletUrl(), parseJoinAi, gameId, 1);
+		joinAi(getServletUrl(), parseJoinAi, gameId, 2);
+   }
+
+   function createSingle(servletUrl, responseHandler) {
+      	sendXMLHttp(servletUrl + "?messageType=CREATE" , responseHandler);
+   }
+
    function parseJoin(responseXML){
    	var userNode = responseXML.getElementsByTagName("user")[0];
    	if(userNode != null){
@@ -358,8 +377,18 @@ borders_on{border:1px solid #0F0 !important;}
    	countPlayers(getServletUrl(), parseCountPlayers, gameId);
    }
 
+
    function join(servletUrl, responseHandler, gameId) {
       	sendXMLHttp(servletUrl + "?messageType=JOIN&gameId=" + gameId , responseHandler);
+   }
+
+   function parseJoinAi(responseXML){
+   	writeInfo();
+   	countPlayers(getServletUrl(), parseCountPlayers, gameId);
+   }
+
+   function joinAi(servletUrl, responseHandler, gameId, ai) {
+      	sendXMLHttp(servletUrl + "?messageType=JOINAI&gameId=" + gameId , responseHandler);
    }
 
    function parseLeave(responseXML){
@@ -555,7 +584,9 @@ borders_on{border:1px solid #0F0 !important;}
    	var result = "";
    	if(!started){
 		if(user == null){
-			result += '<div><a href="" onClick="create(getServletUrl(), parseCreate); return false;"><div><img src="ok.png" alt="Create" height="40"></div><div>Create New Game</div></a></div>';
+			result += '<div><a href="" onClick="create(getServletUrl(), parseCreate); return false;"><div><img src="ok.png" alt="Create" height="40"></div><div>Create New Multi-player Game</div></a></div>';
+			result += '<div><a href="" onClick="createSingle(getServletUrl(), parseCreateSingle); return false;"><div><img src="ok.png" alt="Create" height="40"></div><div>Create New Single-player Game (With Target Practice AI)</div></a></div>';
+			//result += 'Currently working on making a single player - vs computer player game';
 			var newAvailable = null;
 			if(availableGames != null){
 				newAvailable = "";
@@ -584,6 +615,7 @@ borders_on{border:1px solid #0F0 !important;}
 			}
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="discard.png" alt="Leave" height="40"></div><div>Leave this game</div></a>';
+			result += 'Invite others to play. ' + 'http://usedbabies.zapto.org/bang?join=' + gameId;
 		}
 		if(playerCount != null){
 			result += '<div>';

@@ -71,6 +71,21 @@ public class AjaxServlet extends HttpServlet {
     		} else {
     			response.getWriter().write("<fail/>");
     		}
+    	} else if(messageType.equals("JOINAI")){
+    		String gameId = request.getParameter("gameId");
+    		String user = WebGame.joinAI(Integer.parseInt(gameId));
+    		if(user != null){
+    			response.getWriter().write("<joininfo>");
+    			response.getWriter().write("<user>");
+    			response.getWriter().write(user);
+    			response.getWriter().write("</user>");
+    			response.getWriter().write("<gameid>");
+    			response.getWriter().write(gameId);
+    			response.getWriter().write("</gameid>");
+    			response.getWriter().write("</joininfo>");
+    		} else {
+    			response.getWriter().write("<fail/>");
+    		}
     	} else if(messageType.equals("LEAVE")){
     		String user = request.getParameter("user");
     		String gameId = request.getParameter("gameId");
