@@ -1,6 +1,7 @@
 package com.chriscarr.game;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -29,36 +30,44 @@ public class AjaxServlet extends HttpServlet {
 	    	JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
 	    	if(userInterface != null){
 	    		GameState gameState = userInterface.getGameState();
-	    		response.getWriter().write("<gamestate>");
-		    		response.getWriter().write("<players>");
-		    		for(GameStatePlayer player : gameState.getPlayers()){
-		    			writePlayer(player, response);
-		    		}
-		    		response.getWriter().write("</players>");
-		    		if(gameState.isGameOver()){
-		    			response.getWriter().write("<gameover/>");
-		    			Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
-		    			cleanup.start();
-		    		}
-		    		response.getWriter().write("<currentname>");
-		    		response.getWriter().write(gameState.getCurrentName());
-		    		response.getWriter().write("</currentname>");
-		    		response.getWriter().write("<decksize>");
-		    		response.getWriter().write(Integer.toString(gameState.getDeckSize()));
-		    		response.getWriter().write("</decksize>");
-		    		GameStateCard topCard = gameState.discardTopCard();
-		    		if(topCard != null){
-		    			response.getWriter().write("<discardtopcard>");
-		    			writeCard(topCard, response);
-		    			response.getWriter().write("</discardtopcard>");
-		    		}
-	    		response.getWriter().write("</gamestate>");
+	    		if(gameState != null){
+		    		response.getWriter().write("<gamestate>");
+			    		response.getWriter().write("<players>");
+			    		for(GameStatePlayer player : gameState.getPlayers()){
+			    			writePlayer(player, response);
+			    		}
+			    		response.getWriter().write("</players>");
+			    		if(gameState.timeout() != null){
+			    			response.getWriter().write("<timeout>" + gameState.timeout() + "</timeout>");
+			    		}
+			    		if(gameState.isGameOver()){
+			    			response.getWriter().write("<gameover/>");
+			    			Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
+			    			cleanup.start();
+			    		}
+			    		response.getWriter().write("<currentname>");
+			    		response.getWriter().write(gameState.getCurrentName());
+			    		response.getWriter().write("</currentname>");
+			    		response.getWriter().write("<decksize>");
+			    		response.getWriter().write(Integer.toString(gameState.getDeckSize()));
+			    		response.getWriter().write("</decksize>");
+			    		GameStateCard topCard = gameState.discardTopCard();
+			    		if(topCard != null){
+			    			response.getWriter().write("<discardtopcard>");
+			    			writeCard(topCard, response);
+			    			response.getWriter().write("</discardtopcard>");
+			    		}
+		    		response.getWriter().write("</gamestate>");
+	    		} else {
+	    			response.getWriter().write("<gamestate/>");
+	    		}
 	    	} else {
 	    		response.getWriter().write("<gamestate/>");
 	    	}
     	} else if(messageType.equals("JOIN")){
     		String gameId = request.getParameter("gameId");
-    		String user = WebGame.join(Integer.parseInt(gameId));
+    		String handle = request.getParameter("handle");
+    		String user = WebGame.join(Integer.parseInt(gameId), handle);
     		if(user != null){
     			response.getWriter().write("<joininfo>");
     			response.getWriter().write("<user>");
@@ -73,7 +82,8 @@ public class AjaxServlet extends HttpServlet {
     		}
     	} else if(messageType.equals("JOINAI")){
     		String gameId = request.getParameter("gameId");
-    		String user = WebGame.joinAI(Integer.parseInt(gameId));
+    		String handle = request.getParameter("handle");
+    		String user = WebGame.joinAI(Integer.parseInt(gameId), handle);
     		if(user != null){
     			response.getWriter().write("<joininfo>");
     			response.getWriter().write("<user>");
@@ -94,7 +104,11 @@ public class AjaxServlet extends HttpServlet {
     	} else if(messageType.equals("COUNTPLAYERS")){
     		String gameId = request.getParameter("gameId");
     		response.getWriter().write("<playercount>");
-    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
+    		if(gameId != null && !gameId.equals("null")){
+    			response.getWriter().write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
+    		} else {
+    			response.getWriter().write("0");
+    		}
     		response.getWriter().write("</playercount>");
     	} else if(messageType.equals("GETGUESTCOUNTER")){
     		response.getWriter().write("<guestcounter>");
@@ -133,12 +147,18 @@ public class AjaxServlet extends HttpServlet {
     	} else if(messageType.equals("GETCHAT")){
     		String guestCounter = request.getParameter("guestCounter");
     		WebGame.updateSession(guestCounter);
-    		List<String> chatLog = WebGame.getChatLog();
+    		List<ChatMessage> chatLog = WebGame.getChatLog();
     		response.getWriter().write("<chats>");
-    		for(String chat : chatLog){
+    		for(ChatMessage chat : chatLog){
+    			response.getWriter().write("<chatmessage>");
     			response.getWriter().write("<chat>");
-    			response.getWriter().write(chat);
+    			response.getWriter().write(chat.message);
     			response.getWriter().write("</chat>");
+    			response.getWriter().write("<timestamp>");
+    			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    			response.getWriter().write(sdf.format(chat.timestamp));
+    			response.getWriter().write("</timestamp>");
+    			response.getWriter().write("</chatmessage>");
     		}
     		List<String> sessions = WebGame.getSessions();
     		for(String session : sessions){
@@ -163,6 +183,7 @@ public class AjaxServlet extends HttpServlet {
     		if(userInterface != null){
 	    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
 	    		if(!messages.isEmpty()){
+	    			System.out.println("Got message " + messages.get(0));
 	    			response.getWriter().write("<message>");
 	    			response.getWriter().write(messages.get(0));
 	    			response.getWriter().write("</message>");
@@ -173,15 +194,21 @@ public class AjaxServlet extends HttpServlet {
     			response.getWriter().write("<ok/>");
     		}
     	} else if(messageType.equals("SENDRESPONSE")){
+    		System.out.println("Sent Response");
     		String user = request.getParameter("user");
     		String responseMessage = request.getParameter("response");
     		String gameId = request.getParameter("gameId");
     		JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
     		if(userInterface != null){
 	    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
-	    		messages.remove(0);
-	    		if(!"".equals(responseMessage)){
-	    			((WebGameUserInterface)userInterface).addResponse(user, responseMessage);
+	    		if(!messages.isEmpty()){
+		    		Object removed = messages.remove(0);
+		    		System.out.println("Removed " + removed);
+		    		if(!"".equals(responseMessage)){
+		    			((WebGameUserInterface)userInterface).addResponse(user, responseMessage);
+		    		}
+	    		} else {
+	    			System.out.println("**Weirdo Ajax Servlet sent response to empty messages " + user + " " + responseMessage + "**");
 	    		}
     		}
     		response.getWriter().write("<ok/>");
@@ -213,6 +240,9 @@ public class AjaxServlet extends HttpServlet {
   
   private void writePlayer(GameStatePlayer player, HttpServletResponse response) throws IOException{
 	  	response.getWriter().write("<player>");
+	  	response.getWriter().write("<handle>");
+		response.getWriter().write("Handle");
+		response.getWriter().write("</handle>");
 	  	response.getWriter().write("<name>");
 		response.getWriter().write(player.name);
 		response.getWriter().write("</name>");

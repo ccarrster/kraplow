@@ -13,5 +13,7 @@ public interface GameState {
 	int getDeckSize();
 
 	GameStateCard discardTopCard();
+	
+	String timeout();
 
 }

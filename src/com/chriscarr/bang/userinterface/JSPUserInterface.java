@@ -31,7 +31,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	
 	private List<Object> makeCardList(String remove, Player player) {
 		List<Object> cardsToDiscard = new ArrayList<Object>();
-		if(!"".equals(remove)){
+		if(!"".equals(remove) && !"-1".equals(remove)){
 			String[] removed = remove.split(",");
 			Hand hand = player.getHand();
 			for(int i = 0; i < removed.length; i++){
@@ -251,7 +251,14 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	public GameState getGameState(boolean gameOver) {
-		return turn.getGameState(gameOver);
+		if(turn != null){
+			return turn.getGameState(gameOver);
+		}
+		return null;
+	}
+
+	public String getTimeout() {
+		return null;
 	}
 
 }

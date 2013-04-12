@@ -39,4 +39,6 @@ public interface UserInterface {
 	int chooseCardToPutBack(Player player, List<Object> cards);
 	
 	String getRoleForName(String name);
+	
+	String getTimeout();
 }

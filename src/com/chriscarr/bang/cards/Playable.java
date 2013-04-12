@@ -15,7 +15,7 @@ public interface Playable {
 
 	public abstract List<Player> targets(Player player, List<Player> players);
 
-	public abstract void play(Player currentPlayer, List<Player> players,
+	public abstract boolean play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn);
 
 }

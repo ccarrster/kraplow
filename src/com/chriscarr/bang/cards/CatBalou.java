@@ -31,7 +31,7 @@ public class CatBalou extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		int chosenCard = -3;
@@ -39,11 +39,18 @@ public class CatBalou extends Card implements Playable {
 			chosenCard = userInterface.askOthersCard(currentPlayer, other.getInPlay(), other.getHand().size() > 0);
 		}
 		if(chosenCard == -1){
-			discard.add(other.getHand().removeRandom());
+			Object card = other.getHand().removeRandom();
+			discard.add(card);
+			userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card)card).getName() + " from " + other.getName() + "'s hand with a Cat Balou");
 		} else if(chosenCard == -2){
-			discard.add(other.getInPlay().removeGun());
+			Object card = other.getInPlay().removeGun(); 
+			discard.add(card);
+			userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card)card).getName() + " from " + other.getName() + " with a Cat Balou");
 		} else {
-			discard.add(other.getInPlay().remove(chosenCard));
+			Object card = other.getInPlay().remove(chosenCard);
+			discard.add(card);
+			userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card)card).getName() + " from " + other.getName() + " with a Cat Balou");
 		}
+		return true;
 	}
 }

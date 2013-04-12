@@ -30,23 +30,30 @@ public class Duel extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public void play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
-		Player other = Turn.getValidChosenPlayer(currentPlayer, Turn.others(currentPlayer, players), userInterface);				
+		Player other = Turn.getValidChosenPlayer(currentPlayer, Turn.others(currentPlayer, players), userInterface);
+		userInterface.printInfo(currentPlayer.getName() + " duels " + other.getName());
 		while(true){
 			int bangPlayed = Turn.validPlayBang(other, userInterface);
 			if(bangPlayed == -1){
 				turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-				return;
+				userInterface.printInfo(other.getName() + " loses a health");
+				return true;
 			} else {
-				discard.add(other.getHand().remove(bangPlayed));				
+				Object card = other.getHand().remove(bangPlayed);
+				discard.add(card);
+				userInterface.printInfo(other.getName() + " plays a " + ((Card)card).getName());
 			}		
 			int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
 			if(currentBangPlayed == -1){
 				turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
-				return;						
-			} else {								
-				discard.add(currentPlayer.getHand().remove(currentBangPlayed));
+				userInterface.printInfo(currentPlayer.getName() + " loses a health");
+				return true;						
+			} else {		
+				Object card = currentPlayer.getHand().remove(currentBangPlayed);
+				discard.add(card);
+				userInterface.printInfo(currentPlayer.getName() + " plays a " + ((Card)card).getName());
 			}
 		}
 	}

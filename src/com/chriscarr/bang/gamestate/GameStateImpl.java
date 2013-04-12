@@ -46,5 +46,9 @@ public class GameStateImpl implements GameState {
 			return turn.isGameOver();
 		}
 	}
+	
+	public String timeout(){
+		return turn.getTimeout();
+	}
 
 }

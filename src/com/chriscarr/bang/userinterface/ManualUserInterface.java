@@ -486,4 +486,10 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		return turn.roleToGoal(name);
 	}
 
+	@Override
+	public String getTimeout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

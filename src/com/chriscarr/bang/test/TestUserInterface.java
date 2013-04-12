@@ -121,4 +121,10 @@ public class TestUserInterface implements UserInterface {
 	public String getGoalForName(String name){
 		return null;
 	}
+
+	@Override
+	public String getTimeout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

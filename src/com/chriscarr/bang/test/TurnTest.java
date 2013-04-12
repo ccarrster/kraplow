@@ -184,7 +184,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new Jail(Card.CARDJAIL, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
-		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
+		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer2();
 		turn.setUserInterface(testUserInterface);		
 		turn.play();
 		int otherPlayer = 0;
@@ -1103,7 +1103,7 @@ public class TurnTest extends TestCase{
 		players.add(player);
 		players.add(sheriff);
 		List<Player> jailable = Turn.getJailablePlayers(player, players);
-		assertTrue(jailable.isEmpty());
+		assertTrue(jailable.size() == 1);
 	}
 	
 	public void testOutOfJail(){
@@ -1551,7 +1551,7 @@ public class TurnTest extends TestCase{
 		figure.setName(Figure.BARTCASSIDY);
 		player.setFigure(figure);
 		player.setMaxHealth(4);
-		turn.damagePlayer(player, new ArrayList<Player>(), player, 1, player, deck, null, null);
+		turn.damagePlayer(player, new ArrayList<Player>(), player, 1, player, deck, null, new TestUserInterface());
 		assertEquals(player.getHand().size(), 1);
 	}
 	
@@ -1655,6 +1655,9 @@ public class TurnTest extends TestCase{
 		figure.setName(Figure.VULTURESAM);
 		player.setFigure(figure);		
 		Player other = new Player();
+		Figure otherFigure = new Figure();
+		otherFigure.setName("Big Jim Test");
+		other.setFigure(otherFigure);
 		Hand hand = new Hand();
 		InPlay inPlay = new InPlay();
 		other.setHand(hand);
@@ -1666,6 +1669,7 @@ public class TurnTest extends TestCase{
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);	
 		Turn turn = new Turn();
+		turn.setUserInterface(new TestUserInterface());
 		turn.deadDiscardAll(other, players, discard);
 		assertEquals(3, player.getHand().size());
 	}

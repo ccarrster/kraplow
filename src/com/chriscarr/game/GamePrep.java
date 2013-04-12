@@ -21,25 +21,24 @@ public class GamePrep {
 		}
 	}
 	
-	public String join(){
+	public String join(String handle){
 		if(canJoin()){
 			lastUpdated = System.currentTimeMillis();
-			String result = Integer.toString(counter);
-			joinedPlayers.add(result);
+			joinedPlayers.add(handle);
 			counter = counter + 1;
-			return result;
+			return handle;
 		} else {
 			return null;
 		}
 	}
 	
-	public String joinAI(){
+	public String joinAI(String handle){
 		if(canJoin()){
 			lastUpdated = System.currentTimeMillis();
-			String result = Integer.toString(counter) + "AI";
-			joinedPlayers.add(result);
+			handle = handle + "AI";
+			joinedPlayers.add(handle);
 			counter = counter + 1;
-			return result;
+			return handle;
 		} else {
 			return null;
 		}
