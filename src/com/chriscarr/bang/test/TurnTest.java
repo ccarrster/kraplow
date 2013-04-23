@@ -155,7 +155,7 @@ public class TurnTest extends TestCase{
 		turn.setUserInterface(testUserInterface);		
 		turn.play();
 		assertTrue(sheriff.getInPlay().hasItem(Card.CARDBARREL));
-		assertFalse(sheriff.getInPlay().hasItem(Card.CARDAPPALOOSA));
+		assertFalse(sheriff.getInPlay().hasItem(Card.CARDSCOPE));
 	}
 	
 	public void testPlayItemTwice(){
@@ -758,7 +758,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new Panic(Card.CARDPANIC, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		UserInterface testUserInterface = new TestUserInterfaceAskPlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
 		turn.setDeck(Setup.setupDeck());
@@ -775,8 +775,8 @@ public class TurnTest extends TestCase{
 		enemy.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		assertEquals(enemy.getHand().size(), 1);
 		turn.play();
-		assertEquals(enemy.getHand().size(), 0);
-		assertEquals(sheriff.getHand().size(), 1);
+		assertEquals(0, enemy.getHand().size());
+		assertEquals(1, sheriff.getHand().size());
 	}
 	
 	public void testBangHit(){
@@ -917,7 +917,7 @@ public class TurnTest extends TestCase{
 		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 0);
 	}
 	
-	public void testBangDistanceWithAppaloosa(){
+	public void testBangDistanceWithScope(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
@@ -925,7 +925,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getInPlay().add(new Card(Card.CARDAPPALOOSA, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
+		sheriff.getInPlay().add(new Card(Card.CARDSCOPE, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
 		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 3);
 	}
 	
@@ -2372,7 +2372,7 @@ public class TurnTest extends TestCase{
 		Hand hand = new Hand();		
 		sheriff.setHand(hand);
 		InPlay inPlay = new InPlay();
-		inPlay.add(new Card(Card.CARDAPPALOOSA, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
+		inPlay.add(new Card(Card.CARDSCOPE, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
 		sheriff.setInPlay(inPlay);
 		sheriff.setRole(Player.SHERIFF);
 		List<Player> players = new ArrayList<Player>();

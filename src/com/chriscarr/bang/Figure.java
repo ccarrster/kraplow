@@ -62,7 +62,7 @@ public class Figure {
 		} else if(name.equals(ELGRINGO)){
 			return "Draws a card from the hand of the player that damaged him";
 		} else if(name.equals(ROSEDOOLAN)){
-			return "Has an Appaloosa at all times";
+			return "Has an Scope at all times";
 		} else if(name.equals(SUZYLAFAYETTE)){
 			return "Draws a card when hand is empty";
 		} else if(name.equals(BLACKJACK)){

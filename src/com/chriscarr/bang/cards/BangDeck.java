@@ -8,7 +8,7 @@ public class BangDeck {
 		ArrayList<Card> cards = new ArrayList<Card>();		
 		//Blue cards
 		cards.add(new Card(Card.CARDBARREL, Card.SPADES, Card.VALUEQ, Card.TYPEITEM));
-		cards.add(new Card(Card.CARDAPPALOOSA, Card.SPADES, Card.VALUEA, Card.TYPEITEM));
+		cards.add(new Card(Card.CARDSCOPE, Card.SPADES, Card.VALUEA, Card.TYPEITEM));
 		cards.add(new Card(Card.CARDMUSTANG, Card.HEARTS, Card.VALUE8, Card.TYPEITEM));
 		cards.add(new Card(Card.CARDMUSTANG, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
 		cards.add(new Jail(Card.CARDJAIL, Card.SPADES, Card.VALUEJ, Card.TYPEITEM));

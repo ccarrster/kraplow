@@ -32,7 +32,7 @@ public class Card implements Playable{
 	public static final int TYPEITEM = 1;
 	public static final int TYPEPLAY = 2;
 	public static final String CARDBARREL = "Barrel";
-	public static final String CARDAPPALOOSA = "Appaloosa";
+	public static final String CARDSCOPE = "Scope";
 	public static final String CARDMUSTANG = "Mustang";
 	public static final String CARDJAIL = "Jail";
 	public static final String CARDDYNAMITE = "Dynamite";

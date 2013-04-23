@@ -65,6 +65,6 @@ public class InPlayTest extends TestCase {
 		assertFalse(inPlay.hasItem(Card.CARDBARREL));
 		inPlay.add(new Card(Card.CARDBARREL, Card.SPADES, Card.VALUEQ, Card.TYPEITEM));
 		assertTrue(inPlay.hasItem(Card.CARDBARREL));
-		assertFalse(inPlay.hasItem(Card.CARDAPPALOOSA));
+		assertFalse(inPlay.hasItem(Card.CARDSCOPE));
 	}
 }

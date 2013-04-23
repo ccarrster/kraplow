@@ -335,7 +335,7 @@ public class Turn {
 			if (Figure.PAULREGRET.equals(otherPlayer.getName())) {
 				distance = distance + 1;
 			}
-			if (player.getInPlay().hasItem(Card.CARDAPPALOOSA)) {
+			if (player.getInPlay().hasItem(Card.CARDSCOPE)) {
 				distance = distance - 1;
 			}
 			if (Figure.ROSEDOOLAN.equals(player.getName())) {
