@@ -470,7 +470,8 @@ borders_on{border:1px solid #0F0 !important;}
 				var data = commandData.substring(commandIndex + 1);
 				var splitData = data.split(", ");
 				if(command.indexOf("chooseTwoDiscardForLife") != -1){
-					result += "<a href='' onClick='sendResponse(selected); return false;'><img src='ok.png' alt='ok' height='90'></a> ";
+					selected = ",";
+					result += "<a href='' onClick='sendResponse(selected); selected = \",\"; return false;'><img src='ok.png' alt='ok' height='90'></a> ";
 					for(var i = 0; i < splitData.length; i++){
 						if(splitData[i] != ""){
 							var description = " - " + getDescriptionForCard(splitData[i]);
@@ -480,7 +481,8 @@ borders_on{border:1px solid #0F0 !important;}
 						}
 					}
 				} else if(command.indexOf("respondTwoMiss") != -1){
-					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected); return false;' height='90'> ";
+					selected = ",";
+					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected); selected = \",\"; return false;' height='90'> ";
 					for(var i = 0; i < splitData.length; i++){
 						if(splitData[i] != ""){
 							var nameCanPlaySplit = splitData[i].split("@");
