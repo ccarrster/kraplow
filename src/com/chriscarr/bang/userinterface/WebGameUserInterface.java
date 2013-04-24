@@ -28,6 +28,49 @@ public class WebGameUserInterface extends JSPUserInterface {
 		}
 	}
 	
+	public String somethingAI(String message){		
+		if(message.indexOf("askOthersCard") == 0){	
+			return Integer.toString((int)Math.floor(Math.random() * -3));
+		} else if(message.indexOf("chooseDiscard") == 0 || message.indexOf("chooseFromPlayer") == 0){
+			return "false";
+		} else if(message.indexOf("chooseGeneralStoreCard") == 0 || message.indexOf("chooseDrawCard") == 0 || message.indexOf("askDiscard") == 0 || message.indexOf("askPlayer") == 0 || message.indexOf("chooseCardToPutBack") == 0){
+			return "0";
+		} else if(message.indexOf("askPlay") == 0 || message.indexOf("chooseTwoDiscardForLife") == 0 || message.indexOf("respondTwoMiss") == 0){
+			return "-1";
+		} else if(message.indexOf("respondMiss") == 0){
+			String options = message.replace("respondMiss", "");
+			String[] cards = options.split(",");
+			for(int i = 0; i < cards.length - 1; i++){
+				String card = cards[i].trim();
+				if(card.indexOf("Missed!") == 0){
+					return Integer.toString(i);
+				}
+			}
+			return "-1";
+		} else if(message.indexOf("respondBang") == 0){
+			String options = message.replace("respondBang", "");
+			String[] cards = options.split(",");
+			for(int i = 0; i < cards.length - 1; i++){
+				String card = cards[i].trim();
+				if(card.indexOf("Bang!") == 0){
+					return Integer.toString(i);
+				}
+			}
+			return "-1";
+		} else if(message.indexOf("respondBeer") == 0){
+			String options = message.replace("respondBeer", "");
+			String[] cards = options.split(",");
+			for(int i = 0; i < cards.length - 1; i++){
+				String card = cards[i].trim();
+				if(card.indexOf("Beer") == 0){
+					return Integer.toString(i);
+				}
+			}
+			return "-1";
+		}
+		return null;
+	}
+	
 	public void sendMessage(String player, String message){
 		if(userFigureNames == null){
 			setupMap();
@@ -35,22 +78,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 		
 		List<String> playerMessages = messages.get(userFigureNames.get(player));
 		playerMessages.add(player + "-" + message);
-		for(String aMessage : playerMessages){
-			System.out.println(aMessage);
-		}
 		if(userFigureNames.get(player).contains("AI")){
 			while(messages.isEmpty()){
 				System.out.println("Messages Is Empty");
 			}
-			if(message.indexOf("askOthersCard") == 0){	
-				addResponse(userFigureNames.get(player), Integer.toString((int)Math.floor(Math.random() * -3)));
-			} else if(message.indexOf("chooseDiscard") == 0 || message.indexOf("chooseFromPlayer") == 0){
-				addResponse(userFigureNames.get(player), "false");
-			} else if(message.indexOf("chooseGeneralStoreCard") == 0 || message.indexOf("chooseDrawCard") == 0 || message.indexOf("askDiscard") == 0 || message.indexOf("askPlayer") == 0 || message.indexOf("chooseCardToPutBack") == 0){
-				addResponse(userFigureNames.get(player), "0");
-			} else if(message.indexOf("askPlay") == 0 || message.indexOf("chooseTwoDiscardForLife") == 0 || message.indexOf("respondBang") == 0 || message.indexOf("respondBeer") == 0 || message.indexOf("respondMiss") == 0 || message.indexOf("respondTwoMiss") == 0){
-				addResponse(userFigureNames.get(player), "-1");
-			}
+			addResponse(userFigureNames.get(player), somethingAI(message));
 		}
 	}
 	

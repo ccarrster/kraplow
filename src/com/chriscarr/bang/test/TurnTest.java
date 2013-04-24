@@ -815,7 +815,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
 		turn.setDeck(Setup.setupDeck());
@@ -900,7 +900,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 2);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 3);
 	}
 	
 	public void testBangDistanceWithMustang(){
@@ -914,7 +914,7 @@ public class TurnTest extends TestCase{
 		for(Player player : players){
 			player.getInPlay().add(new Card(Card.CARDMUSTANG, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
 		}
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 0);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 1);
 	}
 	
 	public void testBangDistanceWithScope(){
@@ -926,7 +926,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().add(new Card(Card.CARDSCOPE, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 3);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 4);
 	}
 	
 	public void testPanicDistance(){
@@ -937,7 +937,7 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();		
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, 1).size(), 2);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, 1).size(), 3);
 	}
 	
 	public void testBangDistance(){
@@ -949,7 +949,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().setGun(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 3);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 4);
 	}
 	
 	public void testBangDistanceRev(){
@@ -961,7 +961,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().setGun(new Gun(Card.CARDREVCARBINE, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 6);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 7);
 	}
 	
 	public void testDynamiteTwo(){
@@ -1423,9 +1423,8 @@ public class TurnTest extends TestCase{
 		turn.setUserInterface(new TestUserInterface());
 		try{
 			turn.handleDeath(deputy, player, phil, players, new TestUserInterface(), deck, null);
-			fail();
 		} catch (RuntimeException e){
-			//expected
+			fail();
 		}
 	}
 	
@@ -1591,7 +1590,7 @@ public class TurnTest extends TestCase{
 		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface()) != 0);
 	}
 	
-	public void testPaulRegred(){
+	public void testPaulRegret(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
@@ -1604,7 +1603,7 @@ public class TurnTest extends TestCase{
 			figure.setName(Figure.PAULREGRET);
 			player.setFigure(figure);
 		}
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 0);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 1);
 	}
 	
 	public void testRoseDoolan(){
@@ -1616,7 +1615,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getFigure().setName(Figure.ROSEDOOLAN);
-		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 3);
+		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 4);
 	}
 	
 	public void testWillyTheKid(){
@@ -1950,7 +1949,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
 		turn.setDeck(Setup.setupDeck());
@@ -2116,7 +2115,7 @@ public class TurnTest extends TestCase{
 		Figure figure = new Figure();
 		figure.setName(Figure.SLABTHEKILLER);
 		sheriff.setFigure(figure);
-		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
 		turn.setDeck(Setup.setupDeck());
@@ -2147,7 +2146,7 @@ public class TurnTest extends TestCase{
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		Figure figure = new Figure();		
-		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
 		turn.setDeck(Setup.setupDeck());

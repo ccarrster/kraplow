@@ -1,18 +1,31 @@
 package com.chriscarr.bang.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.userinterface.UserInterface;
 
-public class TestUserInterfaceNoMiss extends TestUserInterface implements
+public class TestUserInterfaceBangBackTwicePlayer1 extends TestUserInterface implements
 		UserInterface {
 
 	@Override
 	public int askDiscard(Player player) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	int banged = 0;
+	@Override
+	public int respondBang(Player player) {
+		if(banged < 2){
+			banged = banged + 1;
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 	@Override
@@ -30,14 +43,10 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 
 	@Override
 	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
-		if(!inPlay.isEmpty()){
-			return 0;
-		} else if(inPlay.hasGun()){
-			return -2;			
-		} else {
-			return -1;
-		}
+		// TODO Auto-generated method stub
+		return -1;
 	}
+
 
 	@Override
 	public List<Object> chooseTwoDiscardForLife(Player sidKetchum) {
@@ -46,12 +55,15 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 	}
 
 	@Override
+	public int respondMiss(Player miss) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
 	public int askPlay(Player player) {
-		if(player.getHand().size() > 0){
-			return 0;
-		} else {
-			return -1;
-		}
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
@@ -59,7 +71,6 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	public void printInfo(String info){
 		//do nothing
 	}
@@ -80,5 +91,14 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 	public int chooseCardToPutBack(Player player, List<Object> cards) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public List<Object> respondTwoMiss(Player player) {
+		List<Object> result = new ArrayList<Object>();
+		Hand hand = player.getHand();
+		result.add(hand.get(0));
+		result.add(hand.get(1));
+		return result;
 	}
 }

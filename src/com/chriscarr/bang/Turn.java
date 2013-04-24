@@ -58,6 +58,7 @@ public class Turn {
 	}
 
 	private void turnLoop(Player currentPlayer) {
+		boolean inJail = false;
 		try {
 			userInterface.printInfo(currentPlayer.getName() + "'s turn.");
 			if (isDynamiteExplode()) {
@@ -66,20 +67,31 @@ public class Turn {
 						+ currentPlayer.getName());
 				damagePlayer(currentPlayer, players, currentPlayer, 3, null,
 						deck, discard, userInterface);
+				if (isGameOver(players)) {
+					userInterface.printInfo("Winners are " + getWinners(players));
+					throw new EndOfGameException("Game over");
+				}
 			} else {
 				passDynamite();
 			}
-			if (!isInJail() && players.contains(currentPlayer)) {
+			inJail = isInJail();
+			if (!inJail && players.contains(currentPlayer)) {
 				this.drawCards(currentPlayer, deck);
 				while (!donePlaying && players.contains(currentPlayer)) {
 					play();
+					if (isGameOver(players)) {
+						userInterface.printInfo("Winners are " + getWinners(players));
+						throw new EndOfGameException("Game over");
+					}
 				}
 			}
 		} catch (EndOfGameException e) {
 			return;
 		}
 		if (players.contains(currentPlayer)) {
-			discard(currentPlayer);
+			if(!inJail){
+				discard(currentPlayer);
+			}
 		}
 		nextTurn();
 	}
@@ -204,7 +216,7 @@ public class Turn {
 		this.userInterface = userInterface;
 	}
 
-	public void play() throws EndOfGameException {
+	public void play() {
 		for (Player player : players) {
 			if (Figure.SUZYLAFAYETTE.equals(player.getName())) {
 				Hand playerHand = player.getHand();
@@ -460,8 +472,7 @@ public class Turn {
 
 	public void damagePlayer(Player player, List<Player> players,
 			Player currentPlayer, int damage, Player damager, Deck deck,
-			Discard discard, UserInterface userInterface)
-			throws EndOfGameException {
+			Discard discard, UserInterface userInterface) {
 		player.setHealth(player.getHealth() - damage);
 		if (player.getHealth() <= 0 && players.size() > 2) {
 			boolean doNotPlayBeer = false;
@@ -503,8 +514,7 @@ public class Turn {
 
 	public void handleDeath(Player player, Player damager,
 			Player currentPlayer, List<Player> players,
-			UserInterface userInterface, Deck deck, Discard discard)
-			throws EndOfGameException {
+			UserInterface userInterface, Deck deck, Discard discard) {
 		if (player.equals(currentPlayer)) {
 			currentPlayer = getPreviousPlayer(currentPlayer, players);
 		}
@@ -523,10 +533,6 @@ public class Turn {
 						+ " killed an outlaw, draws 3 cards");
 				deckToHand(damager.getHand(), deck, 3);
 			}
-		}
-		if (isGameOver(players)) {
-			userInterface.printInfo("Winners are " + getWinners(players));
-			throw new EndOfGameException("Game over");
 		}
 	}
 
