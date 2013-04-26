@@ -104,6 +104,7 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("COUNTPLAYERS")){
     		String gameId = request.getParameter("gameId");
+    		response.getWriter().write("<count>");
     		response.getWriter().write("<playercount>");
     		if(gameId != null && !gameId.equals("null")){
     			response.getWriter().write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
@@ -111,6 +112,16 @@ public class AjaxServlet extends HttpServlet {
     			response.getWriter().write("0");
     		}
     		response.getWriter().write("</playercount>");
+    		response.getWriter().write("<players>");
+    		List<String> joinedPlayers = WebGame.getJoinedPlayers(Integer.parseInt(gameId));
+    		for(int playerIndex = 0; playerIndex < joinedPlayers.size(); playerIndex++){
+    			String playerHandle = joinedPlayers.get(playerIndex);
+    			response.getWriter().write("<playerName>");
+	    		response.getWriter().write(playerHandle);
+	    		response.getWriter().write("</playerName>");
+    		}
+    		response.getWriter().write("</players>");
+    		response.getWriter().write("</count>");
     	} else if(messageType.equals("GETGUESTCOUNTER")){
     		response.getWriter().write("<guestcounter>");
     		response.getWriter().write(Integer.toString(WebGame.getNextGuestCounter()));
@@ -129,6 +140,15 @@ public class AjaxServlet extends HttpServlet {
 	    		response.getWriter().write("<canjoin>");
 	    		response.getWriter().write(Boolean.toString(WebGame.canJoin(availableGames.get(i))));
 	    		response.getWriter().write("</canjoin>");
+	    		response.getWriter().write("<players>");
+	    		List<String> joinedPlayers = WebGame.getJoinedPlayers(availableGames.get(i));
+	    		for(int playerIndex = 0; playerIndex < joinedPlayers.size(); playerIndex++){
+	    			String playerHandle = joinedPlayers.get(playerIndex);
+	    			response.getWriter().write("<playerName>");
+		    		response.getWriter().write(playerHandle);
+		    		response.getWriter().write("</playerName>");
+	    		}
+	    		response.getWriter().write("</players>");
 	    		response.getWriter().write("</game>");
     		}
     		response.getWriter().write("</gameids>");

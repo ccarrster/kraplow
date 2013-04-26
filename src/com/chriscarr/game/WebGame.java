@@ -24,6 +24,10 @@ public class WebGame {
 		return gameId;
 	}
 	
+	public static List<String> getJoinedPlayers(int gameId){
+		return gamePreps.get(gameId).getJoinedPlayers();
+	}
+	
 	public static String getUniqueHandle(String handle){
 		handle = handle.replace("AI", "ai");
 		handle = handle.replaceAll("[^a-zA-Z0-9]", "");

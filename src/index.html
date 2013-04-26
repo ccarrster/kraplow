@@ -718,6 +718,12 @@ borders_on{border:1px solid #0F0 !important;}
 
    function parseCountPlayers(responseXML){
    	playerCount = responseXML.getElementsByTagName("playercount")[0].childNodes[0].nodeValue;
+   	var playerNodes = responseXML.getElementsByTagName("playerName");
+	gamePlayerHandles = new Array();
+	for(j = 0; j < playerNodes.length; j++){
+		var playerName = playerNodes[j].childNodes[0].nodeValue;
+		gamePlayerHandles.push(playerName);
+	}
    	canStart(getServletUrl(), parseCanStart, gameId);
    	setup();
    }
@@ -731,12 +737,21 @@ borders_on{border:1px solid #0F0 !important;}
 		availableGames = new Array();
 		playerCounts = new Array();
 		canJoins = new Array();
+		playerHandles = new Array();
 		for(i = 0; i < gameNodes.length; i++){
 			var availableGameId = gameNodes[i].getElementsByTagName("gameid")[0].childNodes[0].nodeValue;
 			var availablePlayerCount = gameNodes[i].getElementsByTagName("playercount")[0].childNodes[0].nodeValue;
 			var canJoin = gameNodes[i].getElementsByTagName("canjoin")[0].childNodes[0].nodeValue;
 			availableGames.push(availableGameId);
 			playerCounts.push(availablePlayerCount);
+			var playerNodes = gameNodes[i].getElementsByTagName("playerName");
+			var playerArray = new Array();
+			for(j = 0; j < playerNodes.length; j++){
+				var playerName = playerNodes[j].childNodes[0].nodeValue;
+				playerArray.push(playerName);
+				console.log(playerName);
+			}
+			playerHandles.push(playerArray);
 			canJoins.push(canJoin);
 		}
 		setup();
@@ -899,6 +914,8 @@ borders_on{border:1px solid #0F0 !important;}
    var gameOver = false;
    var availableGames = null;
    var playerCounts = null;
+   var playerHandles = null;
+   var gamePlayerHandles = null;
    var canJoins = null;
    var previousAvailable = null;
    var guestCounter = null;
@@ -919,11 +936,11 @@ borders_on{border:1px solid #0F0 !important;}
 					if(canJoins[i] == 'true'){
 						newAvailable += '<div style="border:2px solid #000;"><div><div style="float:left;"><a href="" onClick="join(getServletUrl(), parseJoin, ' + availableGames[i] + ', \'' + document.getElementById("handle").value + '\'); return false;"><div><img src="join.png" alt="Join" width="90"></div></a><input type="button" onClick="join(getServletUrl(), parseJoin, ' + availableGames[i] + ', \'' + document.getElementById("handle").value + '\');" value="Join"></div>';
 					}
-					if(playerCounts[i] > 0){
+					if(playerHandles[i].length > 0){
 						newAvailable += '<div style="float:left;">';
 						newAvailable += playerCounts[i] + ' players ';
-						for(var j = 0; j < playerCounts[i]; j++){
-							newAvailable += '<img src="player.png" alt="Player" width="90"> ';
+						for(var j = 0; j < playerHandles[i].length; j++){
+							newAvailable += '<div style="float:left;"><div><img src="player.png" alt="' + playerHandles[i][j] + '" width="90"></div><div>' + playerHandles[i][j] + '</div></div> ';
 						}
 						newAvailable += '</div>';
 					}
@@ -944,16 +961,20 @@ borders_on{border:1px solid #0F0 !important;}
 			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://usedbabies.zapto.org/bang?join=' + gameId + '</p>';
 		}
 		if(playerCount != null){
-			result += '<div>';
-			result += playerCount + ' players ';
-			for(var i = 0; i < playerCount; i++){
-				result += '<img src="player.png" alt="Player" width="90"> ';
+			result += '<div style="float:left;">';
+			result += playerCount + ' players in game';
+			console.log(gamePlayerHandles.length);
+			result += '<div style="float:left;">';
+			for(var j = 0; j < gamePlayerHandles.length; j++){
+				result += '<div style="float:left;"><div><img src="player.png" alt="' + gamePlayerHandles[j] + '" width="90"></div><div>' + gamePlayerHandles[j] + '</div></div> ';
 			}
-			result += '</div><div>Players in game</div>'
+			result += '</div>';
+			result += '</div>'
 		}
 		if(startable != null && startable == true && gameId != null){
 			result += '<a href="" onClick="start(getServletUrl(), parseStart, gameId); return false;"><div><img src="start.png" alt="Start game" width="90"></div></a><input type="button" href="" onClick="start(getServletUrl(), parseStart, gameId);" value="Start Game">';
 		}
+		result += '<div style="clear:both;"></div>';
    	}
    	if(setupResult != result){
    		gameSetupDiv.innerHTML = result;
