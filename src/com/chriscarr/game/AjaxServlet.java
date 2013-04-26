@@ -13,6 +13,7 @@ import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
 import com.chriscarr.bang.userinterface.JSPUserInterface;
+import com.chriscarr.bang.userinterface.Message;
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
 @SuppressWarnings("serial")
@@ -181,11 +182,16 @@ public class AjaxServlet extends HttpServlet {
     		String gameId = request.getParameter("gameId");
     		JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
     		if(userInterface != null){
-	    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
+	    		List<Message> messages = ((WebGameUserInterface)userInterface).getMessages(user);
 	    		if(!messages.isEmpty()){
 	    			System.out.println("Got message " + messages.get(0));
 	    			response.getWriter().write("<message>");
-	    			response.getWriter().write(messages.get(0));
+	    			response.getWriter().write("<id>");
+	    			response.getWriter().write(Integer.toString(messages.get(0).getId()));
+	    			response.getWriter().write("</id>");
+	    			response.getWriter().write("<text>");
+	    			response.getWriter().write(messages.get(0).getMessage());
+	    			response.getWriter().write("</text>");
 	    			response.getWriter().write("</message>");
 	    		} else {
 	    			response.getWriter().write("<ok/>");
@@ -198,9 +204,11 @@ public class AjaxServlet extends HttpServlet {
     		String user = request.getParameter("user");
     		String responseMessage = request.getParameter("response");
     		String gameId = request.getParameter("gameId");
+    		String messageId = request.getParameter("messageId");
+    		System.out.println("Response " + messageId);
     		JSPUserInterface userInterface = (JSPUserInterface)WebInit.getUserInterface(Integer.parseInt(gameId));
     		if(userInterface != null){
-	    		List<String> messages = ((WebGameUserInterface)userInterface).getMessages(user);
+	    		List<Message> messages = ((WebGameUserInterface)userInterface).getMessages(user);
 	    		if(!messages.isEmpty()){
 		    		Object removed = messages.remove(0);
 		    		System.out.println("Removed " + removed);

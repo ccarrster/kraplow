@@ -43,7 +43,9 @@ public class GeneralStore extends Card implements Playable {
 			while(chosenCard < 0 || chosenCard > generalStoreCards.size() - 1){
 				chosenCard = userInterface.chooseGeneralStoreCard(generalPlayer, generalStoreCards);
 			}
-			generalPlayer.getHand().add(generalStoreCards.remove(chosenCard));
+			Object card = generalStoreCards.remove(chosenCard);
+			userInterface.printInfo(generalPlayer.getName() + " chooses " + ((Card)card).getName() + " from " + Card.CARDGENERALSTORE);
+			generalPlayer.getHand().add(card);
 			generalPlayer = Turn.getNextPlayer(generalPlayer, players);
 		}
 		return true;

@@ -457,7 +457,7 @@ borders_on{border:1px solid #0F0 !important;}
 	}
    }
 
-   function formatMessage(message){
+   function formatMessage(message, messageId){
    	var result = "";
 		if(message.indexOf("-") != -1){
 			var splitMessage = message.split("-");
@@ -471,7 +471,7 @@ borders_on{border:1px solid #0F0 !important;}
 				var splitData = data.split(", ");
 				if(command.indexOf("chooseTwoDiscardForLife") != -1){
 					selected = ",";
-					result += "<a href='' onClick='sendResponse(selected); selected = \",\"; return false;'><img src='ok.png' alt='ok' height='90'></a> ";
+					result += "<a href='' onClick='sendResponse(selected, " + messageId + "); selected = \",\"; return false;'><img src='ok.png' alt='ok' height='90'></a> ";
 					for(var i = 0; i < splitData.length; i++){
 						if(splitData[i] != ""){
 							var description = " - " + getDescriptionForCard(splitData[i]);
@@ -482,7 +482,7 @@ borders_on{border:1px solid #0F0 !important;}
 					}
 				} else if(command.indexOf("respondTwoMiss") != -1){
 					selected = ",";
-					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected); selected = \",\"; return false;' height='90'> ";
+					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected, " + messageId + "); selected = \",\"; return false;' height='90'> ";
 					for(var i = 0; i < splitData.length; i++){
 						if(splitData[i] != ""){
 							var nameCanPlaySplit = splitData[i].split("@");
@@ -501,14 +501,14 @@ borders_on{border:1px solid #0F0 !important;}
 				} else {
 					if(command.indexOf("askOthersCard") != -1){
 						if(splitData[0].indexOf("true") != -1){
-							result += "<a href='' onClick='sendResponse(-1); return false;'><img src='hand.png' alt='Players hand' height='90'></a> ";
+							result += "<a href='' onClick='sendResponse(-1, " + messageId + "); return false;'><img src='hand.png' alt='Players hand' height='90'></a> ";
 						}
 						if(splitData[1].indexOf("true") != -1){
-							result += "<a href='' onClick='sendResponse(-2); return false;'><img src='gun.png' alt='Players gun' height='90'></a> ";
+							result += "<a href='' onClick='sendResponse(-2, " + messageId + "); return false;'><img src='gun.png' alt='Players gun' height='90'></a> ";
 						}
 						splitData = splitData.slice(2, splitData.length);
 					} else if((command.indexOf("askPlay") != -1 && command.indexOf("askPlayer") == -1) || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){
-						result += "<a href='' onClick='sendResponse(-1); return false;'><img src='pass.png' alt='Done Playing' title='Done Playing' height='90'></a> ";
+						result += "<a href='' onClick='sendResponse(-1, " + messageId + "); return false;'><img src='pass.png' alt='Done Playing' title='Done Playing' height='90'></a> ";
 					}
 					for(var i = 0; i < splitData.length; i++){
 						var targetCode = "";
@@ -557,7 +557,7 @@ borders_on{border:1px solid #0F0 !important;}
 								}
 							}
 							if(canPlay){
-								result += '<a href="" onClick="sendResponse(' + i + '); return false;"><img src="' + image + '" alt="' + splitData[i] + altTargetText + '" title="' + splitData[i] + description + '" ' + targetCode + ' height="90"></a> ';
+								result += '<a href="" onClick="sendResponse(' + i + ', ' + messageId + '); return false;"><img src="' + image + '" alt="' + splitData[i] + altTargetText + '" title="' + splitData[i] + description + '" ' + targetCode + ' height="90"></a> ';
 							} else {
 								result += '<img src="' + image + '" alt="Can not play ' + splitData[i] + '" title="' + splitData[i] + description +'" ' + targetCode + ' style="opacity:0.4;" height="90"> ';
 							}
@@ -580,11 +580,11 @@ borders_on{border:1px solid #0F0 !important;}
 			} else {
 				result += '<h2>' + commandName(commandData) + '</h2>';
 				if(commandData == "chooseFromPlayer"){
-					result += "<a href='' onClick='sendResponse(\"true\"); return false;'><img src='player.png' alt='Players hand' height='90'></a> ";
+					result += "<a href='' onClick='sendResponse(\"true\", " + messageId + "); return false;'><img src='player.png' alt='Players hand' height='90'></a> ";
 				} else if(commandData == "chooseDiscard"){
-					result += "<a href='' onClick='sendResponse(\"true\"); return false;'><img src='discard.png' alt='Discard Pile' height='90'></a> ";
+					result += "<a href='' onClick='sendResponse(\"true\", " + messageId + "); return false;'><img src='discard.png' alt='Discard Pile' height='90'></a> ";
 				}
-				result += "<a href='' onClick='sendResponse(\"false\"); return false;'><img src='card.png' alt='Draw Pile' height='90'></a> ";
+				result += "<a href='' onClick='sendResponse(\"false\", " + messageId + "); return false;'><img src='card.png' alt='Draw Pile' height='90'></a> ";
 			}
 		} else {
 			var gameLogDiv = document.getElementById('gameLog');
@@ -592,7 +592,7 @@ borders_on{border:1px solid #0F0 !important;}
 			info = info + '\n' + message;
 			gameLogDiv.innerHTML = info;
 			gameLogDiv.scrollTop = gameLogDiv.scrollHeight;
-			sendResponse("");
+			sendResponse("", messageId);
 		}
    	return result;
    }
@@ -772,21 +772,27 @@ borders_on{border:1px solid #0F0 !important;}
       	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId, responseHandler);
    }
 
-   var message = null;
+
+   var messageId = null;
 
    function parseGetMessage(responseXML){
       	var messageNode = responseXML.getElementsByTagName("message")[0];
       	var gameMessagesDiv = document.getElementById('gameMessages');
       	if(messageNode != null && goal != null){
-      		var newMessage = messageNode.childNodes[0].nodeValue;
+      	    var idNode = messageNode.getElementsByTagName("id")[0];
+      		var textNode = messageNode.getElementsByTagName("text")[0];
+      		var newMessage = textNode.childNodes[0].nodeValue;
+      		var newMessageId = idNode.childNodes[0].nodeValue;
       		//Cancel old message == new message fail?
       		//It's the canceling that triggers it!
-      		if(newMessage != message){
-      			message = newMessage;
-      			gameMessagesDiv.innerHTML = formatMessage(newMessage);
+      		if(newMessageId != messageId){
+      			messageId = newMessageId;
+      			gameMessagesDiv.innerHTML = formatMessage(newMessage, newMessageId);
+      		} else {
+      			console.log("Skip message");
       		}
       	} else {
-      		message = null;
+      		messageId = null;
       		gameMessagesDiv.innerHTML = "";
       	}
 
@@ -809,12 +815,12 @@ borders_on{border:1px solid #0F0 !important;}
 	}
    }
 
-   function sendResponse(message){
-   	sendResponseXML(getServletUrl(), parseSendResponse, user, message, gameId);
+   function sendResponse(message, messageId){
+   	sendResponseXML(getServletUrl(), parseSendResponse, user, message, gameId, messageId);
    }
 
-   function sendResponseXML(servletUrl, responseHandler, user, response, gameId){
-   	sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response + "&gameId=" + gameId, responseHandler);
+   function sendResponseXML(servletUrl, responseHandler, user, response, gameId, messageId){
+   	sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response + "&gameId=" + gameId + "&messageId=" + messageId, responseHandler);
    }
 
    function parseSendChat(responseXML){

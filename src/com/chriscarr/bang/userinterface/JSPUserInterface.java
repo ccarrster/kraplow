@@ -14,13 +14,13 @@ import com.chriscarr.bang.gamestate.GameStateListener;
 
 public class JSPUserInterface implements UserInterface, GameStateListener {
 
-	public List<String> messages;
-	public List<String> responses;
-	private Turn turn;
+	public List<Message> messages;
+	public List<Message> responses;
+	protected Turn turn;
 	
 	public JSPUserInterface(){
-		messages = new ArrayList<String>();
-		responses = new ArrayList<String>();
+		messages = new ArrayList<Message>();
+		responses = new ArrayList<Message>();
 	}
 	
 	protected void waitForResponse(String player){
@@ -161,7 +161,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 
 	@Override
 	public void printInfo(String info) {
-		messages.add(info);
+		messages.add(new MessageImpl(info));
 	}
 
 	@Override
@@ -219,7 +219,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 	
 	public void sendMessage(String player, String message){
-		messages.add(player + "-" + message);
+		messages.add(new MessageImpl(player + "-" + message));
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 	
 	public String removeResponse(String playerName){
-		return responses.remove(0);
+		return responses.remove(0).getMessage();
 	}
 
 	@Override

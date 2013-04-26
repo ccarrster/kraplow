@@ -29,6 +29,16 @@ public class Turn {
 	public Player getPlayersTurn() {
 		return currentPlayer;
 	}
+	
+	public Player getPlayerForName(String name){
+		for(int i = 0; i < players.size(); i++){
+			Player player = players.get(i);
+			if(player.getName().equals(name)){
+				return player;
+			}
+		}
+		return null;
+	}
 
 	public static Player getNextPlayer(Player player, List<Player> players) {
 		int index = players.indexOf(player);
