@@ -88,7 +88,7 @@ public class WebGame {
 
 	public static void addChat(String chat) {	
 		chatLog.add(new ChatMessage(chat));
-		if(chatLog.size() >10){
+		if(chatLog.size() >50){
 			chatLog.remove(0);
 		}
 	}
