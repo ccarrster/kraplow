@@ -734,7 +734,7 @@ public class TurnTest extends TestCase{
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
+		UserInterface testUserInterface = new TestUserInterfaceCatBalu();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
 		turn.setDeck(Setup.setupDeck());

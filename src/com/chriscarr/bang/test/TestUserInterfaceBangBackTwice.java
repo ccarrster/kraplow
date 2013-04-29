@@ -38,7 +38,7 @@ public class TestUserInterfaceBangBackTwice extends TestUserInterface implements
 	@Override
 	public int askPlayer(Player player, List<String> otherPlayers) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override
