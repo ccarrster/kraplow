@@ -78,7 +78,7 @@ public class Turn {
 				damagePlayer(currentPlayer, players, currentPlayer, 3, null,
 						deck, discard, userInterface);
 				if (isGameOver(players)) {
-					userInterface.printInfo("Winners are " + getWinners(players));
+					userInterface.printInfo("Winners are " + getWinners(players) + " " + getRoles(players));
 					throw new EndOfGameException("Game over");
 				}
 			} else {
@@ -90,7 +90,7 @@ public class Turn {
 				while (!donePlaying && players.contains(currentPlayer)) {
 					play();
 					if (isGameOver(players)) {
-						userInterface.printInfo("Winners are " + getWinners(players));
+						userInterface.printInfo("Winners are " + getWinners(players) + " " + getRoles(players));
 						throw new EndOfGameException("Game over");
 					}
 				}
@@ -618,8 +618,8 @@ public class Turn {
 
 	public static boolean isGameOver(List<Player> players) {
 		return isDead(Player.SHERIFF, players)
-				|| isDead(Player.RENEGADE, players)
-				&& isDead(Player.OUTLAW, players);
+				|| (isDead(Player.RENEGADE, players)
+				&& isDead(Player.OUTLAW, players));
 	}
 
 	private static boolean isDead(int role, List<Player> players) {
@@ -632,19 +632,28 @@ public class Turn {
 	}
 
 	public static String getWinners(List<Player> players) {
-		if (isDead(Player.OUTLAW, players) && isDead(Player.RENEGADE, players)) {
-			return "Sheriff and Deputies";
-		} else if (isDead(Player.SHERIFF, players)
-				&& (!isDead(Player.DEPUTY, players) || !isDead(Player.OUTLAW,
-						players))) {
-			return "Outlaws";
-		} else if (isDead(Player.DEPUTY, players)
+		if (isDead(Player.DEPUTY, players)
 				&& isDead(Player.OUTLAW, players)
 				&& isDead(Player.SHERIFF, players)) {
 			return "Renegades";
+		} else if (isDead(Player.SHERIFF, players)
+				&& (!isDead(Player.DEPUTY, players) || !isDead(Player.OUTLAW,
+						players))) {
+			return "Outlaws"; 
+		} else if (isDead(Player.OUTLAW, players) && isDead(Player.RENEGADE, players)) {
+			return "Sheriff and Deputies";
 		} else {
 			throw new RuntimeException("No Winner");
 		}
+	}
+	
+	public static String getRoles(List<Player> players) {
+		String result = "";
+		for(int i = 0; i < players.size(); i++){
+			Player player = players.get(i);
+			result += player.getFigure().getName() + " was a " + Player.roleToString(player.getRole()) + ". ";  
+		}
+		return result;
 	}
 
 	public static void discardTwoCardsForLife(Player player, Discard discard,

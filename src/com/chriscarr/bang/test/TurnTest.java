@@ -1471,11 +1471,36 @@ public class TurnTest extends TestCase{
 		assertEquals("Outlaws", Turn.getWinners(players));
 	}
 	
+	public void testOutlawWinDeuptyAlive2(){
+		List<Player> players = new ArrayList<Player>();
+		Player deputy = new Player();
+		deputy.setRole(Player.DEPUTY);
+		players.add(deputy);
+		Turn turn = new Turn();
+		turn.setPlayers(players);
+		assertTrue(Turn.isGameOver(players));
+		assertEquals("Outlaws", Turn.getWinners(players));
+	}
+	
 	public void testSheriffDeputyWin(){
 		List<Player> players = new ArrayList<Player>();
 		Player renegade = new Player();
 		renegade.setRole(Player.SHERIFF);
 		players.add(renegade);
+		Turn turn = new Turn();
+		turn.setPlayers(players);
+		assertTrue(Turn.isGameOver(players));
+		assertEquals("Sheriff and Deputies", Turn.getWinners(players));
+	}
+	
+	public void testSheriffDeputyWin2(){
+		List<Player> players = new ArrayList<Player>();
+		Player renegade = new Player();
+		renegade.setRole(Player.SHERIFF);
+		players.add(renegade);
+		Player renegade2 = new Player();
+		renegade2.setRole(Player.DEPUTY);
+		players.add(renegade2);
 		Turn turn = new Turn();
 		turn.setPlayers(players);
 		assertTrue(Turn.isGameOver(players));
