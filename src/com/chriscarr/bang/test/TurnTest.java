@@ -1149,7 +1149,7 @@ public class TurnTest extends TestCase{
 		Player player = new Player();
 		player.setInPlay(new InPlay());
 		player.setFigure(new Figure());
-		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface()) != 0);
+		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) != 0);
 	}
 	
 	public void testSavedByBarrel(){
@@ -1166,7 +1166,7 @@ public class TurnTest extends TestCase{
 		turn.setUserInterface(new TestUserInterface());
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
-		assertTrue(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface()) != 0);
+		assertTrue(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface(), 1) != 0);
 	}
 	
 	public void testNotSavedByBarrel(){
@@ -1184,7 +1184,7 @@ public class TurnTest extends TestCase{
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
 		sheriff.setFigure(new Figure());
-		assertFalse(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface()) != 0);
+		assertFalse(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface(), 1) != 0);
 	}
 	
 	public void testNoBeerPlayer(){
@@ -1569,7 +1569,7 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface()) != 0);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) != 0);
 	}
 	
 	public void testJourdonnaisFail(){
@@ -1587,7 +1587,99 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface()) != 0);
+		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) != 0);
+	}
+	
+	public void testJourdonnaisFailBarrelFail(){
+		Turn turn = new Turn();
+		Player player = new Player();
+		player.setInPlay(new InPlay());
+		Figure figure = new Figure();
+		figure.setName(Figure.JOURDONNAIS);
+		player.setFigure(figure);
+		player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
+		Deck deck = new Deck();
+		Card card = new Card();
+		turn.setUserInterface(new TestUserInterface());
+		card.setSuit(Card.DIAMONDS);
+		deck.add(card);
+		Card card2 = new Card();
+		card2.setSuit(Card.DIAMONDS);
+		deck.add(card2);
+		Discard discard = new Discard();
+		turn.setDeck(deck);
+		turn.setDiscard(discard);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) == 0);
+		assertTrue(deck.size() == 0);
+	}
+	
+	public void testJourdonnaisFailBarrelSuccess(){
+		Turn turn = new Turn();
+		Player player = new Player();
+		player.setInPlay(new InPlay());
+		Figure figure = new Figure();
+		figure.setName(Figure.JOURDONNAIS);
+		player.setFigure(figure);
+		player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
+		Deck deck = new Deck();
+		Card card = new Card();
+		turn.setUserInterface(new TestUserInterface());
+		card.setSuit(Card.HEARTS);
+		deck.add(card);
+		Card card2 = new Card();
+		card2.setSuit(Card.DIAMONDS);
+		deck.add(card2);
+		Discard discard = new Discard();
+		turn.setDeck(deck);
+		turn.setDiscard(discard);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) == 1);
+		assertTrue(deck.size() == 0);
+	}
+	
+	public void testJourdonnaisSuccessBarrelSkip(){
+		Turn turn = new Turn();
+		Player player = new Player();
+		player.setInPlay(new InPlay());
+		Figure figure = new Figure();
+		figure.setName(Figure.JOURDONNAIS);
+		player.setFigure(figure);
+		player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
+		Deck deck = new Deck();
+		Card card = new Card();
+		turn.setUserInterface(new TestUserInterface());
+		card.setSuit(Card.HEARTS);
+		deck.add(card);
+		Card card2 = new Card();
+		card2.setSuit(Card.HEARTS);
+		deck.add(card2);
+		Discard discard = new Discard();
+		turn.setDeck(deck);
+		turn.setDiscard(discard);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) == 1);
+		assertTrue(deck.size() == 1);
+	}
+	
+	public void testJourdonnaisSuccessBarrelSuccessDoubleMiss(){
+		Turn turn = new Turn();
+		Player player = new Player();
+		player.setInPlay(new InPlay());
+		Figure figure = new Figure();
+		figure.setName(Figure.JOURDONNAIS);
+		player.setFigure(figure);
+		player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
+		Deck deck = new Deck();
+		Card card = new Card();
+		turn.setUserInterface(new TestUserInterface());
+		card.setSuit(Card.HEARTS);
+		deck.add(card);
+		Card card2 = new Card();
+		card2.setSuit(Card.HEARTS);
+		deck.add(card2);
+		Discard discard = new Discard();
+		turn.setDeck(deck);
+		turn.setDiscard(discard);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 2) == 2);
+		assertTrue(deck.size() == 0);
 	}
 	
 	public void testPaulRegret(){

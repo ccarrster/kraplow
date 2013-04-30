@@ -450,7 +450,7 @@ public class Turn {
 	}
 
 	public static int isBarrelSave(Player player, Deck deck, Discard discard,
-			UserInterface userInterface) {
+			UserInterface userInterface, int missesRequired) {
 		int misses = 0;
 		if (Figure.JOURDONNAIS.equals(player.getName())) {
 			Card drawn = (Card) draw(player, deck, discard, userInterface);
@@ -463,6 +463,9 @@ public class Turn {
 						+ Card.suitToString(drawn.getSuit())
 						+ " and was not saved by his ability.");
 			}
+		}
+		if(misses >= missesRequired){
+			return misses;
 		}
 		InPlay currentInPlay = player.getInPlay();
 		if (currentInPlay.hasItem(Card.CARDBARREL)) {

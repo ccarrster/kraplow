@@ -34,7 +34,7 @@ public class Gatling extends Card implements Playable {
 		discard.add(this);
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
-			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface) > 0){
+			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface, 1) > 0){
 				gatlingPlayer = Turn.getNextPlayer(gatlingPlayer, players);
 				continue;
 			}

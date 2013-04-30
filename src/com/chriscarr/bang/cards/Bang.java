@@ -46,7 +46,7 @@ public class Bang extends Card implements Playable {
 			if(Figure.SLABTHEKILLER.equals(currentPlayer.getName())){
 				missesRequired = 2;
 			}
-			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface);
+			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired);
 			missesRequired = missesRequired - barrelMisses;
 			if(missesRequired <= 0){
 				return true;
