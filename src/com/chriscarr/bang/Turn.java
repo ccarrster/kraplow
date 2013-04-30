@@ -534,17 +534,19 @@ public class Turn {
 		players.remove(player);
 		userInterface.printInfo(player.getName() + " is dead. Role was "
 				+ Player.roleToString(player.getRole()));
-		deadDiscardAll(player, players, discard);
-		if (damager != null) {
-			if (damager.getRole() == Player.SHERIFF
-					&& player.getRole() == Player.DEPUTY) {
-				userInterface.printInfo(damager.getName()
-						+ " killed own deputy, loses all cards");
-				discardAll(damager, discard);
-			} else if (player.getRole() == Player.OUTLAW) {
-				userInterface.printInfo(damager.getName()
-						+ " killed an outlaw, draws 3 cards");
-				deckToHand(damager.getHand(), deck, 3);
+		if (!isGameOver(players)) {
+			deadDiscardAll(player, players, discard);
+			if (damager != null) {
+				if (damager.getRole() == Player.SHERIFF
+						&& player.getRole() == Player.DEPUTY) {
+					userInterface.printInfo(damager.getName()
+							+ " killed own deputy, loses all cards");
+					discardAll(damager, discard);
+				} else if (player.getRole() == Player.OUTLAW) {
+					userInterface.printInfo(damager.getName()
+							+ " killed an outlaw, draws 3 cards");
+					deckToHand(damager.getHand(), deck, 3);
+				}
 			}
 		}
 	}
