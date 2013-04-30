@@ -35,6 +35,7 @@ public class Indians extends Card implements Playable {
 		Player indianPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(indianPlayer != currentPlayer){
 			int bangPlayed = Turn.validPlayBang(indianPlayer, userInterface);
+			Player nextPlayer = Turn.getNextPlayer(indianPlayer, players); 
 			if(bangPlayed == -1){
 				turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				userInterface.printInfo(indianPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
@@ -42,7 +43,7 @@ public class Indians extends Card implements Playable {
 				discard.add(indianPlayer.getHand().remove(bangPlayed));
 				userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
 			}
-			indianPlayer = Turn.getNextPlayer(indianPlayer, players);
+			indianPlayer = nextPlayer; 
 		}
 		return true;
 	}

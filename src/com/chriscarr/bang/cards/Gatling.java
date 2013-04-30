@@ -34,8 +34,9 @@ public class Gatling extends Card implements Playable {
 		discard.add(this);
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
+			Player nextPlayer = Turn.getNextPlayer(gatlingPlayer, players);
 			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface, 1) > 0){
-				gatlingPlayer = Turn.getNextPlayer(gatlingPlayer, players);
+				gatlingPlayer = nextPlayer;
 				continue;
 			}
 			int missPlayed = Turn.validPlayMiss(gatlingPlayer, userInterface);
@@ -46,7 +47,7 @@ public class Gatling extends Card implements Playable {
 				discard.add(gatlingPlayer.getHand().remove(missPlayed));
 				userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + Card.CARDGATLING);
 			}
-			gatlingPlayer = Turn.getNextPlayer(gatlingPlayer, players);
+			gatlingPlayer = nextPlayer;
 		}
 		return true;
 	}
