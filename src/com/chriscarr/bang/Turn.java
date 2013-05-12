@@ -163,7 +163,7 @@ public class Turn {
 			hand.add(deck.pull());
 		} else if (Figure.PEDRORAMIREZ.equals(player.getName())) {
 			if (!discard.isEmpty()) {
-				boolean chosenDiscard = userInterface.chooseDiscard(player);
+				boolean chosenDiscard = userInterface.chooseDiscard(player, discard.peek());
 				if (chosenDiscard) {
 					Object discardCard = discard.remove();
 					hand.add(discardCard);

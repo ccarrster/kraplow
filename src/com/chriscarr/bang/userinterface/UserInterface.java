@@ -26,7 +26,7 @@ public interface UserInterface {
 
 	int respondBeer(Player player);
 
-	boolean chooseDiscard(Player player);
+	boolean chooseDiscard(Player player, Object card);
 	
 	boolean chooseFromPlayer(Player player);	
 

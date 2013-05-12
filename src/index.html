@@ -499,7 +499,9 @@ borders_on{border:1px solid #0F0 !important;}
 						}
 					}
 				} else {
-					if(command.indexOf("askOthersCard") != -1){
+					if(command.indexOf("chooseDiscard") != -1){
+						result += "<a href='' onClick='sendResponse(-1, " + messageId + "); return false;'><img src='card.png' alt='Draw Pile' height='90'></a> ";
+					} else if(command.indexOf("askOthersCard") != -1){
 						if(splitData[0].indexOf("true") != -1){
 							result += "<a href='' onClick='sendResponse(-1, " + messageId + "); return false;'><img src='hand.png' alt='Players hand' height='90'></a> ";
 						}
@@ -581,8 +583,6 @@ borders_on{border:1px solid #0F0 !important;}
 				result += '<h2>' + commandName(commandData) + '</h2>';
 				if(commandData == "chooseFromPlayer"){
 					result += "<a href='' onClick='sendResponse(\"true\", " + messageId + "); return false;'><img src='player.png' alt='Players hand' height='90'></a> ";
-				} else if(commandData == "chooseDiscard"){
-					result += "<a href='' onClick='sendResponse(\"true\", " + messageId + "); return false;'><img src='discard.png' alt='Discard Pile' height='90'></a> ";
 				}
 				result += "<a href='' onClick='sendResponse(\"false\", " + messageId + "); return false;'><img src='card.png' alt='Draw Pile' height='90'></a> ";
 			}

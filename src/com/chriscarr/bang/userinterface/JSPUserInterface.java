@@ -112,10 +112,15 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean chooseDiscard(Player player) {
-		sendMessage(player.getName(), "chooseDiscard");
+	public boolean chooseDiscard(Player player, Object card) {
+		sendMessage(player.getName(), "chooseDiscard " + ((Card)card).getName());
 		waitForResponse(player.getName());
-		return Boolean.parseBoolean(removeResponse(player.getName()));
+		String response = removeResponse(player.getName());
+		if(response.equals("-1")){
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override

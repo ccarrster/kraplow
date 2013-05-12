@@ -151,10 +151,10 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean chooseDiscard(Player player) {
+	public boolean chooseDiscard(Player player, Object card) {
 		System.out.println(player.getFigure().getName());
 		System.out.println("Draw Card From Discard");
-		System.out.println("0) From Discard");
+		System.out.println("0) From Discard " + ((Card)card).getName());
 		System.out.println("1) From Deck");
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);

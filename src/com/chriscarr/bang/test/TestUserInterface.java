@@ -81,7 +81,7 @@ public class TestUserInterface implements UserInterface {
 	}
 
 	@Override
-	public boolean chooseDiscard(Player player) {
+	public boolean chooseDiscard(Player player, Object card) {
 		// TODO Auto-generated method stub
 		return true;
 	}
