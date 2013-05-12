@@ -506,7 +506,8 @@ borders_on{border:1px solid #0F0 !important;}
 							result += "<a href='' onClick='sendResponse(-1, " + messageId + "); return false;'><img src='hand.png' alt='Players hand' height='90'></a> ";
 						}
 						if(splitData[1].indexOf("true") != -1){
-							result += "<a href='' onClick='sendResponse(-2, " + messageId + "); return false;'><img src='gun.png' alt='Players gun' height='90'></a> ";
+							var gunName = splitData[1].substring(4);
+							result += "<a href='' onClick='sendResponse(-2, " + messageId + "); return false;'><img src='" + getImageForCard(gunName) + "' alt='" + gunName + "' height='90'></a> ";
 						}
 						splitData = splitData.slice(2, splitData.length);
 					} else if((command.indexOf("askPlay") != -1 && command.indexOf("askPlayer") == -1) || command.indexOf("respondBeer") != -1 || command.indexOf("respondBang") != -1 || command.indexOf("respondMiss") != -1){

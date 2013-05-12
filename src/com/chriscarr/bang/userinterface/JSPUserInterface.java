@@ -64,7 +64,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			inPlayCards += ((Card)inPlay.get(i)).getName() + ", ";
 		}		
 		boolean hasGun = inPlay.hasGun();
-		sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + ", " + inPlayCards);
+		sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + inPlay.getGunName() + ", " + inPlayCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
 	}
