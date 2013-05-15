@@ -267,5 +267,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public String getTimeout() {
 		return null;
 	}
+	
+	public Hand getHandForUser(String playerName){
+		return turn.getPlayerForName(playerName).getHand();
+	}
 
 }

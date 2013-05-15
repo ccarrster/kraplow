@@ -22,6 +22,7 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="gameMessages" style="height:256px; width:533; display:none; border:2px solid #000;"></div>
 </div>
 <div style="clear:both;"></div>
+<div id="handArea"></div>
 <div id="handleArea"><span id="numUsers"></span> users total.</div>
 <a href="legend.html" target="_blank">Show Legend</a>
 <p>Suggestions/Help/Feedback? <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a> <a href="http://www.davincigames.net/bang/bang_rules.pdf">Download Rules PDF</a> <a href="http://www.davincigames.net/bang/faq/bang_faq_eng.pdf">Download FAQ PDF</a></p>
@@ -808,6 +809,7 @@ borders_on{border:1px solid #0F0 !important;}
       	if(messageNode != null && goal != null){
       	    var idNode = messageNode.getElementsByTagName("id")[0];
       		var textNode = messageNode.getElementsByTagName("text")[0];
+      		var handNode = messageNode.getElementsByTagName("hand")[0];
       		var newMessage = textNode.childNodes[0].nodeValue;
       		var newMessageId = idNode.childNodes[0].nodeValue;
       		//Cancel old message == new message fail?
@@ -815,6 +817,14 @@ borders_on{border:1px solid #0F0 !important;}
       		if(newMessageId != messageId){
       			messageId = newMessageId;
       			gameMessagesDiv.innerHTML = formatMessage(newMessage, newMessageId);
+      			var cardNodes = handNode.getElementsByTagName("card");
+      			var handAreaDiv = document.getElementById('handArea');
+      			var cardString = '<h2>Your Hand</h2>';
+      			for(var cardIndex = 0; cardIndex < cardNodes.length; cardIndex++){
+      				var card = cardNodes[cardIndex].childNodes[0].nodeValue;
+      				cardString += '<img height="90" src="' + getImageForCard(card) + '" alt="' + card + '">';
+      			}
+      			handAreaDiv.innerHTML = cardString;
       		} else {
       			console.log("Skip message");
       		}

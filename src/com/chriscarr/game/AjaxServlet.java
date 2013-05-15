@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
@@ -212,6 +214,15 @@ public class AjaxServlet extends HttpServlet {
 	    			response.getWriter().write("<text>");
 	    			response.getWriter().write(messages.get(0).getMessage());
 	    			response.getWriter().write("</text>");
+	    			response.getWriter().write("<hand>");
+	    			Hand hand = userInterface.getHandForUser(((WebGameUserInterface)userInterface).getPlayerForUser(user));
+	    			for(int i = 0; i < hand.size(); i++){
+	    				Card card = (Card)hand.get(i);
+	    				response.getWriter().write("<card>");
+	    				response.getWriter().write(card.getName());
+	    				response.getWriter().write("</card>");
+	    			}
+	    			response.getWriter().write("</hand>");
 	    			response.getWriter().write("</message>");
 	    		} else {
 	    			response.getWriter().write("<ok/>");
