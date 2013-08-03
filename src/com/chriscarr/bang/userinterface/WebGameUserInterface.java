@@ -76,7 +76,8 @@ public class WebGameUserInterface extends JSPUserInterface {
 				}
 			}
 			return "-1";
-		} else if (message.indexOf("askPlay") == 0 && message.indexOf("askPlayer") != 0) {
+		} else if (message.indexOf("askPlay") == 0
+				&& message.indexOf("askPlayer") != 0) {
 			String options = message.replace("askPlay", "");
 			String[] cards = options.split(",");
 			for (int i = 0; i < cards.length - 1; i++) {
@@ -155,7 +156,8 @@ public class WebGameUserInterface extends JSPUserInterface {
 			setupMap();
 		}
 
-		List<Message> playerMessages = messages.get(userFigureNames.get(player));
+		List<Message> playerMessages = messages
+				.get(userFigureNames.get(player));
 		playerMessages.add(new MessageImpl(player + "-" + message));
 		System.out.println("Add message " + message);
 		if (userFigureNames.get(player).contains("AI")) {
@@ -214,7 +216,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 
 	protected void waitForResponse(String player) {
-		int maxWait = 180000;
+		int maxWait = 360000;
 		int wait = 100;
 		int waitCount = 0;
 		while (responses.get(userFigureNames.get(player)).isEmpty()) {
@@ -232,7 +234,8 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 
 	public String removeResponse(String player) {
-		return responses.get(userFigureNames.get(player)).remove(0).getMessage();
+		return responses.get(userFigureNames.get(player)).remove(0)
+				.getMessage();
 	}
 
 	public String getPlayerForUser(String user) {
