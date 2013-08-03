@@ -569,7 +569,7 @@ public class Turn {
 		}
 		String discardedCards = "";
 		while (hand.size() != 0) {
-			Object discardedCard = askPlayerToDiscard(player, discard);
+			Object discardedCard = hand.remove(0);
 			discardedCards += ((Card)discardedCard).getName() + ", ";
 		}
 		if(!discardedCards.equals("")){
@@ -603,7 +603,7 @@ public class Turn {
 			}
 			String discardedCards = "";
 			while (hand.size() != 0) {
-				Object discardedCard = askPlayerToDiscard(player, discard);
+				Object discardedCard = hand.remove(0);
 				discardedCards += ((Card)discardedCard).getName() + ", ";
 			}
 			if(!discardedCards.equals("")){
