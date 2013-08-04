@@ -15,7 +15,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 
 	Map<String, List<Message>> messages;
 	Map<String, List<Message>> responses;
-	Map<String, String> userFigureNames = null;
+	public Map<String, String> userFigureNames = null;
 	Map<String, String> figureNamesUser = null;
 	boolean gameOver = false;
 	String timeout = null;

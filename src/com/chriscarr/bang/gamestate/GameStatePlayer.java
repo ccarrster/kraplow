@@ -12,4 +12,5 @@ public class GameStatePlayer {
 	public boolean isSheriff;
 	public GameStateCard gun;
 	public List<GameStateCard> inPlay;
+	public String user = "Blank";
 }

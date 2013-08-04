@@ -363,6 +363,7 @@ borders_on{border:1px solid #0F0 !important;}
 
 
 			var loopPlayerName = loopPlayer.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+			var loopPlayerHandle = loopPlayer.getElementsByTagName("handle")[0].childNodes[0].nodeValue;
 			var border_color = "transparent";
 			var altPlayerText = loopPlayerName + " ";
 			if(loopPlayerName == playerName && name == loopPlayerName){
@@ -379,7 +380,7 @@ borders_on{border:1px solid #0F0 !important;}
 
 			var description = " - " + getDescriptionForPlayer(loopPlayerName);
 			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="' + altPlayerText + '" id="' + loopPlayerName + '" title="' + loopPlayerName + description +'" style="border:4px solid transparent; position:absolute; top:0px; left:0px;" height="150px">';
-
+			result += '<div style="position:relative; top:152px; width:125px; background-color:white; border: 1px solid black;">' + loopPlayerHandle + '</div>'; 
 			var gunNode = loopPlayer.getElementsByTagName("gun")[0];
 			if(gunNode != null){
 				var gunName = gunNode.getElementsByTagName("name")[0].childNodes[0].nodeValue;

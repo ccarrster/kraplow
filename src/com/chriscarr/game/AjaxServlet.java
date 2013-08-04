@@ -37,6 +37,9 @@ public class AjaxServlet extends HttpServlet {
 		    		response.getWriter().write("<gamestate>");
 			    		response.getWriter().write("<players>");
 			    		for(GameStatePlayer player : gameState.getPlayers()){
+			    			if (userInterface instanceof WebGameUserInterface){
+			    				player.user = ((WebGameUserInterface)userInterface).userFigureNames.get(player.name);
+			    			}
 			    			writePlayer(player, response);
 			    		}
 			    		response.getWriter().write("</players>");
@@ -280,7 +283,7 @@ public class AjaxServlet extends HttpServlet {
   private void writePlayer(GameStatePlayer player, HttpServletResponse response) throws IOException{
 	  	response.getWriter().write("<player>");
 	  	response.getWriter().write("<handle>");
-		response.getWriter().write("Handle");
+		response.getWriter().write(player.user);
 		response.getWriter().write("</handle>");
 	  	response.getWriter().write("<name>");
 		response.getWriter().write(player.name);
