@@ -16,7 +16,10 @@ borders_on{border:1px solid #0F0 !important;}
 	<div><form>Handle <input type="text"/ name="handle" id="handle"></form></div>
 </div>
 <div style="float:left;">
-<div id="chatLog"></div>
+<div>
+<div style="float:left;" id="chatLog"></div>
+<div style="float:left; width:100px; height:178px;" id="chatNames"></div>
+</div>
 <div id="chatInput"><form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">Chat <input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
 <div><textarea id="gameLog" rows='10' cols='60' style="display:none;"></textarea></div>
 <div id="gameMessages" style="height:256px; width:533; display:none; border:2px solid #000;"></div>
@@ -26,6 +29,7 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="handleArea"><span id="numUsers"></span> users total.</div>
 <a href="legend.html" target="_blank">Show Legend</a>
 <p>Suggestions/Help/Feedback? <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a> <a href="http://www.davincigames.net/bang/bang_rules.pdf">Download Rules PDF</a> <a href="http://www.davincigames.net/bang/faq/bang_faq_eng.pdf">Download FAQ PDF</a></p>
+<p><a href="https://www.facebook.com/groups/517659154972037/">Facebook group Kraplow</a></p>
 </div>
 <script language="javascript">
 	var handleField = document.getElementById('handle');
@@ -862,7 +866,9 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function parseSendChat(responseXML){
-   	 getChat(getServletUrl(), parseGetChat, guestCounter);
+   	 var handleField = document.getElementById('handle');
+	 var handle = handleField.value;
+   	 getChat(getServletUrl(), parseGetChat, guestCounter, handle);
    }
 
    function sendChat(servletUrl, responseHandler, chat){
@@ -890,10 +896,23 @@ borders_on{border:1px solid #0F0 !important;}
   	var sessionNodes = responseXML.getElementsByTagName("session");
 
   	document.getElementById('numUsers').innerHTML = sessionNodes.length;
+  	var chatNamesDiv = document.getElementById('chatNames');
+  	var sessionNodes = responseXML.getElementsByTagName("session");
+  	var namesResult = "<textarea rows=\"10\" cols=\"20\" id=\"chatarea\">";
+  	for(var i = 0; i < sessionNodes.length; i++){
+		if(sessionNodes[i].childNodes.length > 0){
+			var sessionName = sessionNodes[i].childNodes[0].nodeValue;
+			namesResult += sessionName + '\n'; 
+		}
+	}
+  	namesResult += "</textarea>";
+  	if(chatNamesDiv.innerHTML != namesResult){
+  		chatNamesDiv.innerHTML = namesResult;
+  	}
   }
 
-  function getChat(servletUrl, responseHandler, guestCounter){
-		sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter, responseHandler);
+  function getChat(servletUrl, responseHandler, guestCounter, handle){
+		sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter + "&handle=" + handle, responseHandler);
    }
 
    function parseGetPlayerInfo(responseXML){
@@ -1026,7 +1045,9 @@ borders_on{border:1px solid #0F0 !important;}
 		var t=setTimeout("timedCount()",1000);
 		setup();
 		pollMessages();
-		getChat(getServletUrl(), parseGetChat, guestCounter);
+		var handleField = document.getElementById('handle');
+		var handle = handleField.value;
+		getChat(getServletUrl(), parseGetChat, guestCounter, handle);
 		writeInfo();
 		if(!started){
 			if(user == null){

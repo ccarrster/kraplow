@@ -13,7 +13,7 @@ public class WebGame {
 	private static int guestCounter = 0;
 	private static Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<Integer, GamePrep>();
 	private static List<ChatMessage> chatLog = new ArrayList<ChatMessage>();
-	private static Map<String, Long> sessions = new ConcurrentHashMap<String, Long>();
+	private static Map<String, Session> sessions = new ConcurrentHashMap<String, Session>();
 	private static List<String> handles = new ArrayList<String>();
 	
 	public static int create(){
@@ -102,15 +102,15 @@ public class WebGame {
 		long now = System.currentTimeMillis();
 		while(sessionIter.hasNext()){
 			String sessionId = sessionIter.next();			
-			if((sessions.get(sessionId) + 5000) < now){
+			if((sessions.get(sessionId).lastUpdated + 5000) < now){
 				sessions.remove(sessionId);
 			}
 		}
 	}
 	
-	public static void updateSession(String sessionId) {
+	public static void updateSession(String sessionId, String handle) {
 		if(!sessionId.equals("null")){
-			sessions.put(sessionId, System.currentTimeMillis());
+			sessions.put(sessionId, new Session(new Long(System.currentTimeMillis()), handle));
 			cleanSessions();
 		}
 	}
@@ -119,7 +119,7 @@ public class WebGame {
 		return guestCounter++;
 	}
 
-	public static List<String> getSessions() {
-		return new ArrayList<String>(sessions.keySet());		
+	public static List<Session> getSessions() {
+		return new ArrayList<Session>(sessions.values());		
 	}
 }

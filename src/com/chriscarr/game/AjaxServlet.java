@@ -172,7 +172,8 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("GETCHAT")){
     		String guestCounter = request.getParameter("guestCounter");
-    		WebGame.updateSession(guestCounter);
+    		String handle = request.getParameter("handle");
+    		WebGame.updateSession(guestCounter, handle);
     		List<ChatMessage> chatLog = WebGame.getChatLog();
     		response.getWriter().write("<chats>");
     		for(ChatMessage chat : chatLog){
@@ -186,10 +187,14 @@ public class AjaxServlet extends HttpServlet {
     			response.getWriter().write("</timestamp>");
     			response.getWriter().write("</chatmessage>");
     		}
-    		List<String> sessions = WebGame.getSessions();
-    		for(String session : sessions){
+    		List<Session> sessions = WebGame.getSessions();
+    		for(Session session : sessions){
     			response.getWriter().write("<session>");
-    			response.getWriter().write(session);
+    			String outHandle = session.handle;
+    			if(outHandle == null){
+    				outHandle = "Unknown";
+    			}
+    			response.getWriter().write(outHandle);
     			response.getWriter().write("</session>");
     		}
     		response.getWriter().write("</chats>");
