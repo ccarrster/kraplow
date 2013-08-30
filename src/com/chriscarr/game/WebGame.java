@@ -103,6 +103,13 @@ public class WebGame {
 		while(sessionIter.hasNext()){
 			String sessionId = sessionIter.next();			
 			if((sessions.get(sessionId).lastUpdated + 5000) < now){
+				Session session = sessions.get(sessionId);
+				String handle = session.handle;
+				ArrayList<GamePrep> allPreps = new ArrayList<GamePrep>(gamePreps.values());
+				for(int i = 0; i < allPreps.size(); i++){
+					GamePrep prep = allPreps.get(i);
+					prep.leave(handle);
+				}
 				sessions.remove(sessionId);
 			}
 		}
