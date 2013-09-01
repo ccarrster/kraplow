@@ -50,6 +50,7 @@ public class AjaxServlet extends HttpServlet {
 			    			response.getWriter().write("<gameover/>");
 			    			Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
 			    			cleanup.start();
+			    			WebGame.removeGame(Integer.parseInt(gameId));
 			    		}
 			    		response.getWriter().write("<currentname>");
 			    		response.getWriter().write(gameState.getCurrentName());

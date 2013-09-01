@@ -14,19 +14,20 @@ public class WebGame {
 	private static Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<Integer, GamePrep>();
 	private static Map<String, List<ChatMessage>> chatLogs = new ConcurrentHashMap<String, List<ChatMessage>>();
 	private static Map<String, Session> sessions = new ConcurrentHashMap<String, Session>();
-	private static List<String> handles = new ArrayList<String>();
+	//private static List<String> handles = new ArrayList<String>();
+	private static Map<String, List<String>> gameHandles = new ConcurrentHashMap<String, List<String>>();
 	
 	static {
 		chatLogs.put("lobby", new ArrayList<ChatMessage>());
 	}
 	
-	//TODO we need to cleanup the game when it's done
 	public static int create(){
 		int gameId = gameCounter;
 		GamePrep gamePrep = new GamePrep();
 		gamePreps.put(gameId, gamePrep);
 		gameCounter++;
 		chatLogs.put(Integer.toString(gameId), new ArrayList<ChatMessage>());
+		gameHandles.put(Integer.toString(gameId), new ArrayList<String>());
 		return gameId;
 	}
 	
@@ -34,9 +35,10 @@ public class WebGame {
 		return gamePreps.get(gameId).getJoinedPlayers();
 	}
 	
-	public static String getUniqueHandle(String handle){
+	public static String getUniqueHandle(int gameId, String handle){
 		handle = handle.replace("AI", "ai");
 		handle = handle.replaceAll("[^a-zA-Z0-9]", "");
+		List<String> handles = gameHandles.get(Integer.toString(gameId));
 		while(handles.contains(handle)){
 			handle = handle + "_" + getNextGuestCounter();
 		}
@@ -45,11 +47,11 @@ public class WebGame {
 	}
 	
 	public static String join(int gameId, String handle){
-		return gamePreps.get(gameId).join(getUniqueHandle(handle));
+		return gamePreps.get(gameId).join(getUniqueHandle(gameId, handle));
 	}
 	
 	public static String joinAI(int gameId, String handle){
-		return gamePreps.get(gameId).joinAI(getUniqueHandle(handle));
+		return gamePreps.get(gameId).joinAI(getUniqueHandle(gameId, handle));
 	}
 	
 	public static boolean canJoin(int gameId){
@@ -58,6 +60,8 @@ public class WebGame {
 	
 	public static void leave(int gameId, String joinNumber){
 		gamePreps.get(gameId).leave(joinNumber);
+		List<String> handles = gameHandles.get(Integer.toString(gameId));
+		handles.remove(joinNumber);
 	}
 	
 	public static int getCountPlayers(int gameId){
@@ -135,5 +139,10 @@ public class WebGame {
 
 	public static List<Session> getSessions() {
 		return new ArrayList<Session>(sessions.values());		
+	}
+
+	public static void removeGame(int gameId) {
+		chatLogs.remove(Integer.toString(gameId));
+		gameHandles.remove(Integer.toString(gameId));
 	}
 }

@@ -35,14 +35,31 @@ borders_on{border:1px solid #0F0 !important;}
 	var randomAdjectives = ["Selective", "Tasty", "Furtive", "Pink", "Straight", "Shaggy", "Disgusting", "Cut", "Humorous", "Rightful", "Elated", "Rough", "Plucky", "Sophisticated", "Rude", "Fancy", "Noxious", "Drab", "Spicy", "Elastic", "Well-groomed", "Upset", "Fresh", "Voiceless", "Silent", "Sulky", "Cynical", "Stimulating", "Astonishing", "Blushing", "Well-made", "Picayune", "Flippant", "Lovely", "Political", "Ambitious", "Obese", "Freezing", "Maddening", "Hideous", "Lively", "Solid", "Taboo", "Fallacious", "Hysterical", "Magenta", "Gullible", "Abortive", "Permissible", "Successful", "Crazy", "Joyous", "Legal", "Flawless", "Boorish", "Eatable", "Literate", "Fantastic", "Gusty", "Faded", "Possible", "Rare", "Labored", "Equal", "Feeble", "Sparkling", "Thoughtless", "Green", "Even", "Puzzled", "Rigid", "Garrulous", "Paltry", "Difficult", "Nostalgic", "Uptight", "Habitual", "Woozy", "Quiet", "Thirsty", "Fearful", "Gleaming", "Happy", "Vagabond", "Ill", "Many", "Deeply", "Luxuriant", "Present", "Tall", "Swanky", "Clear", "Tired", "Fluffy", "Blue-eyed", "Average", "Obscene", "Parched", "Ten", "Uninterested", "Important", "Wooden", "Late", "Scattered", "Materialistic", "Alluring", "Square", "Sweltering", "Capable", "Gruesome", "Maniacal", "Periodic", "Dashing", "Whimsical", "Overwrought", "Future", "Aquatic", "Protective"];
 	var randomNames = ["Sachiko", "Walter", "Brittney", "Donnell", "Eufemia", "Clementina", "Erika", "Lauran", "Twanda", "Arianna", "Rema", "Monroe", "Herma", "Abigail", "Hattie", "Rick", "Adrianna", "Lesha", "Melida", "Izola", "Marquitta", "Savanna", "Ethelyn", "Leone", "Irwin", "Kristal", "Gonzalo", "Maryanne", "Abdul", "Nakia", "Rina", "Adrienne", "Bula", "Shane", "Avis", "Allegra", "Arlen", "Vaughn", "Pricilla", "Iesha", "Elidia", "Jeramy", "Caren", "Theodore", "Flavia", "Telma", "Barbra", "Will", "Lachelle", "Kate"];
 	var handleField = document.getElementById('handle');
-	handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
+	
 	var joinLocation = window.location.href.indexOf("join=");
 	var autostart = false;
 	if(joinLocation != -1){
-		var gameIdJoin = window.location.href.substring(joinLocation + 5, window.location.href.length);
+		var restOfUrl = window.location.href.substring(joinLocation + 5, window.location.href.length);
+		var andpersandLocation = restOfUrl.indexOf("&");
+		if(andpersandLocation == -1){
+			var gameIdJoin = restOfUrl; 	
+		} else {
+			var gameIdJoin = restOfUrl.substring(0, andpersandLocation);
+		}
 		join(getServletUrl(), parseJoin, gameIdJoin, document.getElementById("handle").value);
 	}
-
+	var handleLocation = window.location.href.indexOf("handle=");
+	if(handleLocation != -1){
+		var restOfUrl = window.location.href.substring(handleLocation + 7, window.location.href.length);
+		var andpersandLocation = restOfUrl.indexOf("&");
+		if(andpersandLocation == -1){
+			handleField.value = restOfUrl; 	
+		} else {
+			handleField.value = restOfUrl.substring(0, andpersandLocation);
+		}
+	} else {
+		handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
+	}
 
    function getServletUrl(){
        return "/bang/chat";
@@ -100,7 +117,9 @@ borders_on{border:1px solid #0F0 !important;}
 				gameOverMessage += "<h2>Timeout - " + timeoutOverNode.childNodes[0].nodeValue + "</h2>"
 			}
 			var gameMessagesDiv = document.getElementById('gameMessages');
-			gameOverMessage += '<h2>Game Over</2><a href="/bang">Game Lobby</a>';
+			var handleField = document.getElementById('handle');
+			
+			gameOverMessage += '<h2>Game Over</2> <a href="/bang?handle=' + handleField.value + '">Game Lobby</a>';
 			gameMessagesDiv.innerHTML = gameOverMessage;
 			gameOver = true;
 		}
