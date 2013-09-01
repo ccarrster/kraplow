@@ -12,15 +12,21 @@ public class WebGame {
 	private static int gameCounter = 0;
 	private static int guestCounter = 0;
 	private static Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<Integer, GamePrep>();
-	private static List<ChatMessage> chatLog = new ArrayList<ChatMessage>();
+	private static Map<String, List<ChatMessage>> chatLogs = new ConcurrentHashMap<String, List<ChatMessage>>();
 	private static Map<String, Session> sessions = new ConcurrentHashMap<String, Session>();
 	private static List<String> handles = new ArrayList<String>();
 	
+	static {
+		chatLogs.put("lobby", new ArrayList<ChatMessage>());
+	}
+	
+	//TODO we need to cleanup the game when it's done
 	public static int create(){
 		int gameId = gameCounter;
 		GamePrep gamePrep = new GamePrep();
 		gamePreps.put(gameId, gamePrep);
 		gameCounter++;
+		chatLogs.put(Integer.toString(gameId), new ArrayList<ChatMessage>());
 		return gameId;
 	}
 	
@@ -86,15 +92,16 @@ public class WebGame {
 		return new ArrayList<Integer>(gamePreps.keySet());		
 	}
 
-	public static void addChat(String chat) {	
+	public static void addChat(String chat, String gameId) {
+		List<ChatMessage> chatLog = chatLogs.get(gameId);
 		chatLog.add(new ChatMessage(chat));
 		if(chatLog.size() >50){
 			chatLog.remove(0);
 		}
 	}
 	
-	public static List<ChatMessage> getChatLog(){
-		return chatLog;
+	public static List<ChatMessage> getChatLog(String gameId){
+		return chatLogs.get(gameId);
 	}
 
 	public static void cleanSessions(){

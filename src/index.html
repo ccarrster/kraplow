@@ -32,8 +32,10 @@ borders_on{border:1px solid #0F0 !important;}
 <p><a href="https://www.facebook.com/groups/517659154972037/">Facebook group Kraplow</a></p>
 </div>
 <script language="javascript">
+	var randomAdjectives = ["Selective", "Tasty", "Furtive", "Pink", "Straight", "Shaggy", "Disgusting", "Cut", "Humorous", "Rightful", "Elated", "Rough", "Plucky", "Sophisticated", "Rude", "Fancy", "Noxious", "Drab", "Spicy", "Elastic", "Well-groomed", "Upset", "Fresh", "Voiceless", "Silent", "Sulky", "Cynical", "Stimulating", "Astonishing", "Blushing", "Well-made", "Picayune", "Flippant", "Lovely", "Political", "Ambitious", "Obese", "Freezing", "Maddening", "Hideous", "Lively", "Solid", "Taboo", "Fallacious", "Hysterical", "Magenta", "Gullible", "Abortive", "Permissible", "Successful", "Crazy", "Joyous", "Legal", "Flawless", "Boorish", "Eatable", "Literate", "Fantastic", "Gusty", "Faded", "Possible", "Rare", "Labored", "Equal", "Feeble", "Sparkling", "Thoughtless", "Green", "Even", "Puzzled", "Rigid", "Garrulous", "Paltry", "Difficult", "Nostalgic", "Uptight", "Habitual", "Woozy", "Quiet", "Thirsty", "Fearful", "Gleaming", "Happy", "Vagabond", "Ill", "Many", "Deeply", "Luxuriant", "Present", "Tall", "Swanky", "Clear", "Tired", "Fluffy", "Blue-eyed", "Average", "Obscene", "Parched", "Ten", "Uninterested", "Important", "Wooden", "Late", "Scattered", "Materialistic", "Alluring", "Square", "Sweltering", "Capable", "Gruesome", "Maniacal", "Periodic", "Dashing", "Whimsical", "Overwrought", "Future", "Aquatic", "Protective"];
+	var randomNames = ["Sachiko", "Walter", "Brittney", "Donnell", "Eufemia", "Clementina", "Erika", "Lauran", "Twanda", "Arianna", "Rema", "Monroe", "Herma", "Abigail", "Hattie", "Rick", "Adrianna", "Lesha", "Melida", "Izola", "Marquitta", "Savanna", "Ethelyn", "Leone", "Irwin", "Kristal", "Gonzalo", "Maryanne", "Abdul", "Nakia", "Rina", "Adrienne", "Bula", "Shane", "Avis", "Allegra", "Arlen", "Vaughn", "Pricilla", "Iesha", "Elidia", "Jeramy", "Caren", "Theodore", "Flavia", "Telma", "Barbra", "Will", "Lachelle", "Kate"];
 	var handleField = document.getElementById('handle');
-	handleField.value = 'Unknown';
+	handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
 	var joinLocation = window.location.href.indexOf("join=");
 	var autostart = false;
 	if(joinLocation != -1){
@@ -872,7 +874,11 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function sendChat(servletUrl, responseHandler, chat){
-      	sendXMLHttp(servletUrl + "?messageType=CHAT&chat=" + document.getElementById('handle').value + ": " + chat, responseHandler);
+   	var gameIdString = "";
+   	if(gameId != null){
+   		gameIdString = "&gameid=" + gameId; 
+   	}
+    sendXMLHttp(servletUrl + "?messageType=CHAT&chat=" + document.getElementById('handle').value + ": " + chat + gameIdString, responseHandler);
    }
 
   function parseGetChat(responseXML){
@@ -912,7 +918,11 @@ borders_on{border:1px solid #0F0 !important;}
   }
 
   function getChat(servletUrl, responseHandler, guestCounter, handle){
-		sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter + "&handle=" + handle, responseHandler);
+     	var gameIdString = "";
+	   	if(gameId != null){
+	   		gameIdString = "&gameid=" + gameId; 
+	   	}
+		sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter + "&handle=" + handle + gameIdString, responseHandler);
    }
 
    function parseGetPlayerInfo(responseXML){

@@ -168,13 +168,21 @@ public class AjaxServlet extends HttpServlet {
     		String chat = request.getParameter("chat");
     		chat = chat.replace(">", "");
     		chat = chat.replace("<", "");
-    		WebGame.addChat(chat);
+    		String gameId = request.getParameter("gameid");
+    		if(gameId == null){
+    			gameId = "lobby";
+    		}
+    		WebGame.addChat(chat, gameId);
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("GETCHAT")){
     		String guestCounter = request.getParameter("guestCounter");
     		String handle = request.getParameter("handle");
+    		String gameId = request.getParameter("gameid");
+    		if(gameId == null){
+    			gameId = "lobby";
+    		}
     		WebGame.updateSession(guestCounter, handle);
-    		List<ChatMessage> chatLog = WebGame.getChatLog();
+    		List<ChatMessage> chatLog = WebGame.getChatLog(gameId);
     		response.getWriter().write("<chats>");
     		for(ChatMessage chat : chatLog){
     			response.getWriter().write("<chatmessage>");
