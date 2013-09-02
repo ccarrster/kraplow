@@ -169,6 +169,7 @@ public class AjaxServlet extends HttpServlet {
     		String chat = request.getParameter("chat");
     		chat = chat.replace(">", "");
     		chat = chat.replace("<", "");
+    		System.out.println("chat:" + chat);
     		String gameId = request.getParameter("gameid");
     		if(gameId == null){
     			gameId = "lobby";

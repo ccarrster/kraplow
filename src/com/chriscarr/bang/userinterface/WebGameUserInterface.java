@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +31,6 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 
 	public String somethingAI(String player, String message) {
-		System.out.println(message);
 		Player aiPlayer = turn.getPlayerForName(player);
 		if (message.indexOf("askOthersCard") == 0) {
 			return Integer.toString((int) Math.floor(Math.random() * -3));
@@ -40,9 +40,13 @@ public class WebGameUserInterface extends JSPUserInterface {
 		} else if (message.indexOf("chooseGeneralStoreCard") == 0
 				|| message.indexOf("chooseDrawCard") == 0
 				|| message.indexOf("askDiscard") == 0
-				|| message.indexOf("askPlayer") == 0
 				|| message.indexOf("chooseCardToPutBack") == 0) {
 			return "0";
+		} else if (message.indexOf("askPlayer") == 0){
+			String[] splitMessage = message.split(",");
+			int options = splitMessage.length - 1;
+			Random random = new Random();
+			return Integer.toString(random.nextInt(options));
 		} else if (message.indexOf("chooseTwoDiscardForLife") == 0
 				|| message.indexOf("respondTwoMiss") == 0) {
 			return "-1";
@@ -143,6 +147,9 @@ public class WebGameUserInterface extends JSPUserInterface {
 					return Integer.toString(i);
 				}
 				if (card.indexOf("Gatling") == 0) {
+					return Integer.toString(i);
+				}
+				if(card.indexOf("Bang!@true") == 0){
 					return Integer.toString(i);
 				}
 			}

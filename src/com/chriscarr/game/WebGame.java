@@ -14,7 +14,6 @@ public class WebGame {
 	private static Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<Integer, GamePrep>();
 	private static Map<String, List<ChatMessage>> chatLogs = new ConcurrentHashMap<String, List<ChatMessage>>();
 	private static Map<String, Session> sessions = new ConcurrentHashMap<String, Session>();
-	//private static List<String> handles = new ArrayList<String>();
 	private static Map<String, List<String>> gameHandles = new ConcurrentHashMap<String, List<String>>();
 	
 	static {
@@ -62,6 +61,9 @@ public class WebGame {
 		gamePreps.get(gameId).leave(joinNumber);
 		List<String> handles = gameHandles.get(Integer.toString(gameId));
 		handles.remove(joinNumber);
+		if(gamePreps.get(gameId).getCountPlayers() == 0){
+			gamePreps.remove(gameId);
+		}
 	}
 	
 	public static int getCountPlayers(int gameId){
