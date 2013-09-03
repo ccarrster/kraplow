@@ -33,7 +33,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 	public String somethingAI(String player, String message) {
 		Player aiPlayer = turn.getPlayerForName(player);
 		if (message.indexOf("askOthersCard") == 0) {
-			return Integer.toString((int) Math.floor(Math.random() * -3));
+			String[] splitMessage = message.split(",");
+			if(splitMessage[0].indexOf("true") != -1){
+				return "-1";
+			}
+			if(splitMessage[1].indexOf("true") != -1){
+				return "-2";
+			}
+			return "0";
 		} else if (message.indexOf("chooseDiscard") == 0
 				|| message.indexOf("chooseFromPlayer") == 0) {
 			return "false";
@@ -140,7 +147,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 				if (card.indexOf("General Store") == 0) {
 					return Integer.toString(i);
 				}
-				if (card.indexOf("General Store") == 0) {
+				if (card.indexOf("Panic!@true") == 0) {
+					return Integer.toString(i);
+				}
+				if (card.indexOf("Cat Balou@true") == 0) {
 					return Integer.toString(i);
 				}
 				if (card.indexOf("Indians!") == 0) {
@@ -149,9 +159,22 @@ public class WebGameUserInterface extends JSPUserInterface {
 				if (card.indexOf("Gatling") == 0) {
 					return Integer.toString(i);
 				}
+				if (card.indexOf("Saloon") == 0) {
+					return Integer.toString(i);
+				}
 				if(card.indexOf("Bang!@true") == 0){
 					return Integer.toString(i);
 				}
+				if(card.indexOf("Missed!@true") == 0){
+					return Integer.toString(i);
+				}
+				if(card.indexOf("Jail@true") == 0){
+					return Integer.toString(i);
+				}
+				if(card.indexOf("Duel@true") == 0){
+					return Integer.toString(i);
+				}
+				
 			}
 			return "-1";
 		}
