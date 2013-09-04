@@ -50,12 +50,8 @@ public class WebGameUserInterface extends JSPUserInterface {
 			return "0";
 		} else if (message.indexOf("askPlayer") == 0){
 			String commandStripped = message.replace("askPlayer ", "");
-			String cancelStripped = commandStripped.replace("Cancel, ", "");
-			String dollarsReplaced = cancelStripped.replace(",", "$");
+			String dollarsReplaced = commandStripped.replace(", ", "$");
 			int playerToHurt = whoToHurt(aiPlayer, dollarsReplaced);
-			if(!commandStripped.equals(cancelStripped)){
-				playerToHurt = playerToHurt + 1;
-			}
 			return Integer.toString(playerToHurt);
 		} else if (message.indexOf("chooseTwoDiscardForLife") == 0
 				|| message.indexOf("respondTwoMiss") == 0) {
@@ -205,24 +201,29 @@ public class WebGameUserInterface extends JSPUserInterface {
 	public int whoToHurt(Player player, String namesString){
 		int role = player.getRole();
 		String[] names = namesString.split("\\$");
-		for(int i = 1; i < names.length - 1; i++){
+		for(int i = 0; i < names.length - 1; i++){
 			String name = names[i];
 			name = name.trim();
-			Player other = turn.getPlayerForName(name);
-			int otherRole = other.getRole();
-			if(role == Player.OUTLAW && otherRole == Player.SHERIFF){
-				return i;
-			} if(role == Player.DEPUTY && otherRole != Player.SHERIFF){
-				return i;
-			} if(role == Player.SHERIFF){
-				return i;
-			} if(role == Player.RENEGADE && (turn.countPlayers() == 2 || otherRole != Player.SHERIFF)){
-				return i;
+			if(!name.equals("Cancel")){
+				Player other = turn.getPlayerForName(name);
+				int otherRole = other.getRole();
+				if(role == Player.OUTLAW && otherRole == Player.SHERIFF){
+					return i;
+				} if(role == Player.DEPUTY && otherRole != Player.SHERIFF){
+					return i;
+				} if(role == Player.SHERIFF){
+					return i;
+				} if(role == Player.RENEGADE && (turn.countPlayers() == 2 || otherRole != Player.SHERIFF)){
+					return i;
+				}
 			}
 		}
 		for(int i = 0; i < names.length - 1; i++){
-			if(role == Player.OUTLAW){
-				return i;
+			if(!names[i].equals("Cancel")){
+				if(role == Player.OUTLAW){
+					System.out.println("PlayerRole: Outlaw don't care");
+					return i;
+				}
 			}
 		}
 		return -1;
