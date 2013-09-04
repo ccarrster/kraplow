@@ -522,7 +522,7 @@ public class Turn {
 					Hand playerHand = player.getHand();
 					playerHand.add(otherHand.removeRandom());
 					userInterface.printInfo(Figure.ELGRINGO
-							+ " draws a card from " + player.getName()
+							+ " draws a card from " + damager.getName()
 							+ " because he was damaged.");
 				}
 			}
