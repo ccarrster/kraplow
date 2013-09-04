@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -50,10 +49,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 				|| message.indexOf("chooseCardToPutBack") == 0) {
 			return "0";
 		} else if (message.indexOf("askPlayer") == 0){
-			String[] splitMessage = message.split(",");
-			int options = splitMessage.length - 1;
-			Random random = new Random();
-			return Integer.toString(random.nextInt(options));
+			String commandStripped = message.replace("askPlayer ", "");
+			String cancelStripped = commandStripped.replace("Cancel, ", "");
+			String dollarsReplaced = cancelStripped.replace(",", "$");
+			int playerToHurt = whoToHurt(aiPlayer, dollarsReplaced);
+			if(!commandStripped.equals(cancelStripped)){
+				playerToHurt = playerToHurt + 1;
+			}
+			return Integer.toString(playerToHurt);
 		} else if (message.indexOf("chooseTwoDiscardForLife") == 0
 				|| message.indexOf("respondTwoMiss") == 0) {
 			return "-1";
@@ -148,10 +151,16 @@ public class WebGameUserInterface extends JSPUserInterface {
 					return Integer.toString(i);
 				}
 				if (card.indexOf("Panic!@true") == 0) {
-					return Integer.toString(i);
+					String[] splitCard = card.split("@");
+					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+						return Integer.toString(i);
+					}
 				}
 				if (card.indexOf("Cat Balou@true") == 0) {
-					return Integer.toString(i);
+					String[] splitCard = card.split("@");
+					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+						return Integer.toString(i);
+					}
 				}
 				if (card.indexOf("Indians!") == 0) {
 					return Integer.toString(i);
@@ -163,16 +172,28 @@ public class WebGameUserInterface extends JSPUserInterface {
 					return Integer.toString(i);
 				}
 				if(card.indexOf("Bang!@true") == 0){
-					return Integer.toString(i);
+					String[] splitCard = card.split("@");
+					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+						return Integer.toString(i);
+					}
 				}
 				if(card.indexOf("Missed!@true") == 0){
-					return Integer.toString(i);
+					String[] splitCard = card.split("@");
+					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+						return Integer.toString(i);
+					}
 				}
 				if(card.indexOf("Jail@true") == 0){
-					return Integer.toString(i);
+					String[] splitCard = card.split("@");
+					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+						return Integer.toString(i);
+					}
 				}
 				if(card.indexOf("Duel@true") == 0){
-					return Integer.toString(i);
+					String[] splitCard = card.split("@");
+					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+						return Integer.toString(i);
+					}
 				}
 				
 			}
@@ -181,6 +202,32 @@ public class WebGameUserInterface extends JSPUserInterface {
 		return null;
 	}
 
+	public int whoToHurt(Player player, String namesString){
+		int role = player.getRole();
+		String[] names = namesString.split("\\$");
+		for(int i = 1; i < names.length - 1; i++){
+			String name = names[i];
+			name = name.trim();
+			Player other = turn.getPlayerForName(name);
+			int otherRole = other.getRole();
+			if(role == Player.OUTLAW && otherRole == Player.SHERIFF){
+				return i;
+			} if(role == Player.DEPUTY && otherRole != Player.SHERIFF){
+				return i;
+			} if(role == Player.SHERIFF){
+				return i;
+			} if(role == Player.RENEGADE && (turn.countPlayers() == 2 || otherRole != Player.SHERIFF)){
+				return i;
+			}
+		}
+		for(int i = 0; i < names.length - 1; i++){
+			if(role == Player.OUTLAW){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public void sendMessage(String player, String message) {
 		if (userFigureNames == null) {
 			setupMap();

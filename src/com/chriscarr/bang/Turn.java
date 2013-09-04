@@ -30,6 +30,10 @@ public class Turn {
 		return currentPlayer;
 	}
 	
+	public int countPlayers(){
+		return players.size();
+	}
+	
 	public Player getPlayerForName(String name){
 		for(int i = 0; i < players.size(); i++){
 			Player player = players.get(i);
