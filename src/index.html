@@ -10,7 +10,7 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="gameSetup"></div>
 <div id="gameState" style="float:left;"></div>
 <div id="gameInfo">
-	<p>First time here? Check out the <a href="legend.html" target="_blank">Legend</a>, then <input type="button" onClick="createSingle(getServletUrl(), parseCreateSingle);" value="Create A Test Game with Target AI"> (Players)<select id="numAI"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select>  to get familiar with the interface.</p>
+	<p><input type="button" onClick="createSingle(getServletUrl(), parseCreateSingle);" value="Create A Single Player Game"> (Players)<select id="numAI"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select></p>
 	<p>Kraplow! is a clone of Bang!(Fourth Edition) A Casual, Spaghetti Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of of Bang! No expansions are implemented.</p>
 	<div><img src="screencap.jpg" alt="Sample of game play" width="500px;"></div>
 	<div><form>Handle <input type="text"/ name="handle" id="handle"></form></div>
@@ -26,10 +26,7 @@ borders_on{border:1px solid #0F0 !important;}
 </div>
 <div style="clear:both;"></div>
 <div id="handArea"></div>
-<div id="handleArea"><span id="numUsers"></span> users total.</div>
 <a href="legend.html" target="_blank">Show Legend</a>
-<p>Suggestions/Help/Feedback? <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a> <a href="http://www.davincigames.net/bang/bang_rules.pdf">Download Rules PDF</a> <a href="http://www.davincigames.net/bang/faq/bang_faq_eng.pdf">Download FAQ PDF</a></p>
-<p><a href="https://www.facebook.com/groups/517659154972037/">Facebook group Kraplow</a></p>
 </div>
 <script language="javascript">
 	var randomAdjectives = ["Selective", "Tasty", "Furtive", "Pink", "Straight", "Shaggy", "Disgusting", "Cut", "Humorous", "Rightful", "Elated", "Rough", "Plucky", "Sophisticated", "Rude", "Fancy", "Noxious", "Drab", "Spicy", "Elastic", "Well-groomed", "Upset", "Fresh", "Voiceless", "Silent", "Sulky", "Cynical", "Stimulating", "Astonishing", "Blushing", "Well-made", "Picayune", "Flippant", "Lovely", "Political", "Ambitious", "Obese", "Freezing", "Maddening", "Hideous", "Lively", "Solid", "Taboo", "Fallacious", "Hysterical", "Magenta", "Gullible", "Abortive", "Permissible", "Successful", "Crazy", "Joyous", "Legal", "Flawless", "Boorish", "Eatable", "Literate", "Fantastic", "Gusty", "Faded", "Possible", "Rare", "Labored", "Equal", "Feeble", "Sparkling", "Thoughtless", "Green", "Even", "Puzzled", "Rigid", "Garrulous", "Paltry", "Difficult", "Nostalgic", "Uptight", "Habitual", "Woozy", "Quiet", "Thirsty", "Fearful", "Gleaming", "Happy", "Vagabond", "Ill", "Many", "Deeply", "Luxuriant", "Present", "Tall", "Swanky", "Clear", "Tired", "Fluffy", "Blue-eyed", "Average", "Obscene", "Parched", "Ten", "Uninterested", "Important", "Wooden", "Late", "Scattered", "Materialistic", "Alluring", "Square", "Sweltering", "Capable", "Gruesome", "Maniacal", "Periodic", "Dashing", "Whimsical", "Overwrought", "Future", "Aquatic", "Protective"];
@@ -934,7 +931,6 @@ borders_on{border:1px solid #0F0 !important;}
   	}
   	var sessionNodes = responseXML.getElementsByTagName("session");
 
-  	document.getElementById('numUsers').innerHTML = sessionNodes.length;
   	var chatNamesDiv = document.getElementById('chatNames');
   	var sessionNodes = responseXML.getElementsByTagName("session");
   	var namesResult = "<textarea rows=\"10\" cols=\"20\" id=\"chatarea\">";
@@ -1040,7 +1036,7 @@ borders_on{border:1px solid #0F0 !important;}
 					previousAvailable = newAvailable;
 				}
 			}
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreate);" value="Create A Game">';
+			result += '<input type="button" onClick="create(getServletUrl(), parseCreate);" value="Create A Multiplayer Game">';
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
 			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://usedbabies.zapto.org/bang?join=' + gameId + '</p>';
