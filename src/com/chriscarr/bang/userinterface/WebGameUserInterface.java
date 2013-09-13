@@ -115,6 +115,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 						return Integer.toString(i);
 					}
 				}
+				if (card.indexOf("Beer") == 0) {
+					if (aiPlayer.getHealth() < aiPlayer.getMaxHealth()) {
+						return Integer.toString(i);
+					}
+				}
 				if (card.indexOf("Dynamite") == 0) {
 					if (!aiPlayer.isInPlay("Dynamite")) {
 						return Integer.toString(i);
@@ -237,11 +242,9 @@ public class WebGameUserInterface extends JSPUserInterface {
 		List<Message> playerMessages = messages
 				.get(userFigureNames.get(player));
 		playerMessages.add(new MessageImpl(player + "-" + message));
-		System.out.println("Add message " + message);
 		if (userFigureNames.get(player).contains("AI")) {
-			System.out.println("Is AI");
 			while (messages.isEmpty()) {
-				System.out.println("Messages Is Empty");
+				
 			}
 			addResponse(userFigureNames.get(player), somethingAI(player,
 					message));

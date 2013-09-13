@@ -498,6 +498,7 @@ public class Turn {
 				if (playedBeer != -1) {
 					player.setHealth(player.getHealth() + 1);
 					discard.add(player.getHand().remove(playedBeer));
+					userInterface.printInfo(player.getName() + " plays a beer and gains one life.");
 				} else {
 					doNotPlayBeer = true;
 				}
