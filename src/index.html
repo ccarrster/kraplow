@@ -570,6 +570,7 @@ borders_on{border:1px solid #0F0 !important;}
 							var value = null;
 							var description = "";
 							if(command.indexOf("askPlayer") != -1){
+								targetCode = generateTargetCodeSingle(splitData[i]);
 								image = getImageForPlayer(splitData[i]);
 								description = getDescriptionForPlayer(splitData[i]);
 								if(description != ""){
@@ -632,10 +633,23 @@ borders_on{border:1px solid #0F0 !important;}
      for(var i = 0; i < targets.length; i++){
        var target = targets[i];
        if(target != "" && target != "Cancel"){
-	       mouseOver += 'document.getElementById(\'' + target + '\').style.borderColor = \'green\';';
+	       mouseOver += 'document.getElementById(\'' + target + '\').style.borderColor = \'red\';' + 'document.getElementById(\'' + target + '\').style.borderStyle = \'dashed\';';
 	       mouseOut += 'document.getElementById(\'' + target + '\').style.borderColor = \'transparent\';';
        }
      }
+     mouseOver += '"';
+     mouseOut += '"';
+     return mouseOver + ' ' + mouseOut;
+   }
+   
+   function generateTargetCodeSingle(target){
+     var result = "";
+     var mouseOver = 'onmouseover="';
+     var mouseOut = 'onmouseout="';
+	   if(target != "" && target != "Cancel"){
+	       mouseOver += 'document.getElementById(\'' + target + '\').style.borderColor = \'red\';' + 'document.getElementById(\'' + target + '\').style.borderStyle = \'dashed\';';
+	       mouseOut += 'document.getElementById(\'' + target + '\').style.borderColor = \'transparent\';';
+	   }
      mouseOver += '"';
      mouseOut += '"';
      return mouseOver + ' ' + mouseOut;
