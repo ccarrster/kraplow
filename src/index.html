@@ -10,7 +10,7 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="gameSetup"></div>
 <div id="gameState" style="float:left;"></div>
 <div id="gameInfo">
-	<p><input type="button" onClick="createSingle(getServletUrl(), parseCreateSingle);" value="Create A Single Player Game"> (Players)<select id="numAI"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select></p>
+	<p><input type="button" onClick="createSingle(getServletUrl(), parseCreateSingle);" value="Create A Single Player Game"> (Players)<select id="numAI"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select> AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
 	<p>Kraplow! is a clone of Bang!(Fourth Edition) A Casual, Spaghetti Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of of Bang! No expansions are implemented.</p>
 	<div><img src="screencap.jpg" alt="Sample of game play" width="500px;"></div>
 	<div><form>Handle <input type="text"/ name="handle" id="handle"></form></div>
@@ -834,7 +834,15 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function start(servletUrl, responseHandler, gameId) {
-      	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId, responseHandler);
+   		var aiSpeed = 0;
+   		if(document.getElementById("aiSpeedInstant").checked){
+   			aiSpeed = document.getElementById("aiSpeedInstant").value;
+   		} else if(document.getElementById("aiSpeedFast").checked){
+   			aiSpeed = document.getElementById("aiSpeedFast").value; 
+   		} else if(document.getElementById("aiSpeedSlow").checked){
+   			aiSpeed = document.getElementById("aiSpeedSlow").value;
+   		}
+      	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId + "&aiSleepMs=" + aiSpeed, responseHandler);
    }
 
 

@@ -19,8 +19,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 	Map<String, String> figureNamesUser = null;
 	boolean gameOver = false;
 	String timeout = null;
+	int aiSleepMs;
 
-	public WebGameUserInterface(List<String> users) {
+	public WebGameUserInterface(List<String> users, int aiSleepMs) {
+		this.aiSleepMs = aiSleepMs;
 		messages = new ConcurrentHashMap<String, List<Message>>();
 		responses = new ConcurrentHashMap<String, List<Message>>();
 		for (String user : users) {
@@ -30,6 +32,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 
 	public String somethingAI(String player, String message) {
+		try {
+			Thread.sleep(this.aiSleepMs);
+		} catch (InterruptedException e) {
+			//ignore
+		}
 		Player aiPlayer = turn.getPlayerForName(player);
 		if (message.indexOf("askOthersCard") == 0) {
 			String[] splitMessage = message.split(",");

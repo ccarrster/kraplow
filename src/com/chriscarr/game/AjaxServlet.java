@@ -210,7 +210,8 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("</chats>");
     	} else if(messageType.equals("START")){
     		String gameId = request.getParameter("gameId");
-    		WebGame.start(Integer.parseInt(gameId));
+    		String aiSleepMs = request.getParameter("aiSleepMs");
+    		WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs));
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("CREATE")){    		
     		int gameId = WebGame.create();    		

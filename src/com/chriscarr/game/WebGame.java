@@ -85,10 +85,10 @@ public class WebGame {
 		return false;
 	}
 	
-	public static void start(int gameId){
+	public static void start(int gameId, int aiSleepMs){
 		if(canStart(gameId)){
 			WebInit webInit = new WebInit();
-			WebGameUserInterface x = new WebGameUserInterface(gamePreps.get(gameId).getJoinedPlayers());
+			WebGameUserInterface x = new WebGameUserInterface(gamePreps.get(gameId).getJoinedPlayers(), aiSleepMs);
 			webInit.setup(getCountPlayers(gameId), x, x, gameId);
 			gamePreps.remove(gameId);
 		}
