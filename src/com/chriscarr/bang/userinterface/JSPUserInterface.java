@@ -272,4 +272,11 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		return turn.getPlayerForName(playerName).getHand();
 	}
 
+	public boolean isPlayerAlive(String playerName) {
+		if (turn.getPlayerForName(playerName) == null){
+			return false;
+		}
+		return true;
+	}
+
 }
