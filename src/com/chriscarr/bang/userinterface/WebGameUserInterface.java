@@ -103,8 +103,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 					return Integer.toString(i);
 				}
 				if (card.indexOf("Remington") == 0) {
-					if (!aiPlayer.isInPlay("Remington")) {
-						return Integer.toString(i);
+					if(!aiPlayer.hasGun() || aiPlayer.isInPlay("Volcanic") || aiPlayer.isInPlay("Schofield")){
+						if (!aiPlayer.isInPlay("Remington")) {
+							return Integer.toString(i);
+						}
 					}
 				}
 				if (card.indexOf("Scope") == 0) {
@@ -133,12 +135,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				}
 				if (card.indexOf("Schofield") == 0) {
-					if (!aiPlayer.isInPlay("Schofield")) {
-						return Integer.toString(i);
+					if(!aiPlayer.hasGun() || aiPlayer.isInPlay("Volcanic")){
+						if (!aiPlayer.isInPlay("Schofield")) {
+							return Integer.toString(i);
+						}
 					}
 				}
 				if (card.indexOf("Volcanic") == 0) {
-					if (!aiPlayer.isInPlay("Volcanic")) {
+					if (!aiPlayer.hasGun() && !aiPlayer.isInPlay("Volcanic")) {
 						return Integer.toString(i);
 					}
 				}
@@ -148,8 +152,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				}
 				if (card.indexOf("Rev. Carbine") == 0) {
-					if (!aiPlayer.isInPlay("Rev. Carbine")) {
-						return Integer.toString(i);
+					if(!aiPlayer.hasGun() || aiPlayer.isInPlay("Volcanic") || aiPlayer.isInPlay("Schofield") || aiPlayer.isInPlay("Remington")){
+						if (!aiPlayer.isInPlay("Rev. Carbine")) {
+							return Integer.toString(i);
+						}
 					}
 				}
 				if (card.indexOf("Wells Fargo") == 0) {
