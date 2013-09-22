@@ -31,7 +31,12 @@ public class WebGame {
 	}
 	
 	public static List<String> getJoinedPlayers(int gameId){
-		return gamePreps.get(gameId).getJoinedPlayers();
+		GamePrep gamePrep = gamePreps.get(gameId);
+		if(gamePrep != null){
+			return gamePrep.getJoinedPlayers();
+		} else {
+			return new ArrayList<String>();
+		}
 	}
 	
 	public static String getUniqueHandle(int gameId, String handle){
