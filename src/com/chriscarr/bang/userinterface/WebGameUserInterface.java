@@ -177,10 +177,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				}
 				if (card.indexOf("Indians!") == 0) {
-					return Integer.toString(i);
+					if(hurtEveryone(aiPlayer)){
+						return Integer.toString(i);
+					}
 				}
 				if (card.indexOf("Gatling") == 0) {
-					return Integer.toString(i);
+					if(hurtEveryone(aiPlayer)){
+						return Integer.toString(i);
+					}
 				}
 				if (card.indexOf("Saloon") == 0) {
 					return Integer.toString(i);
@@ -216,6 +220,19 @@ public class WebGameUserInterface extends JSPUserInterface {
 		return null;
 	}
 
+	public boolean hurtEveryone(Player player){
+		int role = player.getRole();
+		if(role == Player.DEPUTY || (role == Player.RENEGADE && turn.countPlayers() > 2)){
+			Player sheriff = turn.getSheriff();
+			if(sheriff.getHealth() > 3){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public int whoToHurt(Player player, String namesString){
 		int role = player.getRole();
 		String[] names = namesString.split("\\$");

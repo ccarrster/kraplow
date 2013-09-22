@@ -919,4 +919,13 @@ public class Turn {
 	public String getTimeout() {
 		return userInterface.getTimeout();
 	}
+
+	public Player getSheriff() {
+		for (Player player : players) {
+			if(player.isSheriff()){
+				return player;
+			}
+		}
+		return null;
+	}
 }
