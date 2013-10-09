@@ -130,7 +130,7 @@ public class Turn {
 	public void drawCards(Player player, Deck deck) {
 		Hand hand = player.getHand();
 		if (Figure.KITCARLSON.equals(player.getName())) {
-			List<Object> cards = pullCards(deck, 3);
+			List<Object> cards = pullCards(deck, 3, userInterface);
 			Object cardToPutBack = chooseValidCardToPutBack(player, cards,
 					userInterface);
 			cards.remove(cardToPutBack);
@@ -160,6 +160,9 @@ public class Turn {
 						+ " drew a card from " + chosenPlayer.getName()
 						+ " hand.");
 			} else {
+				if(deck.size() == 0){
+					userInterface.printInfo("Shuffling the deck");
+				}
 				hand.add(deck.pull());
 				userInterface.printInfo(Figure.JESSEJONES
 						+ " drew a card from the deck.");
@@ -235,6 +238,9 @@ public class Turn {
 			if (Figure.SUZYLAFAYETTE.equals(player.getName())) {
 				Hand playerHand = player.getHand();
 				if (playerHand.isEmpty()) {
+					if(deck.size() == 0){
+						userInterface.printInfo("Shuffling the deck");
+					}
 					playerHand.add(deck.pull());
 					userInterface.printInfo(player.getName()
 							+ " ran out of cards and drew a card.");
@@ -407,7 +413,7 @@ public class Turn {
 	public static Object draw(Player player, Deck deck, Discard discard,
 			UserInterface userInterface) {
 		if (Figure.LUCKYDUKE.equals(player.getName())) {
-			List<Object> cards = pullCards(deck, 2);
+			List<Object> cards = pullCards(deck, 2, userInterface);
 			int chosenCard = -1;
 			while (chosenCard < 0 || chosenCard > (cards.size() - 1)) {
 				chosenCard = userInterface.chooseDrawCard(player, cards);
@@ -422,6 +428,9 @@ public class Turn {
 					+ drawnCard.getName());
 			return cards.get(chosenCard);
 		} else {
+			if(deck.size() == 0){
+				userInterface.printInfo("Shuffling the deck");
+			}
 			Object card = deck.pull();
 			Card drawnCard = (Card) card;
 			userInterface.printInfo(player.getName() + " drew a "
@@ -511,6 +520,9 @@ public class Turn {
 		} else {
 			if (Figure.BARTCASSIDY.equals(player.getName())) {
 				for (int i = 0; i < damage; i++) {
+					if(deck.size() == 0){
+						userInterface.printInfo("Shuffling the deck");
+					}
 					player.getHand().add(deck.pull());
 					userInterface
 							.printInfo(Figure.BARTCASSIDY
@@ -550,7 +562,7 @@ public class Turn {
 				} else if (player.getRole() == Player.OUTLAW) {
 					userInterface.printInfo(damager.getName()
 							+ " killed an outlaw, draws 3 cards");
-					deckToHand(damager.getHand(), deck, 3);
+					deckToHand(damager.getHand(), deck, 3, userInterface);
 				}
 			}
 		}
@@ -724,16 +736,22 @@ public class Turn {
 		return othersCopy;
 	}
 
-	public static List<Object> pullCards(Deck deck, int countCards) {
+	public static List<Object> pullCards(Deck deck, int countCards, UserInterface userInterface) {
 		List<Object> cards = new ArrayList<Object>();
 		for (int i = 0; i < countCards; i++) {
+			if(deck.size() == 0){
+				userInterface.printInfo("Shuffling the deck");
+			}
 			cards.add(deck.pull());
 		}
 		return cards;
 	}
 
-	public static void deckToHand(Hand hand, Deck deck, int countCards) {
+	public static void deckToHand(Hand hand, Deck deck, int countCards, UserInterface userInterface) {
 		for (int i = 0; i < countCards; i++) {
+			if(deck.size() == 0){
+				userInterface.printInfo("Shuffling the deck");
+			}
 			hand.add(deck.pull());
 		}
 	}

@@ -25,7 +25,7 @@ public class WellsFargo extends Card implements Playable {
 	public boolean play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		discard.add(this);
-		Turn.deckToHand(currentPlayer.getHand(), deck, 3);
+		Turn.deckToHand(currentPlayer.getHand(), deck, 3, userInterface);
 		return true;
 	}
 

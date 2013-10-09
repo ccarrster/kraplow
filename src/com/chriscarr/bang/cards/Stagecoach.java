@@ -25,7 +25,7 @@ public class Stagecoach extends Card implements Playable {
 	public boolean play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		discard.add(this);
-		Turn.deckToHand(currentPlayer.getHand(), deck, 2);
+		Turn.deckToHand(currentPlayer.getHand(), deck, 2, userInterface);
 		return true;
 	}
 

@@ -35,6 +35,9 @@ public class GeneralStore extends Card implements Playable {
 		discard.add(this);
 		List<Object> generalStoreCards = new ArrayList<Object>();
 		for(int i = 0; i < players.size(); i++){
+			if(deck.size() == 0){
+				userInterface.printInfo("Shuffling the deck");
+			}
 			generalStoreCards.add(deck.pull());
 		}
 		Player generalPlayer = currentPlayer;

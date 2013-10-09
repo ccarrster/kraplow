@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
 
@@ -166,13 +168,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 				}
 				if (card.indexOf("Panic!@true") == 0) {
 					String[] splitCard = card.split("@");
-					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+					if(whoToHurtCardTake(aiPlayer, splitCard[2], true) != -1){
 						return Integer.toString(i);
 					}
 				}
 				if (card.indexOf("Cat Balou@true") == 0) {
+
 					String[] splitCard = card.split("@");
-					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+					if(whoToHurtCardTake(aiPlayer, splitCard[2], true) != -1){
 						return Integer.toString(i);
 					}
 				}
@@ -233,7 +236,31 @@ public class WebGameUserInterface extends JSPUserInterface {
 		return true;
 	}
 	
+	public boolean playerGotCardIWantToTake(Player me, Player them){
+		if(them.getHandSize() > 0){
+			return true;
+		} else if(them.hasGun()){
+			return true;
+		} 
+		InPlay inPlay = them.getInPlay();
+		int cardsInPlay = inPlay.count();
+		if(inPlay.hasItem(Card.CARDJAIL)){
+			cardsInPlay--;
+		}
+		if(inPlay.hasItem(Card.CARDDYNAMITE)){
+			cardsInPlay--;
+		}
+		if(cardsInPlay > 0){
+			return true;
+		}
+		return false;
+	}
+	
 	public int whoToHurt(Player player, String namesString){
+		return whoToHurtCardTake(player, namesString, false);
+	}
+	
+	public int whoToHurtCardTake(Player player, String namesString, boolean takeCard){
 		int role = player.getRole();
 		String[] names = namesString.split("\\$");
 		for(int i = 0; i < names.length - 1; i++){
@@ -243,13 +270,21 @@ public class WebGameUserInterface extends JSPUserInterface {
 				Player other = turn.getPlayerForName(name);
 				int otherRole = other.getRole();
 				if(role == Player.OUTLAW && otherRole == Player.SHERIFF){
-					return i;
+					if(!takeCard || playerGotCardIWantToTake(player, other)){
+						return i;
+					}
 				} if(role == Player.DEPUTY && otherRole != Player.SHERIFF){
-					return i;
+					if(!takeCard || playerGotCardIWantToTake(player, other)){
+						return i;
+					}
 				} if(role == Player.SHERIFF){
-					return i;
+					if(!takeCard || playerGotCardIWantToTake(player, other)){
+						return i;
+					}
 				} if(role == Player.RENEGADE && (turn.countPlayers() == 2 || otherRole != Player.SHERIFF)){
-					return i;
+					if(!takeCard || playerGotCardIWantToTake(player, other)){
+						return i;
+					}
 				}
 			}
 		}
@@ -257,7 +292,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 			if(!names[i].equals("Cancel")){
 				if(role == Player.OUTLAW){
 					System.out.println("PlayerRole: Outlaw don't care");
-					return i;
+					Player other = turn.getPlayerForName(names[i]);
+					if(!takeCard || playerGotCardIWantToTake(player, other)){
+						return i;
+					}
 				}
 			}
 		}
