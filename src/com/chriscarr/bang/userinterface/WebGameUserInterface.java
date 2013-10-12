@@ -1,6 +1,7 @@
 package com.chriscarr.bang.userinterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,19 +43,60 @@ public class WebGameUserInterface extends JSPUserInterface {
 		Player aiPlayer = turn.getPlayerForName(player);
 		if (message.indexOf("askOthersCard") == 0) {
 			String[] splitMessage = message.split(",");
+			
+			for(int i = 2; i < splitMessage.length - 1; i++){
+				if(!splitMessage[i].equals("Jail") && !splitMessage[i].equals("Dynamite")){
+					return Integer.toString(i - 2);
+				}
+			}
+			
 			if(splitMessage[0].indexOf("true") != -1){
 				return "-1";
 			}
 			if(splitMessage[1].indexOf("true") != -1){
 				return "-2";
 			}
+			
 			return "0";
 		} else if (message.indexOf("chooseDiscard") == 0
 				|| message.indexOf("chooseFromPlayer") == 0) {
 			return "false";
+		} else if (message.indexOf("askDiscard") == 0) {
+			String commandStripped = message.replace("askPlayer ", "");
+			String[] cards = commandStripped.split(", ");
+			if(turn.countPlayers() == 2){
+				for(int i = 0; i < cards.length - 1; i++){
+					if(cards[i].equals("Beer")){
+						return Integer.toString(i);
+					}
+				}
+			}
+			if(turn.countPlayers() == 2){
+				for(int i = 0; i < cards.length - 1; i++){
+					if(!aiPlayer.isSheriff() && cards[i].equals("Jail")){
+						return Integer.toString(i);
+					}
+				}
+			}
+			for(int i = 0; i < cards.length - 1; i++){
+				InPlay inPlay = aiPlayer.getInPlay();
+				if(inPlay.hasItem(cards[i]) || inPlay.getGunName().equals(cards[i])){
+					return Integer.toString(i);
+				}
+			}
+			for(int i = 0; i < cards.length - 1; i++){
+				if(isGun(cards[i]) && isThisGunBetter(cards[i], aiPlayer.getInPlay().getGunName())){
+					return Integer.toString(i);
+				}
+			}
+			for(int i = 0; i < cards.length - 1; i++){
+				if(!(cards[i].equals("Beer") || cards[i].equals("Missed!") || cards[i].equals("Bang!"))){
+					return Integer.toString(i);
+				}
+			}
+			return "0";
 		} else if (message.indexOf("chooseGeneralStoreCard") == 0
 				|| message.indexOf("chooseDrawCard") == 0
-				|| message.indexOf("askDiscard") == 0
 				|| message.indexOf("chooseCardToPutBack") == 0) {
 			return "0";
 		} else if (message.indexOf("askPlayer") == 0){
@@ -222,6 +264,26 @@ public class WebGameUserInterface extends JSPUserInterface {
 		}
 		return null;
 	}
+
+	private boolean isGun(String cardName) {
+		return cardName.equals(Card.CARDVOLCANIC) || cardName.equals(Card.CARDSCHOFIELD) || cardName.equals(Card.CARDREMINGTON) || cardName.equals(Card.CARDREVCARBINE) || cardName.equals(Card.CARDWINCHESTER);
+	}
+	
+	private boolean isThisGunBetter(String thisGun, String thatGun){
+		Map<String, Integer> gunRank = new HashMap<String, Integer>();
+		gunRank.put("Colt .45", 0);
+		gunRank.put(Card.CARDVOLCANIC, 1);
+		gunRank.put(Card.CARDSCHOFIELD, 2);
+		gunRank.put(Card.CARDREMINGTON, 3);
+		gunRank.put(Card.CARDREVCARBINE, 4);
+		gunRank.put(Card.CARDWINCHESTER, 5);
+		if(gunRank.get(thisGun) - gunRank.get(thatGun) > 0){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 
 	public boolean hurtEveryone(Player player){
 		int role = player.getRole();
