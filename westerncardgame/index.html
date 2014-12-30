@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Kraplow! The unofficial Bang! clone</title>
+<title>Kraplow! The unofficial western card game clone</title>
 <style>
 borders_on{border:1px solid #0F0 !important;}
 </style>
@@ -11,9 +11,8 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="gameState" style="float:left;"></div>
 <div id="gameInfo">
 	<p><input type="button" onClick="createSingle(getServletUrl(), parseCreateSingle);" value="Create A Single Player Game"> (Players)<select id="numAI"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select> AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
-	<p>Kraplow! is a clone of Bang!(Fourth Edition) A Casual, Spaghetti Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of of Bang! No expansions are implemented.</p>
-	<div><img src="screencap.jpg" alt="Sample of game play" width="500px;"></div>
-	<div><form>Handle <input type="text"/ name="handle" id="handle"></form></div>
+	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
+	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
 </div>
 <div style="float:left;">
 <div>
@@ -26,12 +25,25 @@ borders_on{border:1px solid #0F0 !important;}
 </div>
 <div style="clear:both;"></div>
 <div id="handArea"></div>
-<a href="legend.html" target="_blank">Show Legend</a>
+<a href="legend.html" target="_blank">Show Legend</a> <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a>
 </div>
 <script language="javascript">
 	var randomAdjectives = ["Selective", "Tasty", "Furtive", "Pink", "Straight", "Shaggy", "Disgusting", "Cut", "Humorous", "Rightful", "Elated", "Rough", "Plucky", "Sophisticated", "Rude", "Fancy", "Noxious", "Drab", "Spicy", "Elastic", "Well-groomed", "Upset", "Fresh", "Voiceless", "Silent", "Sulky", "Cynical", "Stimulating", "Astonishing", "Blushing", "Well-made", "Picayune", "Flippant", "Lovely", "Political", "Ambitious", "Obese", "Freezing", "Maddening", "Hideous", "Lively", "Solid", "Taboo", "Fallacious", "Hysterical", "Magenta", "Gullible", "Abortive", "Permissible", "Successful", "Crazy", "Joyous", "Legal", "Flawless", "Boorish", "Eatable", "Literate", "Fantastic", "Gusty", "Faded", "Possible", "Rare", "Labored", "Equal", "Feeble", "Sparkling", "Thoughtless", "Green", "Even", "Puzzled", "Rigid", "Garrulous", "Paltry", "Difficult", "Nostalgic", "Uptight", "Habitual", "Woozy", "Quiet", "Thirsty", "Fearful", "Gleaming", "Happy", "Vagabond", "Ill", "Many", "Deeply", "Luxuriant", "Present", "Tall", "Swanky", "Clear", "Tired", "Fluffy", "Blue-eyed", "Average", "Obscene", "Parched", "Ten", "Uninterested", "Important", "Wooden", "Late", "Scattered", "Materialistic", "Alluring", "Square", "Sweltering", "Capable", "Gruesome", "Maniacal", "Periodic", "Dashing", "Whimsical", "Overwrought", "Future", "Aquatic", "Protective"];
 	var randomNames = ["Sachiko", "Walter", "Brittney", "Donnell", "Eufemia", "Clementina", "Erika", "Lauran", "Twanda", "Arianna", "Rema", "Monroe", "Herma", "Abigail", "Hattie", "Rick", "Adrianna", "Lesha", "Melida", "Izola", "Marquitta", "Savanna", "Ethelyn", "Leone", "Irwin", "Kristal", "Gonzalo", "Maryanne", "Abdul", "Nakia", "Rina", "Adrienne", "Bula", "Shane", "Avis", "Allegra", "Arlen", "Vaughn", "Pricilla", "Iesha", "Elidia", "Jeramy", "Caren", "Theodore", "Flavia", "Telma", "Barbra", "Will", "Lachelle", "Kate"];
 	var handleField = document.getElementById('handle');
+	
+	var handleLocation = window.location.href.indexOf("handle=");
+	if(handleLocation != -1){
+		var restOfUrl = window.location.href.substring(handleLocation + 7, window.location.href.length);
+		var andpersandLocation = restOfUrl.indexOf("&");
+		if(andpersandLocation == -1){
+			handleField.value = restOfUrl; 	
+		} else {
+			handleField.value = restOfUrl.substring(0, andpersandLocation);
+		}
+	} else {
+		handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
+	}
 	
 	var joinLocation = window.location.href.indexOf("join=");
 	var autostart = false;
@@ -45,21 +57,10 @@ borders_on{border:1px solid #0F0 !important;}
 		}
 		join(getServletUrl(), parseJoin, gameIdJoin, document.getElementById("handle").value);
 	}
-	var handleLocation = window.location.href.indexOf("handle=");
-	if(handleLocation != -1){
-		var restOfUrl = window.location.href.substring(handleLocation + 7, window.location.href.length);
-		var andpersandLocation = restOfUrl.indexOf("&");
-		if(andpersandLocation == -1){
-			handleField.value = restOfUrl; 	
-		} else {
-			handleField.value = restOfUrl.substring(0, andpersandLocation);
-		}
-	} else {
-		handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
-	}
+	
 
    function getServletUrl(){
-       return "/bang/chat";
+       return "/westerncardgame/chat";
    }
 
    function initRequest() {
@@ -116,7 +117,7 @@ borders_on{border:1px solid #0F0 !important;}
 			var gameMessagesDiv = document.getElementById('gameMessages');
 			var handleField = document.getElementById('handle');
 			
-			gameOverMessage += '<h2>Game Over</2> <a href="/bang?handle=' + handleField.value + '">Game Lobby</a>';
+			gameOverMessage += '<h2>Game Over</2> <a href="/westerncardgame?handle=' + handleField.value + '">Game Lobby</a>';
 			gameMessagesDiv.innerHTML = gameOverMessage;
 			gameOver = true;
 		}
@@ -677,7 +678,7 @@ borders_on{border:1px solid #0F0 !important;}
    		} else if(command == "chooseTwoDiscardForLife"){
    			return "Discard cards for Life(2 for 1, 4 for 2)";
    		} else if(command == "respondBang"){
-   			return "Play a bang or lose a life";
+   			return "Play a Shoot or lose a life";
    		} else if(command == "respondBeer"){
    			return "Play a beer or die";
    		} else if(command == "respondMiss"){
@@ -1047,7 +1048,7 @@ borders_on{border:1px solid #0F0 !important;}
 			result += '<input type="button" onClick="create(getServletUrl(), parseCreate);" value="Create A Multiplayer Game">';
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
-			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://usedbabies.zapto.org/bang?join=' + gameId + '</p>';
+			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://chriscarr.name/westerncardgame?join=' + gameId + '</p>';
 		}
 		if(playerCount != null){
 			result += '<div style="float:left;">';
@@ -1108,8 +1109,8 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function getImageForCard(cardName){
-   	if(cardName.indexOf("Bang!") != -1){
-   		return "bang.png";
+   	if(cardName.indexOf("Shoot") != -1){
+   		return "shoot.png";
    	} else if(cardName.indexOf("Missed!") != -1){
    		return "missed.png";
    	} else if(cardName.indexOf("Beer") != -1){
@@ -1160,14 +1161,14 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function getDescriptionForCard(cardName){
-   	if(cardName.indexOf("Bang!") != -1){
+   	if(cardName.indexOf("Shoot") != -1){
    		return "Damage a player within range. Can play only 1 per turn.";
    	} else if(cardName.indexOf("Missed!") != -1){
-   		return "Counter to Bangs.";
+   		return "Counter to Shoot.";
    	} else if(cardName.indexOf("Beer") != -1){
    		return "Regain a health. Does not work if only 2 players left.";
    	} else if(cardName.indexOf("Barrel") != -1){
-   		return "Draw on being Banged. If heart counts as Missed.";
+   		return "Draw on being Shoot. If heart counts as Missed.";
    	} else if(cardName.indexOf("Scope") != -1){
    		return "Other players look 1 space closer.";
    	} else if(cardName.indexOf("Mustang") != -1){
@@ -1181,7 +1182,7 @@ borders_on{border:1px solid #0F0 !important;}
    	} else if(cardName.indexOf("Winchester") != -1){
    		return "Gun range of 4.";
    	} else if(cardName.indexOf("Volcanic") != -1){
-   		return "Gun range of 1. Play any number of bangs.";
+   		return "Gun range of 1. Play any number of Shoots.";
    	} else if(cardName.indexOf("Rev. Carbine") != -1){
    		return "Gun range of 5.";
    	} else if(cardName.indexOf("Jail") != -1){
@@ -1189,7 +1190,7 @@ borders_on{border:1px solid #0F0 !important;}
    	} else if(cardName.indexOf("Dynamite") != -1){
    		return "Draw before Drawing cards. If 2-9 of spades. Take 3 damage, else pass to next player.";
    	} else if(cardName.indexOf("Gatling") != -1){
-   		return "Bang everyone else does not count towards Bang!s per turn.";
+   		return "Shoot everyone else does not count towards Shoots per turn.";
    	} else if(cardName.indexOf("Saloon") != -1){
    		return "Everyone gets a beer.";
    	} else if(cardName.indexOf("Panic!") != -1){
@@ -1197,9 +1198,9 @@ borders_on{border:1px solid #0F0 !important;}
    	} else if(cardName.indexOf("General Store") != -1){
    		return "Everyone gets a card.";
    	} else if(cardName.indexOf("Indians!") != -1){
-   		return "Everyone else plays a Bang! or takes a damage.";
+   		return "Everyone else plays a Shoot or takes a damage.";
    	} else if(cardName.indexOf("Duel") != -1){
-   		return "You and any other player discard Bangs, until someone runs out and takes a damage.";
+   		return "You and any other player discard Shoots, until someone runs out and takes a damage.";
    	} else if(cardName.indexOf("Stagecoach") != -1){
    		return "Draw 2 cards.";
    	} else if(cardName.indexOf("Wells Fargo") != -1){
@@ -1264,7 +1265,7 @@ borders_on{border:1px solid #0F0 !important;}
    	} else if(playerName == "Black Jack"){
    		return "Show second draw, if red suit, draw another.";
    	} else if(playerName == "Calamity Janet"){
-   		return "Bangs can be played as Misses, and Misses as Bangs.";
+   		return "Shoots can be played as Misses, and Misses as Shoots.";
    	} else if(playerName == "El Gringo"){
    		return "Draws card from player damaged him.";
    	} else if(playerName == "Jesse Jones"){
@@ -1284,13 +1285,13 @@ borders_on{border:1px solid #0F0 !important;}
    	} else if(playerName == "Sid Ketchum"){
    		return "Can discard 2 cards for 1 life.";
    	} else if(playerName == "Slab the Killer"){
-   		return "Others need 2 misses to counter his Bang!.";
+   		return "Others need 2 misses to counter his Shoot.";
    	} else if(playerName == "Suzy Lafayette"){
    		return "Draw a card when hand is empty.";
    	} else if(playerName == "Vulture Sam"){
    		return "Takes all cards from dead players.";
    	} else if(playerName == "Willy the Kid"){
-   		return "No limit on Bangs per turn.";
+   		return "No limit on Shoots per turn.";
    	} else {
    		return "";
    	}

@@ -90,7 +90,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 				}
 			}
 			for(int i = 0; i < cards.length - 1; i++){
-				if(!(cards[i].equals("Beer") || cards[i].equals("Missed!") || cards[i].equals("Bang!"))){
+				if(!(cards[i].equals("Beer") || cards[i].equals("Missed!") || cards[i].equals("Shoot"))){
 					return Integer.toString(i);
 				}
 			}
@@ -122,7 +122,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 			String[] cards = options.split(",");
 			for (int i = 0; i < cards.length - 1; i++) {
 				String card = cards[i].trim();
-				if (card.indexOf("Bang!") == 0) {
+				if (card.indexOf("Shoot") == 0) {
 					return Integer.toString(i);
 				}
 			}
@@ -234,7 +234,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 				if (card.indexOf("Saloon") == 0) {
 					return Integer.toString(i);
 				}
-				if(card.indexOf("Bang!@true") == 0){
+				if(card.indexOf("Shoot@true") == 0){
 					String[] splitCard = card.split("@");
 					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
 						return Integer.toString(i);

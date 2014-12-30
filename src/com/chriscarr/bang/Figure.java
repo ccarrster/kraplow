@@ -47,7 +47,7 @@ public class Figure {
 	
 	public static String getSpecialAbilityText(String name){
 		if(name.equals(CALAMITYJANET)){
-			return "Bangs can be misses and misses can be bangs";
+			return "Shoots can be misses and misses can be shoots";
 		} else if(name.equals(JOURDONNAIS)){
 			return "Has a barrel at all times";
 		} else if(name.equals(PAULREGRET)){
@@ -71,13 +71,13 @@ public class Figure {
 		} else if(name.equals(SIDKETCHUM)){
 			return "Can discard 2 cards to gain 1 life";
 		} else if(name.equals(SLABTHEKILLER)){
-			return "2 misses required to cancel his bangs";
+			return "2 misses required to cancel his Shoots";
 		} else if(name.equals(LUCKYDUKE)){
 			return "Chooses between 2 drawn cards instead of 1";
 		} else if(name.equals(VULTURESAM)){
 			return "Takes dead players cards";
 		} else if(name.equals(WILLYTHEKID)){
-			return "Not restricted to 1 bang";
+			return "Not restricted to 1 Shoot";
 		} else {
 			throw new RuntimeException("Invalid player name");
 		}

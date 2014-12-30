@@ -41,7 +41,7 @@ public class Bang extends Card implements Playable {
 		List<Player> others = Turn.getPlayersWithinRange(currentPlayer, players, currentPlayer.getInPlay().getGunRange());
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, others, userInterface);
 		if(!(otherPlayer instanceof CancelPlayer)){
-			userInterface.printInfo(currentPlayer.getName() + " Bang's " + otherPlayer.getName());
+			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
 			int missesRequired = 1;
 			if(Figure.SLABTHEKILLER.equals(currentPlayer.getName())){
 				missesRequired = 2;

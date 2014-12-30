@@ -41,7 +41,7 @@ public class Card implements Playable{
 	public static final String CARDREMINGTON = "Remington";
 	public static final String CARDWINCHESTER = "Winchester";
 	public static final String CARDREVCARBINE = "Rev. Carbine";
-	public static final String CARDBANG = "Bang!";
+	public static final String CARDBANG = "Shoot";
 	public static final String CARDMISSED = "Missed!";
 	public static final String CARDBEER = "Beer";
 	public static final String CARDPANIC = "Panic!";
