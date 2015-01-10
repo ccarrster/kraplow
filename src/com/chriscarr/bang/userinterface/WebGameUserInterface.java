@@ -20,11 +20,13 @@ public class WebGameUserInterface extends JSPUserInterface {
 	Map<String, List<Message>> responses;
 	public Map<String, String> userFigureNames = null;
 	Map<String, String> figureNamesUser = null;
+	List<String> timedOutPlayers;
 	boolean gameOver = false;
 	String timeout = null;
 	int aiSleepMs;
 
 	public WebGameUserInterface(List<String> users, int aiSleepMs) {
+		timedOutPlayers = new ArrayList<String>();
 		this.aiSleepMs = aiSleepMs;
 		messages = new ConcurrentHashMap<String, List<Message>>();
 		responses = new ConcurrentHashMap<String, List<Message>>();
@@ -372,7 +374,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		List<Message> playerMessages = messages
 				.get(userFigureNames.get(player));
 		playerMessages.add(new MessageImpl(player + "-" + message));
-		if (userFigureNames.get(player).contains("AI")) {
+		if (userFigureNames.get(player).contains("AI") || timedOutPlayers.contains(userFigureNames.get(player))) {
 			while (messages.isEmpty()) {
 				
 			}
@@ -435,8 +437,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 				Thread.sleep(wait);
 				waitCount += wait;
 				if (waitCount > maxWait) {
-					gameOver = true;
-					timeout = player;
+					printInfo(player + " has timed out and AI has taken over for them.");
+					timedOutPlayers.add(userFigureNames.get(player));
+					//-5 is never a valid response, but it will trigger the AI to make a valid one
+					addResponse(userFigureNames.get(player), "-5");
 				}
 			} catch (InterruptedException e) {
 				// ignore
