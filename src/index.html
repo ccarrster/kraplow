@@ -1101,7 +1101,7 @@ borders_on{border:1px solid #0F0 !important;}
 			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith6);" value="6">';
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
-			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://chriscarr.name/westerncardgame?join=' + gameId + '</p>';
+			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://chriscarr.name:8080/westerncardgame?join=' + gameId + '</p>';
 		}
 		if(playerCount != null){
 			result += '<div style="float:left;">';
