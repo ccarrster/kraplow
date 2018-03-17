@@ -36,6 +36,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		}
 	}
 
+	//This is the AI logic
 	public String somethingAI(String player, String message) {
 		try {
 			Thread.sleep(this.aiSleepMs);
@@ -47,7 +48,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 			String[] splitMessage = message.split(",");
 			
 			for(int i = 2; i < splitMessage.length - 1; i++){
-				if(!splitMessage[i].equals("Jail") && !splitMessage[i].equals("Dynamite")){
+				if(!splitMessage[i].equals(" Jail") && !splitMessage[i].equals(" Dynamite")){
 					return Integer.toString(i - 2);
 				}
 			}
@@ -58,13 +59,12 @@ public class WebGameUserInterface extends JSPUserInterface {
 			if(splitMessage[1].indexOf("true") != -1){
 				return "-2";
 			}
-			
 			return "0";
 		} else if (message.indexOf("chooseDiscard") == 0
 				|| message.indexOf("chooseFromPlayer") == 0) {
 			return "false";
 		} else if (message.indexOf("askDiscard") == 0) {
-			String commandStripped = message.replace("askPlayer ", "");
+			String commandStripped = message.replace("askDiscard ", "");
 			String[] cards = commandStripped.split(", ");
 			if(turn.countPlayers() == 2){
 				for(int i = 0; i < cards.length - 1; i++){
@@ -72,8 +72,6 @@ public class WebGameUserInterface extends JSPUserInterface {
 						return Integer.toString(i);
 					}
 				}
-			}
-			if(turn.countPlayers() == 2){
 				for(int i = 0; i < cards.length - 1; i++){
 					if(!aiPlayer.isSheriff() && cards[i].equals("Jail")){
 						return Integer.toString(i);
@@ -327,7 +325,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	public int whoToHurtCardTake(Player player, String namesString, boolean takeCard){
 		int role = player.getRole();
 		String[] names = namesString.split("\\$");
-		for(int i = 0; i < names.length - 1; i++){
+		for(int i = 0; i < names.length; i++){
 			String name = names[i];
 			name = name.trim();
 			if(!name.equals("Cancel")){
@@ -355,7 +353,6 @@ public class WebGameUserInterface extends JSPUserInterface {
 		for(int i = 0; i < names.length - 1; i++){
 			if(!names[i].equals("Cancel")){
 				if(role == Player.OUTLAW){
-					System.out.println("PlayerRole: Outlaw don't care");
 					Player other = turn.getPlayerForName(names[i]);
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
 						return i;
