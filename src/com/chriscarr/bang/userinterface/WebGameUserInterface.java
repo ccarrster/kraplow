@@ -270,9 +270,12 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				}
 				if(card.indexOf("Duel@true") == 0){
-					String[] splitCard = card.split("@");
-					if(whoToHurt(aiPlayer, splitCard[2]) != -1){
-						return Integer.toString(i);
+					//Don't duel on one health
+					if(aiPlayer.getHealth() > 1) {
+						String[] splitCard = card.split("@");
+						if(whoToHurt(aiPlayer, splitCard[2]) != -1){
+							return Integer.toString(i);
+						}
 					}
 				}
 				
