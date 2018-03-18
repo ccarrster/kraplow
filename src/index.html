@@ -10,6 +10,7 @@ borders_on{border:1px solid #0F0 !important;}
 <div id="gameSetup"></div>
 <div id="gameState" style="float:left;"></div>
 <div id="gameInfo">
+	<p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
 	<p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
 	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
 	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
@@ -744,7 +745,11 @@ borders_on{border:1px solid #0F0 !important;}
    }
 
    function create(servletUrl, responseHandler) {
-      	sendXMLHttp(servletUrl + "?messageType=CREATE" , responseHandler);
+      	var visibility = "public";
+   		if(document.getElementById("private").checked){
+   			visibility = "private";
+   		}
+      	sendXMLHttp(servletUrl + "?messageType=CREATE&visibility="+visibility , responseHandler);
    }
 
    function parseCreateSingle(responseXML){

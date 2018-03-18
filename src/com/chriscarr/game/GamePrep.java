@@ -7,8 +7,10 @@ public class GamePrep {
 	private List<String> joinedPlayers;
 	private Long lastUpdated;
 	private int counter;
+	private String visibility;
 	
-	public GamePrep(){
+	public GamePrep(String visibility){
+		this.visibility = visibility;
 		joinedPlayers = new ArrayList<String>();
 		lastUpdated = System.currentTimeMillis();
 	}
@@ -63,5 +65,9 @@ public class GamePrep {
 	
 	public Long getLastUpdated(){
 		return lastUpdated;
+	}
+	
+	public String getVisibility() {
+		return this.visibility;
 	}
 }

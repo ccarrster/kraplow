@@ -213,8 +213,9 @@ public class AjaxServlet extends HttpServlet {
     		String aiSleepMs = request.getParameter("aiSleepMs");
     		WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs));
     		response.getWriter().write("<ok/>");
-    	} else if(messageType.equals("CREATE")){    		
-    		int gameId = WebGame.create();    		
+    	} else if(messageType.equals("CREATE")){
+    		String visibility = request.getParameter("visibility");
+    		int gameId = WebGame.create(visibility);    		
     		response.getWriter().write("<gameid>");
     		response.getWriter().write(Integer.toString(gameId));
     		response.getWriter().write("</gameid>");

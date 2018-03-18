@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
@@ -20,9 +21,9 @@ public class WebGame {
 		chatLogs.put("lobby", new ArrayList<ChatMessage>());
 	}
 	
-	public static int create(){
+	public static int create(String visibility){
 		int gameId = gameCounter;
-		GamePrep gamePrep = new GamePrep();
+		GamePrep gamePrep = new GamePrep(visibility);
 		gamePreps.put(gameId, gamePrep);
 		gameCounter++;
 		chatLogs.put(Integer.toString(gameId), new ArrayList<ChatMessage>());
@@ -100,7 +101,16 @@ public class WebGame {
 	}
 
 	public static List<Integer> getAvailableGames() {
-		return new ArrayList<Integer>(gamePreps.keySet());		
+		ArrayList<Integer> results = new ArrayList<Integer>();
+		ArrayList<Integer> gameKeys = new ArrayList<Integer>(gamePreps.keySet());
+		for(int i = 0; i < gameKeys.size(); i++){
+			GamePrep prep = gamePreps.get(gameKeys.get(i));
+			String visibility = prep.getVisibility();
+			if(visibility.equals("public")) {
+				results.add(gameKeys.get(i));
+			}
+		}
+		return results;		
 	}
 
 	public static void addChat(String chat, String gameId) {
