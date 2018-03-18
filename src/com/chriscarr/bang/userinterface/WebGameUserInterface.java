@@ -24,8 +24,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 	boolean gameOver = false;
 	String timeout = null;
 	int aiSleepMs;
+	List<String> infoHistory;
 
 	public WebGameUserInterface(List<String> users, int aiSleepMs) {
+		infoHistory = new ArrayList<String>();
 		timedOutPlayers = new ArrayList<String>();
 		this.aiSleepMs = aiSleepMs;
 		messages = new ConcurrentHashMap<String, List<Message>>();
@@ -38,6 +40,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 
 	//This is the AI logic
 	public String somethingAI(String player, String message) {
+		String lastMessage = infoHistory.get(infoHistory.size() - 1);
 		try {
 			Thread.sleep(this.aiSleepMs);
 		} catch (InterruptedException e) {
@@ -118,6 +121,17 @@ public class WebGameUserInterface extends JSPUserInterface {
 			}
 			return "-1";
 		} else if (message.indexOf("respondBang") == 0) {
+			//TODO if this is a duel, and you are a deputy, and the other is the sheriff, take the hit
+			int duelIndex = lastMessage.indexOf(" duels ");
+			if (duelIndex != -1) {
+				String otherPlayer = lastMessage.substring(0, duelIndex);
+				Player other = turn.getPlayerForName(otherPlayer);
+				if(aiPlayer.getRole() == Player.DEPUTY && other.getRole() == Player.SHERIFF) {
+					//Let the sheriff kill you(Not great for the sheriff)
+					return "-1";
+				}
+			}
+
 			String options = message.replace("respondBang", "");
 			String[] cards = options.split(",");
 			for (int i = 0; i < cards.length - 1; i++) {
@@ -222,16 +236,19 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				}
 				if (card.indexOf("Indians!") == 0) {
+					//TODO if you are deputy and sheriff does not have full health, maybe not play this
 					if(hurtEveryone(aiPlayer)){
 						return Integer.toString(i);
 					}
 				}
 				if (card.indexOf("Gatling") == 0) {
+					//TODO if you are deputy and sheriff does not have full health, maybe not play this
 					if(hurtEveryone(aiPlayer)){
 						return Integer.toString(i);
 					}
 				}
 				if (card.indexOf("Saloon") == 0) {
+					//TODO if you have full health do not play? Unless you deputy or renegade and saving the sheriff?
 					return Integer.toString(i);
 				}
 				if(card.indexOf("Shoot@true") == 0){
@@ -400,6 +417,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 				playerMessages.add(new MessageImpl(info));
 			}
 		}
+		infoHistory.add(info);
 	}
 
 	public List<Message> getMessages(String user) {
