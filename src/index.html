@@ -743,6 +743,12 @@ borders_on{border:1px solid #0F0 !important;}
       joinAi(getServletUrl(), parseJoinAi, gameId, 4, 'Robot 5');
       joinAi(getServletUrl(), parseJoinAi, gameId, 5, 'Robot 6');
    }
+   
+   
+   var robotIndex = 0;
+   function addRobot(){
+   	joinAi(getServletUrl(), parseJoinAi, gameId, robotIndex, 'Robot ' + (robotIndex + 1));
+   }
 
    function create(servletUrl, responseHandler) {
       	var visibility = "public";
@@ -782,6 +788,8 @@ borders_on{border:1px solid #0F0 !important;}
    		user = userNode.childNodes[0].nodeValue;
    		gameId = responseXML.getElementsByTagName("gameid")[0].childNodes[0].nodeValue;
    		document.getElementById('handle').value = user;
+   	} else {
+   		alert("Game Full, Sorry");
    	}
    	writeInfo();
    	countPlayers(getServletUrl(), parseCountPlayers, gameId);
@@ -812,6 +820,10 @@ borders_on{border:1px solid #0F0 !important;}
 		writeInfo();
 		setup();
 	}
+   }
+   
+   function parseLeaveAI(responseXML){
+   	var okNode = responseXML.getElementsByTagName("ok")[0];
    }
 
    function leave(servletUrl, responseHandler, user, gameId) {
@@ -1097,16 +1109,12 @@ borders_on{border:1px solid #0F0 !important;}
 				}
 			}
 			result += 'Create a new game with how many computer players? (4 players minimum required to start a game)<br>'
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreate);" value="0">';
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith1);" value="1">';
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith2);" value="2">';
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith3);" value="3">';
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith4);" value="4">';
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith5);" value="5">';
-			result += '<input type="button" onClick="create(getServletUrl(), parseCreateWith6);" value="6">';
+			result += '<p><input type="button" onClick="create(getServletUrl(), parseCreateWith6);" value="Start a new single player game"></p>';
+			result += '<p><input type="button" onClick="create(getServletUrl(), parseCreate);" value="Start a new multi-player game"></p>';
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
 			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://chriscarr.name:8080/westerncardgame?join=' + gameId + '</p>';
+			result += '<p><input type="button" value="Add AI +" onclick="addRobot();"></p>';
 		}
 		if(playerCount != null){
 			result += '<div style="float:left;">';
@@ -1114,7 +1122,12 @@ borders_on{border:1px solid #0F0 !important;}
 			console.log(gamePlayerHandles.length);
 			result += '<div style="float:left;">';
 			for(var j = 0; j < gamePlayerHandles.length; j++){
-				result += '<div style="float:left;"><div><img src="player.png" alt="' + gamePlayerHandles[j] + '" width="90"></div><div>' + gamePlayerHandles[j] + '</div></div> ';
+				var removeAILink = gamePlayerHandles[j];
+				var last2 = gamePlayerHandles[j].slice(-2);
+				if(last2 == "AI"){
+					removeAILink = '<a href="javascript:void(0)" onclick="leave(getServletUrl(), parseLeaveAI, gamePlayerHandles['+j+'], gameId); return false;">Remove AI</a>';
+				}			
+				result += '<div style="float:left;"><div><img src="player.png" alt="' + gamePlayerHandles[j] + '" width="90"></div><div>' + removeAILink + '</div></div> ';
 			}
 			result += '</div>';
 			result += '</div>'

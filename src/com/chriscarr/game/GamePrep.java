@@ -30,6 +30,12 @@ public class GamePrep {
 			counter = counter + 1;
 			return handle;
 		} else {
+			for(int i = 0; i < joinedPlayers.size(); i++) {
+				if(joinedPlayers.get(i).substring(joinedPlayers.get(i).length() - 2).equals("AI")){
+					joinedPlayers.remove(i);
+					return join(handle);
+				}
+			}
 			return null;
 		}
 	}
