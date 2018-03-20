@@ -7,7 +7,9 @@ Features Chat, Game Log, Ajax Polling
 
 Setup and deployment
 I have been using Eclipse and Apache Tomcat.
+If you want to make an Ant or Maven build, fill your boots.
 It uses servlet-api.jar, so you will need to have that in your class path.
+It also uses junit.
 I build the project to a bin folder.
 The bin folder I use as the root of the application so copy the bin folder contents to {tomcat path}/webapps/kraplow
 In the bin folder there is also a "com" folder that contains the compiled java classes, these need to be moved to {tomcat path}/webbaps/kraplow/WEB-INF/classes
