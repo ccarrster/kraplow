@@ -436,15 +436,15 @@ borders_on{border:1px solid #0F0 !important;}
 			var playerMaxHealth = loopPlayer.getElementsByTagName("maxhealth")[0].childNodes[0].nodeValue;
 			for(var healthIndex = 0; healthIndex < playerHealth; healthIndex++){
 				var top = (healthIndex * 10) + 40;
-				result += '<img src="borderbullet.png" alt="Health" height="10" style="position:absolute; left:80px; top:' + top + 'px;"> ';
+				result += '<img src="borderbullet.png" alt="Health" title="'+playerHealth+'/'+playerMaxHealth+' Health" height="10" style="position:absolute; left:80px; top:' + top + 'px;"> ';
 			}
 			for(var maxHealthIndex = healthIndex; maxHealthIndex < playerMaxHealth; maxHealthIndex++){
 				var top = (maxHealthIndex * 10) + 40;
-				result += '<img src="emptyborderbullet.png" alt="Damage" height="10" style="position:absolute; left:80px; top:' + top + 'px;"> ';
+				result += '<img src="emptyborderbullet.png" alt="Damage" title="'+playerHealth+'/'+playerMaxHealth+' Health" height="10" style="position:absolute; left:80px; top:' + top + 'px;"> ';
 			}
 			var handSize = loopPlayer.getElementsByTagName("handsize")[0].childNodes[0].nodeValue;
-			result += '<img src="hand.png" width="40" style="position:absolute; top:30px; left:10px;">';
-			result += '<div style="position:absolute; top:35px; left:15px; width:40px;" ><span style="font-size:28px;">' + handSize + '</span></div>';
+			result += '<img src="hand.png" alt="hand" title="'+handSize+' cards in hand" width="40" style="position:absolute; top:30px; left:10px;">';
+			result += '<div title="'+handSize+' cards in hand" style="position:absolute; top:35px; left:15px; width:40px;" ><span style="font-size:28px;">' + handSize + '</span></div>';
 			result += '</div>';
 			result += '</td>'
 			column = column + 1;
@@ -931,7 +931,7 @@ borders_on{border:1px solid #0F0 !important;}
       			var cardString = '<h2>Your Hand</h2>';
       			for(var cardIndex = 0; cardIndex < cardNodes.length; cardIndex++){
       				var card = cardNodes[cardIndex].childNodes[0].nodeValue;
-      				cardString += '<img height="90" src="' + getImageForCard(card) + '" alt="' + card + '">';
+      				cardString += '<img height="90" src="' + getImageForCard(card) + '" alt="' + card + '" title="' + card + ' - '+getDescriptionForCard(card)+'">';
       			}
       			handAreaDiv.innerHTML = cardString;
       		} else {
@@ -1125,7 +1125,7 @@ borders_on{border:1px solid #0F0 !important;}
 				var removeAILink = gamePlayerHandles[j];
 				var last2 = gamePlayerHandles[j].slice(-2);
 				if(last2 == "AI"){
-					removeAILink = '<input type="button" onclick="leave(getServletUrl(), parseLeaveAI, gamePlayerHandles['+j+'], gameId);" value="Remove Computer Player -"/> ';
+					removeAILink = '<input type="button" onclick="leave(getServletUrl(), parseLeaveAI, gamePlayerHandles['+j+'], gameId);" value="Remove - "/> ';
 				}			
 				result += '<div style="float:left;"><div><img src="player.png" alt="' + gamePlayerHandles[j] + '" width="90"></div><div>' + removeAILink + '</div></div> ';
 			}
