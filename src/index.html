@@ -4,6 +4,13 @@
 <style>
 borders_on{border:1px solid #0F0 !important;}
 </style>
+<script>
+function copyToClipboard() {
+  var copyText = document.getElementById("joinurl");
+  copyText.select();
+  document.execCommand("Copy");
+}
+</script>
 </head>
 <body onload="timedCount();" style="background:url(wood.jpg) repeat;">
 <div>
@@ -1112,7 +1119,7 @@ borders_on{border:1px solid #0F0 !important;}
 			result += '<p><input type="button" onClick="create(getServletUrl(), parseCreateWith6);" value="Start a new game"></p>';
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
-			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar. ' + 'http://chriscarr.name:8080/westerncardgame?join=' + gameId + '</p>';
+			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar.</p><p><input type="text" readonly id="joinurl" value="http://chriscarr.name:8080/westerncardgame?join=' + gameId + '" style="width:350px"><input type="button" onclick="copyToClipboard()" value="Copy to Clipboard"></p>';
 			result += '<p>When human players join, they will kick out computer players.</p>';
 			result += '<p><input type="button" value="Add Computer Player +" onclick="addRobot();"></p>';
 		}
