@@ -513,7 +513,9 @@ public class Turn {
 				}
 			}
 		}
-		discardTwoCardsForLife(player, discard, userInterface);
+		if (player.getHealth() <= 0){
+			discardTwoCardsForLife(player, discard, userInterface);
+		}
 		if (player.getHealth() <= 0) {
 			handleDeath(player, damager, currentPlayer, players, userInterface,
 					deck, discard);
