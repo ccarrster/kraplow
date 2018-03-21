@@ -648,6 +648,10 @@ function copyToClipboard() {
 			gameLogDiv.scrollTop = gameLogDiv.scrollHeight;
 			sendResponse("", messageId);
 		}
+		if(result == ""){
+			result = "<h2>Waiting for other players to perform actions.</h2>";
+		}
+		console.log("RESULT["+result+"]");
    	return result;
    }
 
@@ -1013,7 +1017,7 @@ function copyToClipboard() {
       		}
       	} else {
       		messageId = null;
-      		gameMessagesDiv.innerHTML = "";
+      		gameMessagesDiv.innerHTML = "<h2>Waiting for other players to perform actions.</h2>";
       	}
 
    }
