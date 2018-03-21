@@ -631,11 +631,53 @@ function copyToClipboard() {
 			gameLogDiv.style.display = "block";
 			info = info + '\n' + message;
 			gameLogDiv.innerHTML = info;
+			var splitInfo = info.split("\n");
+			var names = ["Calamity Janet", "Jourdonnais", "Paul Regret", "Kit Carlson", "Bart Cassidy", "Jesse Jones", "Pedro Ramirez", "El Gringo", "Rose Doolan", "Suzy Lafayette", "Black Jack", "Sid Ketchum", "Slab the Killer", "Lucky Duke", "Vulture Sam", "Willy the Kid"];
+			var lastInfo = splitInfo[splitInfo.length - 1];
+			for(i = 0; i < names.length; i++){
+				if(lastInfo.includes(names[i])){
+					flashBorder(names[i]);
+					setInterval("flashBorder("+names[i]+", true)",1500);
+				}
+			}
+			
 			gameLogDiv.scrollTop = gameLogDiv.scrollHeight;
 			sendResponse("", messageId);
 		}
    	return result;
    }
+
+   var flash;
+
+	function flashBorder(elmId, stopFlash)
+	{
+	    var elm = document.getElementById(elmId);  
+	    if(stopFlash == "true")
+	    {
+	        elm.style.opacity = 1;
+	        clearInterval(flash);
+	    }
+	    else
+	    {
+	        var borderPattern = false;
+	        flash = setInterval(setBorder,300);
+
+	        function setBorder()
+	        {
+	            if(borderPattern)
+	            {
+	                borderPattern = false;
+	                elm.style.opacity = 1;
+	            }
+	            else
+	            {
+	                borderPattern = true;
+	                elm.style.opacity = 0.8;
+	            }
+	        }
+	    }
+	}
+
 
    function generateTargetCode(targets){
      var result = "";
@@ -892,7 +934,6 @@ function copyToClipboard() {
 			for(j = 0; j < playerNodes.length; j++){
 				var playerName = playerNodes[j].childNodes[0].nodeValue;
 				playerArray.push(playerName);
-				console.log(playerName);
 			}
 			playerHandles.push(playerArray);
 			canJoins.push(canJoin);
@@ -964,7 +1005,7 @@ function copyToClipboard() {
       			}
       			handAreaDiv.innerHTML = cardString;
       		} else {
-      			console.log("Skip message");
+      			//console.log("Skip message");
       		}
       	} else {
       		messageId = null;
@@ -1148,7 +1189,6 @@ function copyToClipboard() {
 		if(playerCount != null){
 			result += '<div style="float:left;">';
 			result += playerCount + ' players in game';
-			console.log(gamePlayerHandles.length);
 			result += '<div style="float:left;">';
 			for(var j = 0; j < gamePlayerHandles.length; j++){
 				var removeAILink = gamePlayerHandles[j];
