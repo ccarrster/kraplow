@@ -50,7 +50,12 @@ function copyToClipboard() {
 			handleField.value = restOfUrl.substring(0, andpersandLocation);
 		}
 	} else {
-		handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
+		var cookieHandle = getCookie("handle");
+		if(cookieHandle != ""){
+			handleField.value = cookieHandle;
+		} else {
+			handleField.value = randomAdjectives[Math.floor(Math.random() * randomAdjectives.length)] + randomNames[Math.floor(Math.random() * randomNames.length)];
+		}
 	}
 
 	var joinLocation = window.location.href.indexOf("join=");
@@ -803,7 +808,24 @@ function copyToClipboard() {
    }
 
 
+	function getCookie(cname) {
+	    var name = cname + "=";
+	    var decodedCookie = decodeURIComponent(document.cookie);
+	    var ca = decodedCookie.split(';');
+	    for(var i = 0; i <ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0) == ' ') {
+	            c = c.substring(1);
+	        }
+	        if (c.indexOf(name) == 0) {
+	            return c.substring(name.length, c.length);
+	        }
+	    }
+	    return "";
+	}
+
    function join(servletUrl, responseHandler, gameId, handle) {
+   		document.cookie = "handle="+handle+"; expires=Thu, 18 Dec 2999 12:00:00 UTC";
       	sendXMLHttp(servletUrl + "?messageType=JOIN&gameId=" + gameId + "&handle=" + handle, responseHandler);
    }
 
