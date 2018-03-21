@@ -636,8 +636,12 @@ function copyToClipboard() {
 			var lastInfo = splitInfo[splitInfo.length - 1];
 			for(i = 0; i < names.length; i++){
 				if(lastInfo.includes(names[i])){
+					flashBorder(names[i], true);
+				}
+			}
+			for(i = 0; i < names.length; i++){
+				if(lastInfo.includes(names[i])){
 					flashBorder(names[i]);
-					setInterval("flashBorder("+names[i]+", true)",1500);
 				}
 			}
 			
