@@ -6,22 +6,25 @@ Multiplayer, Single Player or a mix of AI and Humans.
 Features Chat, Game Log, Ajax Polling
 
 Setup and deployment
-I have been using Eclipse and Apache Tomcat.
-If you want to make an Ant or Maven build, fill your boots.
-It uses servlet-api.jar, so you will need to have that in your class path.
-It also uses junit.
-I build the project to a bin folder.
-The bin folder I use as the root of the application so copy the bin folder contents to {tomcat path}/webapps/kraplow
-In the bin folder there is also a "com" folder that contains the compiled java classes, these need to be moved to {tomcat path}/webbaps/kraplow/WEB-INF/classes
-After getting the files in place restart tomcat.
-I have tomcat setup as a service "sudo service tomcat restart"
+You will need ant, so download it, add the ANT_HOME c:\ant to environment variables and add c:\ant\bin to your PATH
+Fire up a new console window
+To build a new westerncardgame.war
+ant clean
+ant
+Then put the westerncardgame.war from the dist folder into your apache tomcat webapps folder
+restart tomcat
+go to url http://localhost:8080/westerncardgame
+Port may be different depending on your tomcat setup (80?)
+
 Most of the UI is in index.html and is driven from the API.
+The index.html file has a getServletUrl function. If you name your project something other than "westerncardgame" in the build.xml/war file you will need to change that function.
 
 When deploying I change the owner group to tomcat:tomcat with sudo chown -R tomcat:tomcat kraplow
 
 The code uses an API.
 I called mine /chat - you can edit this in web.xml
 All of the code depends on /chat being there.
+You will need to change this in the getServletUrl function.
 Messages are sent as XML or strings.
 
 The main code for the AI is a function named somethingAI()
