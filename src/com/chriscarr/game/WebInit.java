@@ -13,8 +13,8 @@ public class WebInit {
 	private static Map<Integer, UserInterface> userInterfaces = new HashMap<Integer, UserInterface>();
 	private static Map<Integer, GameStateListener> gameStateListeners = new HashMap<Integer, GameStateListener>();	
 		
-	public void setup(int numPlayers, UserInterface userInterface, GameStateListener gameStateListener, int gameId){
-		Thread gameThread = new GameThread(numPlayers, userInterface, gameStateListener);
+	public void setup(int numPlayers, UserInterface userInterface, GameStateListener gameStateListener, int gameId, boolean sidestep){
+		Thread gameThread = new GameThread(numPlayers, userInterface, gameStateListener, sidestep);
 		userInterfaces.put(gameId, userInterface);
 		gameStateListeners.put(gameId, gameStateListener);
 		gameThread.start();
@@ -33,13 +33,15 @@ public class WebInit {
 		int numPlayers;
 		UserInterface userInterface;
 		GameStateListener gameStateListener;
-		GameThread(int numPlayers, UserInterface userInterface, GameStateListener gameStateListener){
+		boolean sidestep;
+		GameThread(int numPlayers, UserInterface userInterface, GameStateListener gameStateListener, boolean sidestep){
 				this.numPlayers = numPlayers;
 				this.userInterface = userInterface;
 				this.gameStateListener = gameStateListener;
+				this.sidestep = sidestep;
 		}
 		public void run(){
-			new Setup(numPlayers, userInterface, gameStateListener);
+			new Setup(numPlayers, userInterface, gameStateListener, sidestep);
 		}
 	}
 }

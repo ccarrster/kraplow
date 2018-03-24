@@ -215,7 +215,11 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("CREATE")){
     		String visibility = request.getParameter("visibility");
-    		int gameId = WebGame.create(visibility);    		
+    		boolean sidestep = false;
+    		if(request.getParameterMap().containsKey("sidestep")){
+    			sidestep = true;
+    		}
+    		int gameId = WebGame.create(visibility, sidestep);    		
     		response.getWriter().write("<gameid>");
     		response.getWriter().write(Integer.toString(gameId));
     		response.getWriter().write("</gameid>");

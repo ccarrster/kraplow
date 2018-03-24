@@ -21,9 +21,9 @@ public class WebGame {
 		chatLogs.put("lobby", new ArrayList<ChatMessage>());
 	}
 	
-	public static int create(String visibility){
+	public static int create(String visibility, boolean sidestep){
 		int gameId = gameCounter;
-		GamePrep gamePrep = new GamePrep(visibility);
+		GamePrep gamePrep = new GamePrep(visibility, sidestep);
 		gamePreps.put(gameId, gamePrep);
 		gameCounter++;
 		chatLogs.put(Integer.toString(gameId), new ArrayList<ChatMessage>());
@@ -92,10 +92,13 @@ public class WebGame {
 	}
 	
 	public static void start(int gameId, int aiSleepMs){
+		while(getJoinedPlayers(gameId).size() < 4){
+			joinAI(gameId, "ROBOT");
+		}
 		if(canStart(gameId)){
 			WebInit webInit = new WebInit();
 			WebGameUserInterface x = new WebGameUserInterface(gamePreps.get(gameId).getJoinedPlayers(), aiSleepMs);
-			webInit.setup(getCountPlayers(gameId), x, x, gameId);
+			webInit.setup(getCountPlayers(gameId), x, x, gameId, gamePreps.get(gameId).getSidestep());
 			gamePreps.remove(gameId);
 		}
 	}

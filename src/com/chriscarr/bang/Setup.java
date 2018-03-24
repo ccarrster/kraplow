@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.*;
 
 import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
@@ -16,11 +17,15 @@ public class Setup {
 	private List<Player> players;
 	
 	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener) {
+		new Setup(countPlayers, userInterface, gameStateListener, false);
+	}
+
+	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener, boolean sidestep) {
 		deck = setupDeck();
 		deck.shuffle();
 		Discard discard = new Discard();
 		deck.setDiscard(discard);
-		players = getPlayers(countPlayers, deck);
+		players = getPlayers(countPlayers, deck, sidestep);
 		drawHands(players, deck);
 		Turn turn = new Turn();
 		turn.setDeck(deck);
@@ -46,9 +51,21 @@ public class Setup {
 	}
 
 	public static List<Player> getPlayers(int countCharacters, Deck deck) {
+		return getPlayers(countCharacters, deck, false);
+	}
+
+	public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep) {
 		ArrayList<Player> players = new ArrayList<Player>();
-				
-		List<String> characterList = Arrays.asList(Figure.CHARACTERS);
+		ArrayList<String> characterList = new ArrayList<String>();
+		characterList.addAll(Arrays.asList(Figure.CHARACTERS));
+		try{
+			if(sidestep){
+				characterList.addAll(Arrays.asList(Figure.CHARACTERSSIDESTEP));
+			}
+		} catch(Exception e){
+			Logger logger = Logger.getLogger(Setup.class.getName());
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 		Collections.shuffle(characterList);
 		List<Integer> roles = getRoles(countCharacters);
 		Collections.shuffle(roles);

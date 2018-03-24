@@ -3,6 +3,7 @@ package com.chriscarr.bang.userinterface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -236,20 +237,20 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				}
 				if (card.indexOf("Indians!") == 0) {
-					//TODO if you are deputy and sheriff does not have full health, maybe not play this
 					if(hurtEveryone(aiPlayer)){
 						return Integer.toString(i);
 					}
 				}
 				if (card.indexOf("Gatling") == 0) {
-					//TODO if you are deputy and sheriff does not have full health, maybe not play this
 					if(hurtEveryone(aiPlayer)){
 						return Integer.toString(i);
 					}
 				}
 				if (card.indexOf("Saloon") == 0) {
-					//TODO if you have full health do not play? Unless you deputy or renegade and saving the sheriff?
-					return Integer.toString(i);
+					if(healEveryone(aiPlayer)){
+						return Integer.toString(i);	
+					}
+					
 				}
 				if(card.indexOf("Shoot@true") == 0){
 					String[] splitCard = card.split("@");
@@ -317,6 +318,23 @@ public class WebGameUserInterface extends JSPUserInterface {
 		}
 		return true;
 	}
+
+	public boolean healEveryone(Player player){
+		int role = player.getRole();
+		if(role == Player.DEPUTY || (role == Player.RENEGADE && turn.countPlayers() > 2)){
+			Player sheriff = turn.getSheriff();
+			if(sheriff.getHealth() < 3){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		if(player.getHealth() < player.getMaxHealth()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public boolean playerGotCardIWantToTake(Player me, Player them){
 		if(them.getHandSize() > 0){
@@ -343,6 +361,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	public int whoToHurtCardTake(Player player, String namesString, boolean takeCard){
+		ArrayList<Integer> targets = new ArrayList<Integer>();
 		int role = player.getRole();
 		String[] names = namesString.split("\\$");
 		for(int i = 0; i < names.length; i++){
@@ -357,15 +376,15 @@ public class WebGameUserInterface extends JSPUserInterface {
 					}
 				} if(role == Player.DEPUTY && otherRole != Player.SHERIFF){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
-						return i;
+						targets.add(i);
 					}
 				} if(role == Player.SHERIFF){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
-						return i;
+						targets.add(i);
 					}
 				} if(role == Player.RENEGADE && (turn.countPlayers() == 2 || otherRole != Player.SHERIFF)){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
-						return i;
+						targets.add(i);
 					}
 				}
 			}
@@ -375,12 +394,18 @@ public class WebGameUserInterface extends JSPUserInterface {
 				if(role == Player.OUTLAW){
 					Player other = turn.getPlayerForName(names[i]);
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
-						return i;
+						targets.add(i);
 					}
 				}
 			}
 		}
-		return -1;
+		if(targets.size() == 0){
+			return -1;
+		} else {
+			//Random target instead of first
+			Collections.shuffle(targets);
+			return targets.get(0);
+		}
 	}
 	
 	public void sendMessage(String player, String message) {

@@ -21,6 +21,22 @@ public class Figure {
 	public static String WILLYTHEKID = "Willy the Kid";
 	public static String[] CHARACTERS = {CALAMITYJANET, JOURDONNAIS, PAULREGRET, KITCARLSON, BARTCASSIDY, JESSEJONES, PEDRORAMIREZ, ELGRINGO, ROSEDOOLAN, SUZYLAFAYETTE, BLACKJACK, SIDKETCHUM, SLABTHEKILLER, LUCKYDUKE, VULTURESAM, WILLYTHEKID};
 	
+	public static String CHUCKWENGAM = "Chuck Wengam";
+	public static String ELENAFUENTE = "Elena Fuente";
+	public static String BELLESTAR = "Belle Star";
+	public static String JOSEDELGADO = "Jose Delgado";
+	public static String GREGDIGGER = "Greg Digger";
+	public static String DOCHOLYDAY = "Doc Holyday";
+	public static String PIXIEPETE = "Pixie Pete";
+	public static String MOLLYSTARK = "Molly Stark";
+	public static String APACHEKID = "Apache Kid";
+	public static String HERBHUNTER = "Herb Hunter";
+	public static String BILLNOFACE = "Bill Noface";
+	public static String PATBRENNAN = "Pat Brennan";
+	public static String TEQUILAJOE = "Tequila Joe";
+	public static String VERACUSTER = "Vera Custer";
+	public static String SEANMALLORY = "Sean Mallory";
+	public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, BELLESTAR, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, APACHEKID, HERBHUNTER, BILLNOFACE, PATBRENNAN, TEQUILAJOE, VERACUSTER, SEANMALLORY};
 	
 	public static int PLAYBANG = 0;
 	public static int PLAYMISSED = 1;
@@ -78,6 +94,36 @@ public class Figure {
 			return "Takes dead players cards";
 		} else if(name.equals(WILLYTHEKID)){
 			return "Not restricted to 1 Shoot";
+		} else if(name.equals(CHUCKWENGAM)){
+			return "Change one life for 2 cards";
+		} else if(name.equals(ELENAFUENTE)){
+			return "Any card can be a miss";
+		} else if(name.equals(BELLESTAR)){
+			return "On her turn others cards do not work";
+		} else if(name.equals(JOSEDELGADO)){
+			return "On his turn discard blue card to draw 2";
+		} else if(name.equals(GREGDIGGER)){
+			return "When other player killed, get 2 life";
+		} else if(name.equals(DOCHOLYDAY)){
+			return "On his turn, discard 2 cards to Shoot";
+		} else if(name.equals(PIXIEPETE)){
+			return "Draws 4 cards";
+		} else if(name.equals(MOLLYSTARK)){
+			return "When playing cards out of turn, draw 1";
+		} else if(name.equals(APACHEKID)){
+			return "Others diamond cards do not work";
+		} else if(name.equals(HERBHUNTER)){
+			return "When other dies, draw 2 cards";
+		} else if(name.equals(BILLNOFACE)){
+			return "Draws 1 card and an extra for each missing health";
+		} else if(name.equals(PATBRENNAN)){
+			return "Can draw a card infront of another player";
+		} else if(name.equals(TEQUILAJOE)){
+			return "Beer gives him 2 life";
+		} else if(name.equals(VERACUSTER)){
+			return "Copies abilities of others";
+		} else if(name.equals(SEANMALLORY)){
+			return "Has no handsize limit";
 		} else {
 			throw new RuntimeException("Invalid player name");
 		}

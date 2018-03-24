@@ -19,6 +19,7 @@ function copyToClipboard() {
 <div id="gameInfo">
 	<p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
 	<p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
+	<p>Expansion Sidestep Township(Testing):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/></p>
 	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
 	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
 </div>
@@ -651,7 +652,6 @@ function copyToClipboard() {
 		if(result == ""){
 			result = "<h2>Waiting for other players to perform actions.</h2>";
 		}
-		console.log("RESULT["+result+"]");
    	return result;
    }
 
@@ -675,12 +675,16 @@ function copyToClipboard() {
 	            if(borderPattern)
 	            {
 	                borderPattern = false;
-	                elm.style.opacity = 1;
+	                if(elm != null){
+	                	elm.style.opacity = 1;
+	                }
 	            }
 	            else
 	            {
 	                borderPattern = true;
-	                elm.style.opacity = 0.8;
+	                if(elm != null){
+	                	elm.style.opacity = 0.8;
+	                }
 	            }
 	        }
 	    }
@@ -817,7 +821,11 @@ function copyToClipboard() {
    		if(document.getElementById("private").checked){
    			visibility = "private";
    		}
-      	sendXMLHttp(servletUrl + "?messageType=CREATE&visibility="+visibility , responseHandler);
+   		var sidestep = "";
+   		if(document.getElementById("sidestep").checked){
+   			sidestep = "&sidestep=true";
+   		}
+      	sendXMLHttp(servletUrl + "?messageType=CREATE&visibility="+visibility+sidestep , responseHandler);
    }
 
    function parseCreateSingle(responseXML){
@@ -919,6 +927,14 @@ function copyToClipboard() {
 	}
    	canStart(getServletUrl(), parseCanStart, gameId);
    	setup();
+   	if(playerNodes.length < 7){
+   		newStyle = "block";
+   	} else {
+   		newStyle = "none";
+   	}
+   	if(document.getElementById("addcomputer") != null){
+   		document.getElementById("addcomputer").style.display = newStyle;
+   	}
    }
 
    function countPlayers(servletUrl, responseHandler, gameId) {
@@ -1186,13 +1202,11 @@ function copyToClipboard() {
 					previousAvailable = newAvailable;
 				}
 			}
-			result += 'Create a new game with how many computer players? (4 players minimum required to start a game)<br>'
-			result += '<p><input type="button" onClick="create(getServletUrl(), parseCreateWith6);" value="Start a new game"></p>';
+			result += '<p><div id="startbutton" style="position:relative;"><a href="" onclick="create(getServletUrl(), parseCreate); return false;"><img src="button.png" alt="start button"><div id="starttext" style="position:absolute; color:white; font-size:42px; left:56px; top:18px;">Play A Game</div></div></a></p>';
 		} else {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
 			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar.</p><p><input type="text" readonly id="joinurl" value="http://chriscarr.name:8080/westerncardgame?join=' + gameId + '" style="width:350px"><input type="button" onclick="copyToClipboard()" value="Copy to Clipboard"></p>';
-			result += '<p>When human players join, they will kick out computer players.</p>';
-			result += '<p><input type="button" value="Add Computer Player +" onclick="addRobot();"></p>';
+			result += '<p id="addcomputer"><input type="button" value="Add Computer Player +" onclick="addRobot();"></p>';
 		}
 		if(playerCount != null){
 			result += '<div style="float:left;">';
@@ -1209,10 +1223,8 @@ function copyToClipboard() {
 			result += '</div>';
 			result += '</div>'
 		}
-		if(startable != null && startable == true && gameId != null){
-			result += '<a href="" onClick="start(getServletUrl(), parseStart, gameId); return false;"><div><img src="start.png" alt="Start game" width="90"></div></a><input type="button" href="" onClick="start(getServletUrl(), parseStart, gameId);" value="Start Game">';
-		} else {
-			result += ' <div>(4 players required to start game)</div>';
+		if(gameId != null){
+			result += '<div id="giverbutton" style="float:left; position:relative;"><a href="" onclick="start(getServletUrl(), parseStart, gameId); return false;"><img src="button.png" alt="start button"><div id="givertext" style="position:absolute; color:white; font-size:42px; left:76px; top:18px;">Start Game</div></div></a>'
 		}
 		result += '<div style="clear:both;"></div>';
    	}
@@ -1405,7 +1417,7 @@ function copyToClipboard() {
    	} else if(playerName == "Willy the Kid"){
    		return "willythekid.png";
    	} else {
-   		return "cancel.png";
+   		return "player.png";
    	}
    }
 
@@ -1442,7 +1454,37 @@ function copyToClipboard() {
    		return "Takes all cards from dead players.";
    	} else if(playerName == "Willy the Kid"){
    		return "No limit on Shoots per turn.";
-   	} else {
+   	}  else if(playerName == "Chuck Wengam"){
+		return "Change one life for 2 cards";
+	} else if(playerName == "Elena Fuente"){
+		return "Any card can be a miss";
+	} else if(playerName == "Belle Star"){
+		return "On her turn others cards do not work";
+	} else if(playerName == "Jose Delgado"){
+		return "On his turn discard blue card to draw 2";
+	} else if(playerName == "Greg Digger"){
+		return "When other player killed, get 2 life";
+	} else if(playerName == "Doc Holyday"){
+		return "On his turn, discard 2 cards to Shoot";
+	} else if(playerName == "Pixie Pete"){
+		return "Draws 4 cards";
+	} else if(playerName == "Molly Stark"){
+		return "When playing cards out of turn, draw 1";
+	} else if(playerName == "Apache Kid"){
+		return "Others diamond cards do not work";
+	} else if(playerName == "Herb Hunter"){
+		return "When other dies, draw 2 cards";
+	} else if(playerName == "Bill Noface"){
+		return "Draws 1 card and an extra for each missing health";
+	} else if(playerName == "Pat Brennan"){
+		return "Can draw a card infront of another player";
+	} else if(playerName == "Tequila Joe"){
+		return "Beer gives him 2 life";
+	} else if(playerName == "Vera Custer"){
+		return "Copies abilities of others";
+	} else if(playerName == "Sean Mallory"){
+		return "Has no handsize limit";
+	} else {
    		return "";
    	}
    }
