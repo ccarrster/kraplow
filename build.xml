@@ -39,6 +39,15 @@
 		</copy>
 	</target>
 
+	<target name = "test">
+		<junit haltonfailure = "true" printsummary = "true">
+			<classpath location="${junit.home}/junit-${junit.version}.jar" />
+			<formatter type="plain" usefile="false" />
+
+			<test name = "com.chriscarr.bang.test.AllTests"/>
+		</junit>
+	</target>
+
 	<target name="clean">
 		<delete dir="dist" />
 		<delete dir="build" />

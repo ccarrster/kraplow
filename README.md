@@ -7,6 +7,9 @@ Features Chat, Game Log, Ajax Polling
 
 Setup and deployment
 You will need ant, so download it, add the ANT_HOME c:\ant to environment variables and add c:\ant\bin to your PATH
+You will need JUnit, so download it, add JUNIT_HOME to environment variables and set it to the folder where you put the JUnit `.jar` file.
+Also create a JUNIT_VERSION environment variable and set it to the version number of the jar file (e.g. '4.12' for junit-4.12.jar)
+
 Fire up a new console window
 To build a new westerncardgame.war
 ant clean
