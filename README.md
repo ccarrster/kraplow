@@ -33,4 +33,10 @@ From there the AI choose how to respond to actions.
 The main frontend loops poll on what action to do next and chat.
 
 There is no database, everything is stored in session memmory.
+
+Working on Sidestep Township expansion. I have the characters names and abilities text entered, nothing else yet.
+Still need images for players
+Implement players abilities
+Add green card mechanic
+Add green and other cards
 ```
