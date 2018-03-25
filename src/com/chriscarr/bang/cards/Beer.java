@@ -29,7 +29,7 @@ public class Beer extends Card implements Playable {
 			if(!Turn.isMaxHealth(currentPlayer)){
 				currentPlayer.addHealth(1);
 			}
-			if(Figure.TEQUILAJOE.equals(currentPlayer.getName())){
+			if(Figure.TEQUILAJOE.equals(currentPlayer.getAbility())){
 				if(!Turn.isMaxHealth(currentPlayer)){
 					currentPlayer.addHealth(1);
 				}	

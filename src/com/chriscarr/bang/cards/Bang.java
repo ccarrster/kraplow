@@ -20,7 +20,7 @@ public class Bang extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getName())){			
+		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getAbility())){			
 			return false;
 		}
 		return targets(player, players).size() > 1;
@@ -44,11 +44,15 @@ public class Bang extends Card implements Playable {
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, others, userInterface);
 		if(!(otherPlayer instanceof CancelPlayer)){
 			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
+			if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+				userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond Shoot");
+				return true;
+			}
 			int missesRequired = 1;
-			if(Figure.SLABTHEKILLER.equals(currentPlayer.getName())){
+			if(Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())){
 				missesRequired = 2;
 			}
-			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired);
+			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
 			missesRequired = missesRequired - barrelMisses;
 			if(missesRequired <= 0){
 				return true;
@@ -61,7 +65,7 @@ public class Bang extends Card implements Playable {
 					for(int i = 0; i < missesRequired; i++){
 						discard.add(otherPlayer.getHand().remove(missPlayed));
 						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
-						if(Figure.MOLLYSTARK.equals(otherPlayer.getName())){
+						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
 							Hand otherHand = otherPlayer.getHand();
 							otherHand.add(deck.pull());
 							userInterface.printInfo(otherPlayer.getName() + " draws a card");
@@ -80,7 +84,7 @@ public class Bang extends Card implements Playable {
 						hand.remove(card);
 						discard.add(card);
 						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
-						if(Figure.MOLLYSTARK.equals(otherPlayer.getName())){
+						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
 							Hand otherHand = otherPlayer.getHand();
 							otherHand.add(deck.pull());
 							userInterface.printInfo(otherPlayer.getName() + " draws a card");

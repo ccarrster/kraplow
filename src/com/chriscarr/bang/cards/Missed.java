@@ -12,7 +12,7 @@ public class Missed extends Bang implements Playable{
 	}
 	
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){
-		if(!Figure.CALAMITYJANET.equals(player.getName())){
+		if(!Figure.CALAMITYJANET.equals(player.getAbility())){
 			return false;
 		} else {
 			return super.canPlay(player, players, bangsPlayed);

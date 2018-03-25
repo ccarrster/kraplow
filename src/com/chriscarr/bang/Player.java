@@ -18,6 +18,7 @@ public class Player {
 	private int role;
 	private int maxHealth;
 	private int health;	
+	private String ability;
 
 	public void setInPlay(InPlay inPlay) {
 		this.inPlay = inPlay;
@@ -33,6 +34,7 @@ public class Player {
 
 	public void setFigure(Figure figure) {
 		this.figure = figure;
+		this.setAbility(figure.getName());
 	}
 
 	public Figure getFigure() {
@@ -106,6 +108,14 @@ public class Player {
 
 	public String getName() {
 		return figure.getName();
+	}
+
+	public String getAbility() {
+		return this.ability;
+	}
+
+	public void setAbility(String ability) {
+		this.ability = ability;
 	}
 
 	public int getGunRange() {

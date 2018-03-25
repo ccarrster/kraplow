@@ -8,6 +8,7 @@ import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Panic extends Card implements Playable {
@@ -35,6 +36,10 @@ public class Panic extends Card implements Playable {
 	 */
 	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
+		if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+			userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond Panic!");
+			return true;
+		}
 		if(!(otherPlayer instanceof CancelPlayer)){
 			discard.add(this);
 			int chosenCard = -3;

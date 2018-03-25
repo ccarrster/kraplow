@@ -41,6 +41,10 @@ public class Duel extends Card implements Playable {
 		targets.add(0, cancelPlayer);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, targets, userInterface);
 		if(!(other instanceof CancelPlayer)){
+			if(Figure.APACHEKID.equals(other.getAbility()) && this.getSuit() == Card.DIAMONDS){
+				userInterface.printInfo(other.getName() + " is unaffected by diamond Duel");
+				return true;
+			}
 			userInterface.printInfo(currentPlayer.getName() + " duels " + other.getName());
 			while(true){
 				int bangPlayed = Turn.validPlayBang(other, userInterface);
@@ -52,7 +56,7 @@ public class Duel extends Card implements Playable {
 					Object card = other.getHand().remove(bangPlayed);
 					discard.add(card);
 					userInterface.printInfo(other.getName() + " plays a " + ((Card)card).getName());
-					if(Figure.MOLLYSTARK.equals(other.getName())){
+					if(Figure.MOLLYSTARK.equals(other.getAbility())){
 						Hand otherHand = other.getHand();
 						otherHand.add(deck.pull());
 						userInterface.printInfo(other.getName() + " draws a card");

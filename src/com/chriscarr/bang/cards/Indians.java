@@ -36,6 +36,10 @@ public class Indians extends Card implements Playable {
 		discard.add(this);
 		Player indianPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(indianPlayer != currentPlayer){
+			if(Figure.APACHEKID.equals(indianPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+				userInterface.printInfo(indianPlayer.getName() + " is unaffected by diamond Indians");
+				continue;
+			}
 			int bangPlayed = Turn.validPlayBang(indianPlayer, userInterface);
 			Player nextPlayer = Turn.getNextPlayer(indianPlayer, players); 
 			if(bangPlayed == -1){
@@ -44,7 +48,7 @@ public class Indians extends Card implements Playable {
 			} else {
 				discard.add(indianPlayer.getHand().remove(bangPlayed));
 				userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
-				if(Figure.MOLLYSTARK.equals(indianPlayer.getName())){
+				if(Figure.MOLLYSTARK.equals(indianPlayer.getAbility())){
 					Hand otherHand = indianPlayer.getHand();
 					otherHand.add(deck.pull());
 					userInterface.printInfo(indianPlayer.getName() + " draws a card");

@@ -6,6 +6,7 @@ import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class CatBalou extends Card implements Playable {
@@ -34,6 +35,10 @@ public class CatBalou extends Card implements Playable {
 	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
+		if(Figure.APACHEKID.equals(other.getAbility()) && this.getSuit() == Card.DIAMONDS){
+			userInterface.printInfo(other.getName() + " is unaffected by diamond Cat Balou");
+			return true;
+		}
 		int chosenCard = -3;
 		while(chosenCard < -2 || chosenCard > other.getInPlay().size() - 1){
 			chosenCard = userInterface.askOthersCard(currentPlayer, other.getInPlay(), other.getHand().size() > 0);

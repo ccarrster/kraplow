@@ -37,7 +37,7 @@ public class Gatling extends Card implements Playable {
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
 			Player nextPlayer = Turn.getNextPlayer(gatlingPlayer, players);
-			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface, 1) > 0){
+			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface, 1, currentPlayer) > 0){
 				gatlingPlayer = nextPlayer;
 				continue;
 			}
@@ -48,7 +48,7 @@ public class Gatling extends Card implements Playable {
 			} else {
 				discard.add(gatlingPlayer.getHand().remove(missPlayed));
 				userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + Card.CARDGATLING);
-				if(Figure.MOLLYSTARK.equals(gatlingPlayer.getName())){
+				if(Figure.MOLLYSTARK.equals(gatlingPlayer.getAbility())){
 					Hand otherHand = gatlingPlayer.getHand();
 					otherHand.add(deck.pull());
 					userInterface.printInfo(gatlingPlayer.getName() + " draws a card");

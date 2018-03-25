@@ -95,13 +95,13 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			}
 			handCards += name + "@" + canPlay + "@" + targetString + ", ";
 		}
-		if(Figure.CHUCKWENGAM.equals(player.getName())){
+		if(Figure.CHUCKWENGAM.equals(player.getAbility())){
 			handCards += "loselifefor2cards" + "@true@" + player.getName() + "$" + ", ";
 		}
-		if(Figure.JOSEDELGADO.equals(player.getName())){
+		if(Figure.JOSEDELGADO.equals(player.getAbility())){
 			handCards += "discardbluetodraw2" + "@true@" + player.getName() + "$" + ", ";
 		}
-		if(Figure.DOCHOLYDAY.equals(player.getName())){
+		if(Figure.DOCHOLYDAY.equals(player.getAbility())){
 			handCards += "discardtwotoshoot" + "@true@" + player.getName() + "$" + ", ";
 		}
 		sendMessage(player.getName(), "askPlay " + handCards);
@@ -208,7 +208,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		for(int i = 0; i < hand.size(); i++){
 			Card card = (Card)hand.get(i);
 			String name = card.getName();
-			boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Figure.CALAMITYJANET.equals(player.getName()));
+			boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondBang " + handCards);
@@ -238,7 +238,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		for(int i = 0; i < hand.size(); i++){
 			Card card = (Card)hand.get(i);
 			String name = card.getName();
-			boolean canPlay = Card.CARDMISSED.equals(name) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getName()));
+			boolean canPlay = Card.CARDMISSED.equals(name) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondMiss " + handCards);
@@ -266,7 +266,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		for(int i = 0; i < hand.size(); i++){
 			boolean canPlay = false;
 			String cardName = ((Card)hand.get(i)).getName();
-			if(Card.CARDMISSED.equals(cardName) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getName()))){
+			if(Card.CARDMISSED.equals(cardName) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getAbility()))){
 				canPlay = true;
 			}
 			handCards += cardName + "@" + canPlay + ", ";
