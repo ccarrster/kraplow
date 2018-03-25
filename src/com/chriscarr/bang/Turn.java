@@ -2,6 +2,7 @@ package com.chriscarr.bang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import com.chriscarr.bang.cards.Bang;
 import com.chriscarr.bang.cards.Card;
@@ -21,6 +22,16 @@ public class Turn {
 	private Discard discard;
 	private Deck deck;
 	private int bangsPlayed = 0;
+
+	public ArrayList<String> getRoles(){
+		ArrayList<String> roles = new ArrayList<String>();
+		for(int i = 0; i < players.size(); i++){
+			Player player = players.get(i);
+			roles.add(Player.roleToString(player.getRole()));
+		}
+		Collections.sort(roles);
+		return roles;
+	}
 
 	public void setPlayers(List<Player> players) {
 		this.players = players;

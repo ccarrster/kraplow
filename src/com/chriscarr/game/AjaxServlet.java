@@ -3,6 +3,7 @@ package com.chriscarr.game;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,6 +36,7 @@ public class AjaxServlet extends HttpServlet {
 	    		GameState gameState = userInterface.getGameState();
 	    		if(gameState != null){
 		    		response.getWriter().write("<gamestate>");
+		    			ArrayList<String> rolesAlive = new ArrayList<String>();
 			    		response.getWriter().write("<players>");
 			    		for(GameStatePlayer player : gameState.getPlayers()){
 			    			if (userInterface instanceof WebGameUserInterface){
@@ -64,6 +66,12 @@ public class AjaxServlet extends HttpServlet {
 			    			writeCard(topCard, response);
 			    			response.getWriter().write("</discardtopcard>");
 			    		}
+			    		response.getWriter().write("<roles>");
+			    		ArrayList<String> roles = userInterface.getRoles();
+			    		for(String role : roles){
+			    			response.getWriter().write("<role>"+role+"</role>");
+			    		}
+			    		response.getWriter().write("</roles>");
 		    		response.getWriter().write("</gamestate>");
 	    		} else {
 	    			response.getWriter().write("<gamestate/>");

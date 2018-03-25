@@ -19,7 +19,7 @@ function copyToClipboard() {
 <div id="gameInfo">
 	<p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
 	<p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
-	<p>Expansion Sidestep Township(Testing):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: Some characters implemented(Still need images)</p>
+	<p>Expansion Sidestep Township(Testing):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: All characters implemented, nothing else</p>
 	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
 	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
 </div>
@@ -31,6 +31,7 @@ function copyToClipboard() {
 <div id="chatInput"><form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">Chat <input type="text" id="chatinput"><input type="button" value="Send" onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';"></form></div>
 <div><textarea id="gameLog" rows='10' cols='60' style="display:none;" readonly></textarea></div>
 <div id="gameMessages" style="height:256px; width:533; display:none; border:2px solid #000;"></div>
+<div id="remainingroles"></div>
 </div>
 <div style="clear:both;"></div>
 <div id="handArea"></div>
@@ -135,6 +136,25 @@ function copyToClipboard() {
 			gameMessagesDiv.innerHTML = gameOverMessage;
 			gameOver = true;
 		}
+
+		var roleNodes = responseXML.getElementsByTagName("role");
+		var allRoles = "";
+		for(var roleIndex = 0; roleIndex < roleNodes.length; roleIndex++){
+			var roleName = roleNodes[roleIndex].childNodes[0].nodeValue;
+			if(roleName == "Deputy"){
+				allRoles += "<img style='max-height:50px; max-width:50px' src='deputy.png' alt='Deputy' title='Deputy'>";
+			} else if(roleName == "Outlaw"){
+				allRoles += "<img style='max-height:50px; max-width:50px' src='outlaw.png' alt='Outlaw' title='Outlaw'>";
+			} else if(roleName == "Sheriff"){
+				allRoles += "<img style='max-height:50px; max-width:50px' src='sheriff.png' alt='Sheriff' title='Sheriff'>";
+			} else if(roleName == "Renegade"){
+				allRoles += "<img style='max-height:50px; max-width:50px' src='renegade.png' alt='Renegade' title='Renegade'>";
+			}
+		}
+		if(document.getElementById("remainingroles").innerHTML != allRoles){
+			document.getElementById("remainingroles").innerHTML = allRoles;
+		}
+
 		var playerNodes = responseXML.getElementsByTagName("player");
 
 		var foundSelf = false;

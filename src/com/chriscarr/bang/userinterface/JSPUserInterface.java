@@ -22,6 +22,10 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		messages = new ArrayList<Message>();
 		responses = new ArrayList<Message>();
 	}
+
+	public ArrayList<String> getRoles(){
+		return turn.getRoles();
+	}
 	
 	protected void waitForResponse(String player){
 		while(responses.isEmpty()){
