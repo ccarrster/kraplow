@@ -7,6 +7,8 @@ import com.chriscarr.bang.Player;
 
 public interface UserInterface {
 
+	int askBlueDiscard(Player player);
+
 	int askDiscard(Player player);
 
 	int askPlay(Player player);
@@ -31,6 +33,8 @@ public interface UserInterface {
 	boolean chooseFromPlayer(Player player);	
 
 	List<Object> chooseTwoDiscardForLife(Player player);
+
+	List<Object> chooseTwoDiscardForShoot(Player player);
 	
 	public void printInfo(String info);
 

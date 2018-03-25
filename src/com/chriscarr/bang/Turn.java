@@ -188,6 +188,20 @@ public class Turn {
 						+ " drew a card from the deck.");
 			}
 			hand.add(deck.pull());
+		} else if (Figure.PIXIEPETE.equals(player.getName())) {
+			hand.add(deck.pull());
+			hand.add(deck.pull());
+			hand.add(deck.pull());
+			hand.add(deck.pull());
+		} else if (Figure.BILLNOFACE.equals(player.getName())) {
+			hand.add(deck.pull());
+			int cardsToDraw = player.getMaxHealth() - player.getHealth();
+			while(cardsToDraw < 0){
+				hand.add(deck.pull());
+				cardsToDraw -= 1;
+			}
+			userInterface.printInfo(player.getName()
+						+ " drew "+(player.getMaxHealth() - player.getHealth() + 1)+" card(s) from the deck.");
 		} else {
 			hand.add(deck.pull());
 			Object secondCard = deck.pull();
@@ -207,6 +221,9 @@ public class Turn {
 	}
 
 	public void discard(Player player) {
+		if (Figure.SEANMALLORY.equals(player.getName())) {
+			return;
+		}
 		discardTwoCardsForLife(player, discard, userInterface);
 		Hand hand = player.getHand();
 		String discardedCards = "";
@@ -251,6 +268,48 @@ public class Turn {
 		int card = -2;
 		while (card < -1 || card > hand.size() - 1) {
 			card = userInterface.askPlay(currentPlayer);
+			if(card > (hand.size() - 1) && Figure.CHUCKWENGAM.equals(currentPlayer.getName())){
+				if(currentPlayer.getHealth() > 1){
+					currentPlayer.setHealth(currentPlayer.getHealth() - 1);
+					Hand playerHand = currentPlayer.getHand();
+					playerHand.add(deck.pull());
+					playerHand.add(deck.pull());
+					userInterface.printInfo(currentPlayer.getName()
+							+ " traded one life for 2 cards.");
+					return;
+				}
+			} else if(card > (hand.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getName())){
+				int cardIndex = userInterface.askBlueDiscard(currentPlayer);
+				Card playedCard = (Card) hand.get(cardIndex);
+				if(playedCard.getType() == Card.TYPEGUN || playedCard.getType() == Card.TYPEITEM){
+					hand.remove(cardIndex);
+					discard.add(playedCard);
+					hand.add(deck.pull());
+					hand.add(deck.pull());
+					userInterface.printInfo(currentPlayer.getName()
+							+ " traded one blue card for 2 cards.");
+					return;
+				}
+			} else if(card > (hand.size() - 1) && Figure.DOCHOLYDAY.equals(currentPlayer.getName())){
+				List<Object> cardsToDiscard = userInterface.chooseTwoDiscardForShoot(currentPlayer);
+				if(cardsToDiscard.size() == 2){
+					for (Object discardcard : cardsToDiscard) {
+						hand.remove(discardcard);
+						discard.add(discardcard);
+						userInterface.printInfo(Figure.SIDKETCHUM
+								+ " discards " + ((Card) discardcard).getName()
+								+ " for shoot.");
+					}
+					Bang tempBang = new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE7, Card.TYPEPLAY);
+					boolean success = tempBang.play(currentPlayer, players, userInterface, deck, discard, this, true);
+					if(!success){
+						hand.add(discard.remove());
+						hand.add(discard.remove());
+					}
+					return;
+				}
+				
+			}
 			System.out.println("Turn askPlay card: " + card);
 		}
 		if (hand.size() == 0 || card == -1) {
@@ -304,6 +363,8 @@ public class Turn {
 					return playedMiss;
 				} else if (Card.CARDBANG.equals(card.getName())
 						&& Figure.CALAMITYJANET.equals(player.getName())) {
+					return playedMiss;
+				} else if (Figure.ELENAFUENTE.equals(player.getName())) {
 					return playedMiss;
 				}
 			}
@@ -505,9 +566,15 @@ public class Turn {
 			while (!doNotPlayBeer && player.getHealth() <= 0) {
 				int playedBeer = validPlayBeer(player, userInterface);
 				if (playedBeer != -1) {
-					player.setHealth(player.getHealth() + 1);
-					discard.add(player.getHand().remove(playedBeer));
-					userInterface.printInfo(player.getName() + " plays a beer and gains one life.");
+					if(Figure.TEQUILAJOE.equals(player.getName())){
+						player.setHealth(player.getHealth() + 2);
+						discard.add(player.getHand().remove(playedBeer));
+						userInterface.printInfo(player.getName() + " plays a beer and gains two lifes.");
+					} else {
+						player.setHealth(player.getHealth() + 1);
+						discard.add(player.getHand().remove(playedBeer));
+						userInterface.printInfo(player.getName() + " plays a beer and gains one life.");
+					}
 				} else {
 					doNotPlayBeer = true;
 				}
@@ -554,7 +621,7 @@ public class Turn {
 		userInterface.printInfo(player.getName() + " is dead. Role was "
 				+ Player.roleToString(player.getRole()));
 		if (!isGameOver(players)) {
-			deadDiscardAll(player, players, discard);
+			deadDiscardAll(player, players, discard, deck);
 			if (damager != null) {
 				if (damager.getRole() == Player.SHERIFF
 						&& player.getRole() == Player.DEPUTY) {
@@ -597,7 +664,7 @@ public class Turn {
 	}
 
 	public void deadDiscardAll(Player player, List<Player> players,
-			Discard discard) {
+			Discard discard, Deck deck) {
 		List<Object> discardCards = new ArrayList<Object>();
 		Hand hand = player.getHand();
 		while (hand.size() != 0) {
@@ -635,6 +702,30 @@ public class Turn {
 			userInterface.printInfo(Figure.VULTURESAM + " takes "
 					+ player.getName() + "'s cards.");
 		}
+		for (Player alivePlayer : players) {
+			if (Figure.GREGDIGGER.equals(alivePlayer.getName())) {
+				int bonusHealth = 0;
+				if(alivePlayer.getHealth() < alivePlayer.getMaxHealth()){
+					alivePlayer.setHealth(alivePlayer.getHealth() + 1);
+					bonusHealth += 1;
+				}
+				if(alivePlayer.getHealth() < alivePlayer.getMaxHealth()){
+					alivePlayer.setHealth(alivePlayer.getHealth() + 1);
+					bonusHealth += 1;
+				}
+				userInterface.printInfo(Figure.GREGDIGGER + " gets "+bonusHealth+" health.");
+			}
+		}
+		for (Player alivePlayer : players) {
+			if (Figure.HERBHUNTER.equals(alivePlayer.getName())) {
+				Hand herbHand = alivePlayer.getHand();
+				herbHand.add(deck.pull());
+				herbHand.add(deck.pull());
+				userInterface.printInfo(Figure.HERBHUNTER + " draws 2 cards.");
+			}
+		}
+		
+		
 	}
 
 	public static boolean isGameOver(List<Player> players) {

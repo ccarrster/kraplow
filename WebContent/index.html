@@ -19,7 +19,7 @@ function copyToClipboard() {
 <div id="gameInfo">
 	<p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
 	<p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
-	<p>Expansion Sidestep Township(Testing):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/></p>
+	<p>Expansion Sidestep Township(Testing):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: Some characters implemented(Still need images)</p>
 	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
 	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
 </div>
@@ -519,6 +519,17 @@ function copyToClipboard() {
 							result += '<a href="" onClick="document.getElementById(\'discard' + i + '\').style.display = \'none\'; document.getElementById(\'result' + i + '\').style.display = \'inline\'; selected = selected.replace(\',' + i + ',\', \',\'); return false;"><img src="card.png" style="display:none;" alt="Discarding ' + splitData[i] + '" title="' + splitData[i] + description +'" id="discard' + i + '" height="90"></a> ';
 						}
 					}
+				} else if(command.indexOf("chooseTwoDiscardForShoot") != -1){
+					selected = ",";
+					result += "<a href='' onClick='sendResponse(selected, " + messageId + "); selected = \",\"; return false;'><img src='ok.png' alt='ok' height='90'></a> ";
+					for(var i = 0; i < splitData.length; i++){
+						if(splitData[i] != ""){
+							var description = " - " + getDescriptionForCard(splitData[i]);
+							var image = getImageForCard(splitData[i]);
+							result += '<a href="" onClick="document.getElementById(\'result' + i + '\').style.display = \'none\'; document.getElementById(\'discard' + i + '\').style.display = \'inline\'; selected += \'' + i + ',\'; return false;"><img src="' + image + '" alt="Keeping ' + splitData[i] + '" title="' + splitData[i] + description +'" id="result' + i + '" height="90"></a> ';
+							result += '<a href="" onClick="document.getElementById(\'discard' + i + '\').style.display = \'none\'; document.getElementById(\'result' + i + '\').style.display = \'inline\'; selected = selected.replace(\',' + i + ',\', \',\'); return false;"><img src="card.png" style="display:none;" alt="Discarding ' + splitData[i] + '" title="' + splitData[i] + description +'" id="discard' + i + '" height="90"></a> ';
+						}
+					}
 				} else if(command.indexOf("respondTwoMiss") != -1){
 					selected = ",";
 					result += "<img src='ok.png' alt='ok' onClick='sendResponse(selected, " + messageId + "); selected = \",\"; return false;' height='90'> ";
@@ -726,6 +737,8 @@ function copyToClipboard() {
    function commandName(command){
    		if(command == "askDiscard"){
    			return "Discard down to number of remaining life";
+   		} else if(command == "askBlueDiscard"){
+   			return "Discard a blue card to draw 2 others";
    		} else if(command == "askOthersCard"){
    			return "Choose a card to remove from player";
    		} else if(command == "askPlay"){
@@ -744,6 +757,8 @@ function copyToClipboard() {
    			return "Choose a general store card to take";
    		} else if(command == "chooseTwoDiscardForLife"){
    			return "Discard cards for Life(2 for 1, 4 for 2)";
+   		} else if(command == "chooseTwoDiscardForShoot"){
+   			return "Discard cards for Shoot(2 for 1)";
    		} else if(command == "respondBang"){
    			return "Play a Shoot or lose a life";
    		} else if(command == "respondBeer"){
@@ -1416,8 +1431,38 @@ function copyToClipboard() {
    		return "vulturesam.png";
    	} else if(playerName == "Willy the Kid"){
    		return "willythekid.png";
+   	} else if(playerName == "Chuck Wengam"){
+		return "player.png";
+	} else if(playerName == "Elena Fuente"){
+		return "player.png";
+	} else if(playerName == "Belle Star"){
+		return "player.png";
+	} else if(playerName == "Jose Delgado"){
+		return "player.png";
+	} else if(playerName == "Greg Digger"){
+		return "player.png";
+	} else if(playerName == "Doc Holyday"){
+		return "player.png";
+	} else if(playerName == "Pixie Pete"){
+		return "player.png";
+	} else if(playerName == "Molly Stark"){
+		return "player.png";
+	} else if(playerName == "Apache Kid"){
+		return "player.png";
+	} else if(playerName == "Herb Hunter"){
+		return "player.png";
+	} else if(playerName == "Bill Noface"){
+		return "player.png";
+	} else if(playerName == "Pat Brennan"){
+		return "player.png";
+	} else if(playerName == "Tequila Joe"){
+		return "player.png";
+	} else if(playerName == "Vera Custer"){
+		return "player.png";
+	} else if(playerName == "Sean Mallory"){
+		return "player.png";
    	} else {
-   		return "player.png";
+   		return "cancel.png";
    	}
    }
 
@@ -1454,7 +1499,7 @@ function copyToClipboard() {
    		return "Takes all cards from dead players.";
    	} else if(playerName == "Willy the Kid"){
    		return "No limit on Shoots per turn.";
-   	}  else if(playerName == "Chuck Wengam"){
+   	} else if(playerName == "Chuck Wengam"){
 		return "Change one life for 2 cards";
 	} else if(playerName == "Elena Fuente"){
 		return "Any card can be a miss";

@@ -36,8 +36,8 @@ public class Figure {
 	public static String TEQUILAJOE = "Tequila Joe";
 	public static String VERACUSTER = "Vera Custer";
 	public static String SEANMALLORY = "Sean Mallory";
-	public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, BELLESTAR, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, APACHEKID, HERBHUNTER, BILLNOFACE, PATBRENNAN, TEQUILAJOE, VERACUSTER, SEANMALLORY};
-	
+	//public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, BELLESTAR, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, APACHEKID, HERBHUNTER, BILLNOFACE, PATBRENNAN, TEQUILAJOE, VERACUSTER, SEANMALLORY};
+	public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, HERBHUNTER, BILLNOFACE, TEQUILAJOE, SEANMALLORY};
 	public static int PLAYBANG = 0;
 	public static int PLAYMISSED = 1;
 	public static int GETSHOT = 2;
@@ -99,7 +99,7 @@ public class Figure {
 		} else if(name.equals(ELENAFUENTE)){
 			return "Any card can be a miss";
 		} else if(name.equals(BELLESTAR)){
-			return "On her turn others cards do not work";
+			return "On her turn others cards do not work"; //Not
 		} else if(name.equals(JOSEDELGADO)){
 			return "On his turn discard blue card to draw 2";
 		} else if(name.equals(GREGDIGGER)){
@@ -109,19 +109,19 @@ public class Figure {
 		} else if(name.equals(PIXIEPETE)){
 			return "Draws 4 cards";
 		} else if(name.equals(MOLLYSTARK)){
-			return "When playing cards out of turn, draw 1";
+			return "When playing cards out of turn, draw 1"; //Not
 		} else if(name.equals(APACHEKID)){
-			return "Others diamond cards do not work";
+			return "Others diamond cards do not work"; //Not
 		} else if(name.equals(HERBHUNTER)){
 			return "When other dies, draw 2 cards";
 		} else if(name.equals(BILLNOFACE)){
 			return "Draws 1 card and an extra for each missing health";
 		} else if(name.equals(PATBRENNAN)){
-			return "Can draw a card infront of another player";
-		} else if(name.equals(TEQUILAJOE)){
+			return "Can draw a card infront of another player"; //Not
+		} else if(name.equals(TEQUILAJOE)){ 
 			return "Beer gives him 2 life";
 		} else if(name.equals(VERACUSTER)){
-			return "Copies abilities of others";
+			return "Copies abilities of others"; //Not
 		} else if(name.equals(SEANMALLORY)){
 			return "Has no handsize limit";
 		} else {

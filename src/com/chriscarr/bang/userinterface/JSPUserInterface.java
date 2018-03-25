@@ -58,6 +58,17 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		return Integer.parseInt(removeResponse(player.getName()));
 	}
 	@Override
+	public int askBlueDiscard(Player player) {
+		Hand hand = player.getHand();
+		String handCards = "";
+		for(int i = 0; i < hand.size(); i++){
+			handCards += ((Card)hand.get(i)).getName() + ", ";
+		}
+		sendMessage(player.getName(), "askBlueDiscard " + handCards);
+		waitForResponse(player.getName());
+		return Integer.parseInt(removeResponse(player.getName()));
+	}
+	@Override
 	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
 		String inPlayCards = "";
 		for(int i = 0; i < inPlay.count(); i++){
@@ -83,6 +94,15 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 				targetString += otherName + "$";
 			}
 			handCards += name + "@" + canPlay + "@" + targetString + ", ";
+		}
+		if(Figure.CHUCKWENGAM.equals(player.getName())){
+			handCards += "loselifefor2cards" + "@true@" + player.getName() + "$" + ", ";
+		}
+		if(Figure.JOSEDELGADO.equals(player.getName())){
+			handCards += "discardbluetodraw2" + "@true@" + player.getName() + "$" + ", ";
+		}
+		if(Figure.DOCHOLYDAY.equals(player.getName())){
+			handCards += "discardtwotoshoot" + "@true@" + player.getName() + "$" + ", ";
 		}
 		sendMessage(player.getName(), "askPlay " + handCards);
 		waitForResponse(player.getName());
@@ -160,6 +180,18 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			handCards += ((Card)hand.get(i)).getName() + ", ";
 		}
 		sendMessage(player.getName(), "chooseTwoDiscardForLife " + handCards);
+		waitForResponse(player.getName());
+		return makeCardList(removeResponse(player.getName()), player);
+	}
+
+	@Override
+	public List<Object> chooseTwoDiscardForShoot(Player player) {
+		Hand hand = player.getHand();
+		String handCards = "";
+		for(int i = 0; i < hand.size(); i++){
+			handCards += ((Card)hand.get(i)).getName() + ", ";
+		}
+		sendMessage(player.getName(), "chooseTwoDiscardForShoot " + handCards);
 		waitForResponse(player.getName());
 		return makeCardList(removeResponse(player.getName()), player);
 	}
