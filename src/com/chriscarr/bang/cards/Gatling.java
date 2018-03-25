@@ -6,6 +6,8 @@ import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Gatling extends Card implements Playable {
@@ -46,6 +48,11 @@ public class Gatling extends Card implements Playable {
 			} else {
 				discard.add(gatlingPlayer.getHand().remove(missPlayed));
 				userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + Card.CARDGATLING);
+				if(Figure.MOLLYSTARK.equals(gatlingPlayer.getName())){
+					Hand otherHand = gatlingPlayer.getHand();
+					otherHand.add(deck.pull());
+					userInterface.printInfo(gatlingPlayer.getName() + " draws a card");
+				}
 			}
 			gatlingPlayer = nextPlayer;
 		}

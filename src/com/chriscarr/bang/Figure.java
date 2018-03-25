@@ -37,7 +37,8 @@ public class Figure {
 	public static String VERACUSTER = "Vera Custer";
 	public static String SEANMALLORY = "Sean Mallory";
 	//public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, BELLESTAR, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, APACHEKID, HERBHUNTER, BILLNOFACE, PATBRENNAN, TEQUILAJOE, VERACUSTER, SEANMALLORY};
-	public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, HERBHUNTER, BILLNOFACE, TEQUILAJOE, SEANMALLORY};
+	public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, HERBHUNTER, BILLNOFACE, TEQUILAJOE, SEANMALLORY};
+	
 	public static int PLAYBANG = 0;
 	public static int PLAYMISSED = 1;
 	public static int GETSHOT = 2;
@@ -109,7 +110,7 @@ public class Figure {
 		} else if(name.equals(PIXIEPETE)){
 			return "Draws 4 cards";
 		} else if(name.equals(MOLLYSTARK)){
-			return "When playing cards out of turn, draw 1"; //Not
+			return "When playing cards out of turn, draw 1";
 		} else if(name.equals(APACHEKID)){
 			return "Others diamond cards do not work"; //Not
 		} else if(name.equals(HERBHUNTER)){

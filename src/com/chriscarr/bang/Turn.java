@@ -574,6 +574,11 @@ public class Turn {
 						player.setHealth(player.getHealth() + 1);
 						discard.add(player.getHand().remove(playedBeer));
 						userInterface.printInfo(player.getName() + " plays a beer and gains one life.");
+						if(Figure.MOLLYSTARK.equals(player.getName())){
+							Hand otherHand = player.getHand();
+							otherHand.add(deck.pull());
+							userInterface.printInfo(player.getName() + " draws a card");
+						}
 					}
 				} else {
 					doNotPlayBeer = true;

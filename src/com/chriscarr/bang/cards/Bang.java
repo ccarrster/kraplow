@@ -61,6 +61,11 @@ public class Bang extends Card implements Playable {
 					for(int i = 0; i < missesRequired; i++){
 						discard.add(otherPlayer.getHand().remove(missPlayed));
 						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+						if(Figure.MOLLYSTARK.equals(otherPlayer.getName())){
+							Hand otherHand = otherPlayer.getHand();
+							otherHand.add(deck.pull());
+							userInterface.printInfo(otherPlayer.getName() + " draws a card");
+						}
 					}
 				}
 			} else if(missesRequired == 2){
@@ -75,6 +80,11 @@ public class Bang extends Card implements Playable {
 						hand.remove(card);
 						discard.add(card);
 						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+						if(Figure.MOLLYSTARK.equals(otherPlayer.getName())){
+							Hand otherHand = otherPlayer.getHand();
+							otherHand.add(deck.pull());
+							userInterface.printInfo(otherPlayer.getName() + " draws a card");
+						}
 					}
 				}	
 			}

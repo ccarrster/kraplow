@@ -7,6 +7,8 @@ import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Duel extends Card implements Playable {
@@ -50,6 +52,11 @@ public class Duel extends Card implements Playable {
 					Object card = other.getHand().remove(bangPlayed);
 					discard.add(card);
 					userInterface.printInfo(other.getName() + " plays a " + ((Card)card).getName());
+					if(Figure.MOLLYSTARK.equals(other.getName())){
+						Hand otherHand = other.getHand();
+						otherHand.add(deck.pull());
+						userInterface.printInfo(other.getName() + " draws a card");
+					}
 				}		
 				int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
 				if(currentBangPlayed == -1){

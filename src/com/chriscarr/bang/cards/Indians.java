@@ -6,6 +6,8 @@ import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Indians extends Card implements Playable {
@@ -42,6 +44,11 @@ public class Indians extends Card implements Playable {
 			} else {
 				discard.add(indianPlayer.getHand().remove(bangPlayed));
 				userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
+				if(Figure.MOLLYSTARK.equals(indianPlayer.getName())){
+					Hand otherHand = indianPlayer.getHand();
+					otherHand.add(deck.pull());
+					userInterface.printInfo(indianPlayer.getName() + " draws a card");
+				}
 			}
 			indianPlayer = nextPlayer; 
 		}
