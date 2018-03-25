@@ -55,7 +55,7 @@ public class Figure {
 	}
 	
 	public static int getStartingHealth(String name) {
-		if(name.equals(PAULREGRET) || name.equals(ELGRINGO)){
+		if(name.equals(PAULREGRET) || name.equals(ELGRINGO) || name.equals(VERACUSTER) || name.equals(APACHEKID) || name.equals(PIXIEPETE) || name.equals(ELENAFUENTE) || name.equals(SEANMALLORY)){
 			return 3;
 		} else {
 			return 4;
