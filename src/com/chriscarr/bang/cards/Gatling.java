@@ -46,8 +46,15 @@ public class Gatling extends Card implements Playable {
 				turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				userInterface.printInfo(gatlingPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + Card.CARDGATLING);
 			} else {
-				discard.add(gatlingPlayer.getHand().remove(missPlayed));
-				userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + Card.CARDGATLING);
+				Card missCard = (Card)gatlingPlayer.getHand().remove(missPlayed);
+				discard.add(missCard);
+				if(missCard.getName().equals(CARDDODGE)){
+					Hand otherHand = gatlingPlayer.getHand();
+					otherHand.add(deck.pull());
+					userInterface.printInfo(gatlingPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDGATLING + " and draws a card");
+				} else {
+					userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + Card.CARDGATLING);	
+				}	
 				if(Figure.MOLLYSTARK.equals(gatlingPlayer.getAbility())){
 					Hand otherHand = gatlingPlayer.getHand();
 					otherHand.add(deck.pull());

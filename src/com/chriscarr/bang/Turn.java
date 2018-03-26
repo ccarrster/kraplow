@@ -413,6 +413,8 @@ public class Turn {
 				Card card = (Card) hand.get(playedMiss);
 				if (Card.CARDMISSED.equals(card.getName())) {
 					return playedMiss;
+				} else if (Card.CARDDODGE.equals(card.getName())) {
+					return playedMiss;
 				} else if (Card.CARDBANG.equals(card.getName())
 						&& Figure.CALAMITYJANET.equals(player.getAbility())) {
 					return playedMiss;
@@ -479,10 +481,18 @@ public class Turn {
 					distance = distance + 1;
 				}
 			}
+			if (otherPlayer.getInPlay().hasItem(Card.CARDHIDEOUT)) {
+				if(!Figure.BELLESTAR.equals(player.getAbility())){
+					distance = distance + 1;
+				}
+			}
 			if (Figure.PAULREGRET.equals(otherPlayer.getAbility())) {
 				distance = distance + 1;
 			}
 			if (player.getInPlay().hasItem(Card.CARDSCOPE)) {
+				distance = distance - 1;
+			}
+			if (player.getInPlay().hasItem(Card.CARDSILVER)) {
 				distance = distance - 1;
 			}
 			if (Figure.ROSEDOOLAN.equals(player.getAbility())) {

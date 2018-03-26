@@ -101,4 +101,42 @@ public class BangDeck {
 		cards.add(new WellsFargo(Card.CARDWELLSFARGO, Card.HEARTS, Card.VALUE3, Card.TYPEPLAY));
 		return cards;		
 	}
+
+	public static ArrayList<Card> makeSidestepDeck(){
+		ArrayList<Card> cards = new ArrayList<Card>();		
+		//Blue cards
+		cards.add(new Gun(Card.CARDREMINGTON, Card.DIAMONDS, Card.VALUE6, Card.TYPEGUN));
+		cards.add(new Gun(Card.CARDREVCARBINE, Card.SPADES, Card.VALUE5, Card.TYPEGUN));
+		cards.add(new Card(Card.CARDBARREL, Card.CLUBS, Card.VALUEA, Card.TYPEITEM));
+		cards.add(new Card(Card.CARDDYNAMITE, Card.CLUBS, Card.VALUE10, Card.TYPEITEM));
+		cards.add(new Card(Card.CARDMUSTANG, Card.HEARTS, Card.VALUE5, Card.TYPEITEM));
+		cards.add(new Card(Card.CARDSILVER, Card.DIAMONDS, Card.VALUE10, Card.TYPEITEM));
+		cards.add(new Card(Card.CARDHIDEOUT, Card.DIAMONDS, Card.VALUEK, Card.TYPEITEM));
+		cards.add(new Card(Card.CARDHIDEOUT, Card.DIAMONDS, Card.VALUEK, Card.TYPEITEM));
+		
+		//Brown cards	
+		cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE5, Card.TYPEPLAY));
+		cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEK, Card.TYPEPLAY));
+		cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE6, Card.TYPEPLAY));
+		cards.add(new Bang(Card.CARDBANG, Card.SPADES, Card.VALUE8, Card.TYPEPLAY));
+		
+		cards.add(new Missed(Card.CARDMISSED, Card.DIAMONDS, Card.VALUE8, Card.TYPEPLAY));
+
+		cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE6, Card.TYPEPLAY));
+		cards.add(new Beer(Card.CARDBEER, Card.SPADES, Card.VALUE6, Card.TYPEPLAY));
+		
+		cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
+		
+		cards.add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUE8, Card.TYPEPLAY));
+
+		cards.add(new Indians(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUE5, Card.TYPEPLAY));
+
+		cards.add(new RagTime(Card.CARDRAGTIME, Card.HEARTS, Card.VALUE9, Card.TYPEPLAY));
+
+		cards.add(new Dodge(Card.CARDDODGE, Card.DIAMONDS, Card.VALUE7, Card.TYPEPLAY));
+		cards.add(new Dodge(Card.CARDDODGE, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
+
+		cards.add(new Dodge(Card.CARDWHISKY, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
+		return cards;		
+	}
 }

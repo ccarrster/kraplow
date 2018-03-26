@@ -63,8 +63,15 @@ public class Bang extends Card implements Playable {
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
 				} else {
 					for(int i = 0; i < missesRequired; i++){
-						discard.add(otherPlayer.getHand().remove(missPlayed));
-						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+						Card missCard = (Card)otherPlayer.getHand().remove(missPlayed);
+						discard.add(missCard);
+						if(missCard.getName().equals(CARDDODGE)){
+							Hand otherHand = otherPlayer.getHand();
+							otherHand.add(deck.pull());
+							userInterface.printInfo(otherPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
+						} else {
+							userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+						}
 						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
 							Hand otherHand = otherPlayer.getHand();
 							otherHand.add(deck.pull());
