@@ -34,9 +34,12 @@ The main frontend loops poll on what action to do next and chat.
 
 There is no database, everything is stored in session memmory.
 
-Working on Sidestep Township expansion. I have the characters names and abilities text entered, nothing else yet.
-Still need images for players
-Implement players abilities
-Add green card mechanic
-Add green and other cards
+Working on Sidestep Township expansion.
+Characters and Images Added.
+New Blue and Brown cards added and working.
+Green Cards are added.
+Need to make green cards work.
+Need to add images for new blue, brown, green cards.
+Need to show card suits for Apache Kid.
+Need to fix bugs I create.
 ```
