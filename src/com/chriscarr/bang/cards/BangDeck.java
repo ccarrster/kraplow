@@ -136,7 +136,15 @@ public class BangDeck {
 		cards.add(new Dodge(Card.CARDDODGE, Card.DIAMONDS, Card.VALUE7, Card.TYPEPLAY));
 		cards.add(new Dodge(Card.CARDDODGE, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
 
-		cards.add(new Dodge(Card.CARDWHISKY, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
+		cards.add(new Whisky(Card.CARDWHISKY, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
+
+		cards.add(new Punch(Card.CARDPUNCH, Card.SPADES, Card.VALUE10, Card.TYPEPLAY));
+
+		cards.add(new Tequila(Card.CARDTEQUILA, Card.CLUBS, Card.VALUE9, Card.TYPEPLAY));
+
+		cards.add(new Brawl(Card.CARDBRAWL, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
+
+		cards.add(new Springfield(Card.CARDSPRINGFIELD, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
 		return cards;		
 	}
 }

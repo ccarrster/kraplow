@@ -58,6 +58,10 @@ public class Card implements Playable{
 	public static final String CARDWHISKY = "Whisky";
 	public static final String CARDHIDEOUT = "Hideout";
 	public static final String CARDSILVER = "Silver";
+	public static final String CARDPUNCH = "Punch";
+	public static final String CARDBRAWL = "Brawl";
+	public static final String CARDTEQUILA = "Tequila";
+	public static final String CARDSPRINGFIELD = "Springfield";
 	
 	private String name;
 	private int suit;

@@ -21,7 +21,7 @@ public class Setup {
 	}
 
 	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener, boolean sidestep) {
-		deck = setupDeck();
+		deck = setupDeck(sidestep);
 		deck.shuffle();
 		Discard discard = new Discard();
 		deck.setDiscard(discard);
@@ -41,11 +41,17 @@ public class Setup {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static Deck setupDeck(){
+	public static Deck setupDeck(boolean sidestep){
 		Deck deck = new Deck();
 		List<Card> cards = BangDeck.makeDeck();
 		for(Card card : cards){
 			deck.add(card);
+		}
+		if(sidestep){
+			List<Card> sidestepCards = BangDeck.makeSidestepDeck();
+				for(Card card : sidestepCards){
+				deck.add(card);
+			}
 		}
 		return deck;
 	}

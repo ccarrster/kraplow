@@ -11,8 +11,8 @@ import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
 
-public class Bang extends Card implements Playable {
-	public Bang(String name, int suit, int value, int type) {
+public class Punch extends Card implements Playable {
+	public Punch(String name, int suit, int value, int type) {
 		super(name, suit, value, type);
 	}
 
@@ -20,9 +20,6 @@ public class Bang extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getAbility())){			
-			return false;
-		}
 		return targets(player, players).size() > 1;
 	}
 	
@@ -30,17 +27,15 @@ public class Bang extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#targets(com.chriscarr.bang.Player, java.util.List)
 	 */
 	public List<Player> targets(Player player, List<Player> players){
-		return Turn.getPlayersWithinRange(player, players, player.getGunRange());
+		return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, 1));
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
 	 */
-	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard, boolean skipRange){
-		if(skipDiscard){
-			discard.add(this);
-		}
-		List<Player> others = Turn.getPlayersWithinRange(currentPlayer, players, currentPlayer.getInPlay().getGunRange());
+	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+		discard.add(this);
+		List<Player> others = Turn.getPlayersWithinRange(currentPlayer, players, 1);
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, others, userInterface);
 		if(!(otherPlayer instanceof CancelPlayer)){
 			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
@@ -49,9 +44,6 @@ public class Bang extends Card implements Playable {
 				return true;
 			}
 			int missesRequired = 1;
-			if(Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())){
-				missesRequired = 2;
-			}
 			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
 			missesRequired = missesRequired - barrelMisses;
 			if(missesRequired <= 0){
@@ -79,25 +71,6 @@ public class Bang extends Card implements Playable {
 						}
 					}
 				}
-			} else if(missesRequired == 2){
-				Hand hand = otherPlayer.getHand();
-				List<Object> cardsToDiscard = null;			
-				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);			
-				if(cardsToDiscard.size() == 0){
-					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
-				} else {
-					for(Object card : cardsToDiscard){
-						hand.remove(card);
-						discard.add(card);
-						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
-						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
-							Hand otherHand = otherPlayer.getHand();
-							otherHand.add(deck.pull());
-							userInterface.printInfo(otherPlayer.getName() + " draws a card");
-						}
-					}
-				}	
 			}
 			return true;
 		} else {
@@ -105,12 +78,4 @@ public class Bang extends Card implements Playable {
 			return false;
 		}
 	}
-
-	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
-		return this.play(currentPlayer, players, userInterface, deck, discard, turn, false, false);
-	}
-
-	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard){
-		return this.play(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard, false);
-	}	
 }
