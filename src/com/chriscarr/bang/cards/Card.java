@@ -203,8 +203,8 @@ public class Card implements Playable{
 
 	@Override
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
-		Logger logger = Logger.getLogger(Card.class.getName());
-		logger.log(Level.SEVERE, "type ["+type+"] canUseSingleUse ["+canUseSingleUse+"] name["+name+"]");
+		//Logger logger = Logger.getLogger(Card.class.getName());
+		//logger.log(Level.SEVERE, "type ["+type+"] canUseSingleUse ["+canUseSingleUse+"] name["+name+"]");
 		if((type == TYPESINGLEUSEITEM) && canUseSingleUse){
 			if(name == CARDTENGALLONHAT || name == CARDIRONPLATE || name == CARDBIBLE || name == CARDSOMBRERO){
 				return false;
