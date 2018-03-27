@@ -99,6 +99,20 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			}
 			handCards += name + "@" + canPlay + "@" + targetString + ", ";
 		}
+		InPlay inPlay = player.getInPlay();
+		for(int i = 0; i < inPlay.size(); i++){
+			Card card = (Card)inPlay.get(i);
+			if(card.getType() == Card.TYPESINGLEUSEITEM){
+				String name = card.getName();
+				boolean canPlay = turn.canPlay(player, card);
+				List<String> targets = turn.targets(player, card);
+				String targetString = "";
+				for(String otherName : targets){
+					targetString += otherName + "$";
+				}
+				handCards += name + "@" + canPlay + "@" + targetString + ", ";
+			}
+		}
 		if(Figure.CHUCKWENGAM.equals(player.getAbility())){
 			handCards += "loselifefor2cards" + "@true@" + player.getName() + "$" + ", ";
 		}

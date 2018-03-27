@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
 
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
@@ -31,6 +32,7 @@ public class Card implements Playable{
 	public static final int TYPEGUN = 0;
 	public static final int TYPEITEM = 1;
 	public static final int TYPEPLAY = 2;
+	public static final int TYPESINGLEUSEITEM = 3;
 	public static final String CARDBARREL = "Barrel";
 	public static final String CARDSCOPE = "Scope";
 	public static final String CARDMUSTANG = "Mustang";
@@ -62,11 +64,26 @@ public class Card implements Playable{
 	public static final String CARDBRAWL = "Brawl";
 	public static final String CARDTEQUILA = "Tequila";
 	public static final String CARDSPRINGFIELD = "Springfield";
+	public static final String CARDCONESTOGA = "Conestoga";
+	public static final String CARDBUFFALORIFLE = "Buffalo Rifle";
+	public static final String CARDCANCAN = "Can Can";
+	public static final String CARDHOWITZER = "Howitzer";
+	public static final String CARDSOMBRERO = "Sombrero";
+	public static final String CARDBIBLE = "Bible";
+	public static final String CARDCANTEEN = "Canteen";
+	public static final String CARDIRONPLATE = "Iron Plate";
+	public static final String CARDKNIFE = "Knife";
+	public static final String CARDPEPPERBOX = "Pepperbox";
+	public static final String CARDDERRINGER = "Derringer";
+	public static final String CARDTENGALLONHAT = "Ten Gallon Hat";
+	public static final String CARDPONYEXPRESS = "Pony Express";
+
 	
 	private String name;
 	private int suit;
 	private int value;
 	private int type;
+	private boolean canUseSingleUse = false;
 	
 	public Card(){
 		
@@ -186,6 +203,15 @@ public class Card implements Playable{
 
 	@Override
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
+		Logger logger = Logger.getLogger(Card.class.getName());
+		logger.log(Level.SEVERE, "type ["+type+"] canUseSingleUse ["+canUseSingleUse+"] name["+name+"]");
+		if((type == TYPESINGLEUSEITEM) && canUseSingleUse){
+			if(name == CARDTENGALLONHAT || name == CARDIRONPLATE || name == CARDBIBLE || name == CARDSOMBRERO){
+				return false;
+			} else {
+				return true;
+			}
+		}
 		return !player.isInPlay(name);
 	}
 
@@ -193,6 +219,7 @@ public class Card implements Playable{
 	public boolean play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		currentPlayer.addInPlay(this);
+		canUseSingleUse = false;
 		return true;
 	}
 
@@ -204,10 +231,14 @@ public class Card implements Playable{
 	}
 
 	public static String typeToString(int type) {
-		if(TYPEGUN == type || TYPEITEM == type){
+		if(TYPEGUN == type || TYPEITEM == type || TYPESINGLEUSEITEM == type){
 			return "Item";
 		} else {
 			return "Play";
 		}		
+	}
+
+	public void allowSingleUse(){
+		canUseSingleUse = true;
 	}
 }

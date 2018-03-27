@@ -318,9 +318,18 @@ public class Turn {
 		}
 		Hand hand = currentPlayer.getHand();
 		int card = -2;
-		while (card < -1 || card > hand.size() - 1) {
+		InPlay allInPlay = currentPlayer.getInPlay();
+		ArrayList<Card> singleUseInPlay = new ArrayList<Card>();
+		for(int i = 0; i < allInPlay.size() - 1; i++){
+			Card inPlayCard = (Card)allInPlay.get(i);
+			if(inPlayCard.getType() == Card.TYPESINGLEUSEITEM){
+				singleUseInPlay.add(inPlayCard);
+			}
+		}
+
+		while (card < -1 || card > hand.size() + singleUseInPlay.size() - 1) {
 			card = userInterface.askPlay(currentPlayer);
-			if(card > (hand.size() - 1) && Figure.CHUCKWENGAM.equals(currentPlayer.getAbility())){
+			if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.CHUCKWENGAM.equals(currentPlayer.getAbility())){
 				if(currentPlayer.getHealth() > 1){
 					currentPlayer.setHealth(currentPlayer.getHealth() - 1);
 					Hand playerHand = currentPlayer.getHand();
@@ -330,7 +339,7 @@ public class Turn {
 							+ " traded one life for 2 cards.");
 					return;
 				}
-			} else if(card > (hand.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())){
+			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())){
 				int cardIndex = userInterface.askBlueDiscard(currentPlayer);
 				Card playedCard = (Card) hand.get(cardIndex);
 				if(playedCard.getType() == Card.TYPEGUN || playedCard.getType() == Card.TYPEITEM){
@@ -342,7 +351,7 @@ public class Turn {
 							+ " traded one blue card for 2 cards.");
 					return;
 				}
-			} else if(card > (hand.size() - 1) && Figure.DOCHOLYDAY.equals(currentPlayer.getAbility())){
+			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.DOCHOLYDAY.equals(currentPlayer.getAbility())){
 				List<Object> cardsToDiscard = userInterface.chooseTwoDiscardForShoot(currentPlayer);
 				if(cardsToDiscard.size() == 2){
 					for (Object discardcard : cardsToDiscard) {
@@ -364,10 +373,15 @@ public class Turn {
 			}
 			System.out.println("Turn askPlay card: " + card);
 		}
-		if (hand.size() == 0 || card == -1) {
+		if (hand.size() + singleUseInPlay.size() == 0 || card == -1) {
 			donePlaying = true;
 			userInterface.printInfo(currentPlayer.getName()
 					+ " is finished playing.");
+			InPlay cardsInPlay = currentPlayer.getInPlay();
+			for(int i = 0; i < cardsInPlay.size() - 1; i++){
+				Card inPlayCard = (Card)cardsInPlay.get(i);
+				inPlayCard.allowSingleUse();
+			}
 			return;
 		}
 		Card playedCard = (Card) hand.get(card);
