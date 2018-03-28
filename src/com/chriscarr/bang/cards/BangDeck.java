@@ -116,10 +116,12 @@ public class BangDeck {
 		
 		//Green cards
 		cards.add(new Conestoga(Card.CARDCONESTOGA, Card.DIAMONDS, Card.VALUE9, Card.TYPESINGLEUSEITEM));
+		cards.add(new BuffaloRifle(Card.CARDBUFFALORIFLE, Card.CLUBS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		cards.add(new CanCan(Card.CARDCANCAN, Card.CLUBS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
+
+
 
 		/*
-		cards.add(new SingleUse(Card.CARDBUFFALORIFLE, Card.CLUBS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDCANCAN, Card.CLUBS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
 		cards.add(new SingleUse(Card.CARDHOWITZER, Card.SPADES, Card.VALUE9, Card.TYPESINGLEUSEITEM));
 		cards.add(new SingleUse(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
 		cards.add(new SingleUse(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
