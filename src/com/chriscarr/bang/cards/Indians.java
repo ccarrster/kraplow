@@ -36,12 +36,13 @@ public class Indians extends Card implements Playable {
 		discard.add(this);
 		Player indianPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(indianPlayer != currentPlayer){
+			Player nextPlayer = Turn.getNextPlayer(indianPlayer, players); 
 			if(Figure.APACHEKID.equals(indianPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
 				userInterface.printInfo(indianPlayer.getName() + " is unaffected by diamond Indians");
+				indianPlayer = nextPlayer; 
 				continue;
 			}
 			int bangPlayed = Turn.validPlayBang(indianPlayer, userInterface);
-			Player nextPlayer = Turn.getNextPlayer(indianPlayer, players); 
 			if(bangPlayed == -1){
 				turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				userInterface.printInfo(indianPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);

@@ -6,12 +6,15 @@ import java.util.Collections;
 
 import com.chriscarr.bang.cards.Bang;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.SingleUse;
 import com.chriscarr.bang.cards.Missed;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateImpl;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
 import com.chriscarr.bang.userinterface.UserInterface;
+
+import java.util.logging.*;
 
 public class Turn {
 
@@ -319,14 +322,13 @@ public class Turn {
 		Hand hand = currentPlayer.getHand();
 		int card = -2;
 		InPlay allInPlay = currentPlayer.getInPlay();
-		ArrayList<Card> singleUseInPlay = new ArrayList<Card>();
-		for(int i = 0; i < allInPlay.size() - 1; i++){
+		ArrayList<SingleUse> singleUseInPlay = new ArrayList<SingleUse>();
+		for(int i = 0; i < allInPlay.size(); i++){
 			Card inPlayCard = (Card)allInPlay.get(i);
-			if(inPlayCard.getType() == Card.TYPESINGLEUSEITEM){
-				singleUseInPlay.add(inPlayCard);
+			if(inPlayCard instanceof SingleUse){
+				singleUseInPlay.add((SingleUse)inPlayCard);
 			}
 		}
-
 		while (card < -1 || card > hand.size() + singleUseInPlay.size() - 1) {
 			card = userInterface.askPlay(currentPlayer);
 			if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.CHUCKWENGAM.equals(currentPlayer.getAbility())){
@@ -377,43 +379,54 @@ public class Turn {
 			donePlaying = true;
 			userInterface.printInfo(currentPlayer.getName()
 					+ " is finished playing.");
-			InPlay cardsInPlay = currentPlayer.getInPlay();
-			for(int i = 0; i < cardsInPlay.size() - 1; i++){
-				Card inPlayCard = (Card)cardsInPlay.get(i);
-				inPlayCard.allowSingleUse();
+			InPlay allInPlayActivate = currentPlayer.getInPlay();
+			for(int i = 0; i < allInPlayActivate.size(); i++){
+				Card inPlayCardActivate = (Card)allInPlay.get(i);
+				if(inPlayCardActivate instanceof SingleUse){
+					SingleUse cardActivate = (SingleUse)inPlayCardActivate;
+					cardActivate.setReadyToPlay(true);
+				}
 			}
 			return;
 		}
-		Card playedCard = (Card) hand.get(card);
-		if (playedCard.canPlay(currentPlayer, players, bangsPlayed)) {
-			hand.remove(card);
-			if (playedCard.getName() == Card.CARDGENERALSTORE
-					|| playedCard.getName() == Card.CARDGATLING
-					|| playedCard.getName() == Card.CARDINDIANS) {
-				userInterface.printInfo(currentPlayer.getName() + " played a "
-						+ playedCard.getName() + ".");
-			}
-			boolean success = playedCard.play(currentPlayer, players, userInterface, deck,
-					discard, this);
-			if(success){
-				if (playedCard instanceof Bang || playedCard instanceof Missed) {
-					bangsPlayed++;
-				}
-			}
-			if (playedCard.getName() != Card.CARDCATBALOU
-					&& playedCard.getName() != Card.CARDPANIC
-					&& playedCard.getName() != Card.CARDJAIL
-					&& playedCard.getName() != Card.CARDMISSED
-					&& playedCard.getName() != Card.CARDBANG
-					&& playedCard.getName() != Card.CARDDUEL
-					&& playedCard.getName() != Card.CARDGENERALSTORE
-					&& playedCard.getName() != Card.CARDGATLING
-					&& playedCard.getName() != Card.CARDINDIANS) {
-				userInterface.printInfo(currentPlayer.getName() + " played a "
-						+ playedCard.getName() + ".");
-			}
+		Logger logger = Logger.getLogger(Turn.class.getName());
+		logger.log(Level.SEVERE, "Chosen Card " + card + " handSize "+hand.size() + " singleUseInPlay Size "+singleUseInPlay.size());
+		if(card >= hand.size()){
+			int chosen = card - hand.size();
+			singleUseInPlay.get(chosen).play(currentPlayer, players, userInterface, deck,
+						discard, this);
 		} else {
-			System.out.println("**Turn - Weirdo can not play**");
+			Card playedCard = (Card) hand.get(card);
+			if (playedCard.canPlay(currentPlayer, players, bangsPlayed)) {
+				hand.remove(card);
+				if (playedCard.getName() == Card.CARDGENERALSTORE
+						|| playedCard.getName() == Card.CARDGATLING
+						|| playedCard.getName() == Card.CARDINDIANS) {
+					userInterface.printInfo(currentPlayer.getName() + " played a "
+							+ playedCard.getName() + ".");
+				}
+				boolean success = playedCard.play(currentPlayer, players, userInterface, deck,
+						discard, this);
+				if(success){
+					if (playedCard instanceof Bang || playedCard instanceof Missed) {
+						bangsPlayed++;
+					}
+				}
+				if (playedCard.getName() != Card.CARDCATBALOU
+						&& playedCard.getName() != Card.CARDPANIC
+						&& playedCard.getName() != Card.CARDJAIL
+						&& playedCard.getName() != Card.CARDMISSED
+						&& playedCard.getName() != Card.CARDBANG
+						&& playedCard.getName() != Card.CARDDUEL
+						&& playedCard.getName() != Card.CARDGENERALSTORE
+						&& playedCard.getName() != Card.CARDGATLING
+						&& playedCard.getName() != Card.CARDINDIANS) {
+					userInterface.printInfo(currentPlayer.getName() + " played a "
+							+ playedCard.getName() + ".");
+				}
+			} else {
+				System.out.println("**Turn - Weirdo can not play**");
+			}
 		}
 	}
 

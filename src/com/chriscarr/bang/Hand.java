@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.SingleUse;
 
 public class Hand {
 
 	List<Object> cards = new ArrayList<Object>();
 	
 	public void add(Object object) {
+		if(object instanceof SingleUse){
+			SingleUse card = (SingleUse)object;
+			card.setReadyToPlay(false);
+		}
 		cards.add(object);
 	}
 

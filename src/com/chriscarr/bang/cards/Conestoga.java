@@ -2,46 +2,36 @@ package com.chriscarr.bang.cards;
 
 import java.util.List;
 
-import com.chriscarr.bang.CancelPlayer;
+import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.userinterface.UserInterface;
 
-public class RagTime extends Card implements Playable {
-	public RagTime(String name, int suit, int value, int type) {
+import java.util.logging.*;
+
+public class Conestoga extends SingleUse implements Playable{
+
+	public Conestoga(String name, int suit, int value, int type) {
 		super(name, suit, value, type);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
-	 */
-	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		return true;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.chriscarr.bang.Playable#targets(com.chriscarr.bang.Player, java.util.List)
-	 */
 	public List<Player> targets(Player player, List<Player> players){
 		return Turn.othersWithCardsToTake(player, players);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
-	 */
-	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
-		//Choose card to discard
-		int cardDiscard = userInterface.askDiscard(currentPlayer);
-		if(cardDiscard == -1){
-			return false;
-		}
-		//Choose player to take a card from
+
+	public boolean activate(Player currentPlayer, List<Player> players,
+		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-		//Steal from player
+		if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+			userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond "+this.getName());
+			return true;
+		}
 		if(!(otherPlayer instanceof CancelPlayer)){
 			int chosenCard = -3;
 			while(chosenCard < -2 || chosenCard > otherPlayer.getInPlay().size() - 1){
@@ -60,14 +50,12 @@ public class RagTime extends Card implements Playable {
 				hand.add(card);
 				userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
 			}
-			//discard the card
-			Hand currentHand = currentPlayer.getHand();
-			Object card = currentHand.remove(cardDiscard);
-			discard.add(card);
+			removeFromInPlay(currentPlayer);
 			discard.add(this);
 			return true;
 		} else {
 			return false;
 		}
 	}
+
 }

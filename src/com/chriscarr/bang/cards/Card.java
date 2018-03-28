@@ -83,7 +83,6 @@ public class Card implements Playable{
 	private int suit;
 	private int value;
 	private int type;
-	private boolean canUseSingleUse = false;
 	
 	public Card(){
 		
@@ -203,15 +202,6 @@ public class Card implements Playable{
 
 	@Override
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
-		//Logger logger = Logger.getLogger(Card.class.getName());
-		//logger.log(Level.SEVERE, "type ["+type+"] canUseSingleUse ["+canUseSingleUse+"] name["+name+"]");
-		if((type == TYPESINGLEUSEITEM) && canUseSingleUse){
-			if(name == CARDTENGALLONHAT || name == CARDIRONPLATE || name == CARDBIBLE || name == CARDSOMBRERO){
-				return false;
-			} else {
-				return true;
-			}
-		}
 		return !player.isInPlay(name);
 	}
 
@@ -219,7 +209,6 @@ public class Card implements Playable{
 	public boolean play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		currentPlayer.addInPlay(this);
-		canUseSingleUse = false;
 		return true;
 	}
 
@@ -236,9 +225,5 @@ public class Card implements Playable{
 		} else {
 			return "Play";
 		}		
-	}
-
-	public void allowSingleUse(){
-		canUseSingleUse = true;
 	}
 }

@@ -115,20 +115,23 @@ public class BangDeck {
 		cards.add(new Card(Card.CARDHIDEOUT, Card.DIAMONDS, Card.VALUEK, Card.TYPEITEM));
 		
 		//Green cards
-		cards.add(new Card(Card.CARDCONESTOGA, Card.DIAMONDS, Card.VALUE9, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDBUFFALORIFLE, Card.CLUBS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDCANCAN, Card.CLUBS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDHOWITZER, Card.SPADES, Card.VALUE9, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDCANTEEN, Card.HEARTS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDIRONPLATE, Card.DIAMONDS, Card.VALUEA, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDIRONPLATE, Card.SPADES, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDKNIFE, Card.HEARTS, Card.VALUE8, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDPEPPERBOX, Card.CLUBS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDTENGALLONHAT, Card.DIAMONDS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
-		cards.add(new Card(Card.CARDPONYEXPRESS, Card.DIAMONDS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		cards.add(new Conestoga(Card.CARDCONESTOGA, Card.DIAMONDS, Card.VALUE9, Card.TYPESINGLEUSEITEM));
+
+		/*
+		cards.add(new SingleUse(Card.CARDBUFFALORIFLE, Card.CLUBS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDCANCAN, Card.CLUBS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDHOWITZER, Card.SPADES, Card.VALUE9, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDCANTEEN, Card.HEARTS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDIRONPLATE, Card.DIAMONDS, Card.VALUEA, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDIRONPLATE, Card.SPADES, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDKNIFE, Card.HEARTS, Card.VALUE8, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDPEPPERBOX, Card.CLUBS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDTENGALLONHAT, Card.DIAMONDS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUse(Card.CARDPONYEXPRESS, Card.DIAMONDS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		*/
 
 		//Brown cards	
 		cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE5, Card.TYPEPLAY));
