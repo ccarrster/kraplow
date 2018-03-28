@@ -120,20 +120,19 @@ public class BangDeck {
 		cards.add(new CanCan(Card.CARDCANCAN, Card.CLUBS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
 		cards.add(new Howitzer(Card.CARDHOWITZER, Card.SPADES, Card.VALUE9, Card.TYPESINGLEUSEITEM));
 		cards.add(new Canteen(Card.CARDCANTEEN, Card.HEARTS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Knife(Card.CARDKNIFE, Card.HEARTS, Card.VALUE8, Card.TYPESINGLEUSEITEM));
+		cards.add(new Pepperbox(Card.CARDPEPPERBOX, Card.CLUBS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new PonyExpress(Card.CARDPONYEXPRESS, Card.DIAMONDS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
 
-		
 		/*
 		
 		cards.add(new SingleUse(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
 		cards.add(new SingleUse(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-		
 		cards.add(new SingleUse(Card.CARDIRONPLATE, Card.DIAMONDS, Card.VALUEA, Card.TYPESINGLEUSEITEM));
 		cards.add(new SingleUse(Card.CARDIRONPLATE, Card.SPADES, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDKNIFE, Card.HEARTS, Card.VALUE8, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDPEPPERBOX, Card.CLUBS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
 		cards.add(new SingleUse(Card.CARDTENGALLONHAT, Card.DIAMONDS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDPONYEXPRESS, Card.DIAMONDS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		
 		*/
 
 		//Brown cards	
