@@ -262,19 +262,30 @@ public class Card implements Playable{
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
 				} else {
 					for(int i = 0; i < missesRequired; i++){
-						Card missCard = (Card)otherPlayer.getHand().remove(missPlayed);
-						discard.add(missCard);
-						if(missCard.getName().equals(CARDDODGE)){
-							Hand otherHand = otherPlayer.getHand();
-							otherHand.add(deck.pull());
-							userInterface.printInfo(otherPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
+						if(missPlayed < otherPlayer.getHand().size()){
+							Card missCard = (Card)otherPlayer.getHand().remove(missPlayed);
+							discard.add(missCard);
+							if(missCard.getName().equals(CARDDODGE)){
+								Hand otherHand = otherPlayer.getHand();
+								otherHand.add(deck.pull());
+								userInterface.printInfo(otherPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
+							} else {
+								userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+							}
+							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
+								Hand otherHand = otherPlayer.getHand();
+								otherHand.add(deck.pull());
+								userInterface.printInfo(otherPlayer.getName() + " draws a card");
+							}
 						} else {
-							userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
-						}
-						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
-							Hand otherHand = otherPlayer.getHand();
-							otherHand.add(deck.pull());
-							userInterface.printInfo(otherPlayer.getName() + " draws a card");
+							missPlayed -= otherPlayer.getHand().size();
+							InPlay inPlay = otherPlayer.getInPlay();
+							SingleUseMissed sum = (SingleUseMissed)inPlay.remove(missPlayed);
+							if(sum.getName().equals(Card.CARDBIBLE)){
+								otherPlayer.getHand().add(deck.pull());
+							}
+							userInterface.printInfo(otherPlayer.getName() + " plays a "+sum.getName());
+							discard.add(sum);
 						}
 					}
 				}

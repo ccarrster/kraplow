@@ -39,8 +39,6 @@ public class Springfield extends Card implements Playable {
 		if(cardDiscard == -1){
 			return false;
 		}
-		//Choose player to give a draw to
-		Player targetPlayer = Turn.getValidChosenPlayer(currentPlayer, players, userInterface);
 		
 		boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, false);
 		if(result){

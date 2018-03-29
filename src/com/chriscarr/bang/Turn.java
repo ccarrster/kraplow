@@ -437,15 +437,19 @@ public class Turn {
 				return playedMiss;
 			} else {
 				Hand hand = player.getHand();
-				Card card = (Card) hand.get(playedMiss);
-				if (Card.CARDMISSED.equals(card.getName())) {
-					return playedMiss;
-				} else if (Card.CARDDODGE.equals(card.getName())) {
-					return playedMiss;
-				} else if (Card.CARDBANG.equals(card.getName())
-						&& Figure.CALAMITYJANET.equals(player.getAbility())) {
-					return playedMiss;
-				} else if (Figure.ELENAFUENTE.equals(player.getAbility())) {
+				if(playedMiss < hand.size()){
+					Card card = (Card) hand.get(playedMiss);
+					if (Card.CARDMISSED.equals(card.getName())) {
+						return playedMiss;
+					} else if (Card.CARDDODGE.equals(card.getName())) {
+						return playedMiss;
+					} else if (Card.CARDBANG.equals(card.getName())
+							&& Figure.CALAMITYJANET.equals(player.getAbility())) {
+						return playedMiss;
+					} else if (Figure.ELENAFUENTE.equals(player.getAbility())) {
+						return playedMiss;
+					}
+				} else {
 					return playedMiss;
 				}
 			}

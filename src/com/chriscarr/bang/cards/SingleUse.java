@@ -14,7 +14,7 @@ import java.util.logging.*;
 
 public class SingleUse extends Card implements Playable{
 
-	private boolean readyToPlay = false;
+	protected boolean readyToPlay = false;
 
 	public SingleUse(String name, int suit, int value, int type) {
 		super(name, suit, value, type);

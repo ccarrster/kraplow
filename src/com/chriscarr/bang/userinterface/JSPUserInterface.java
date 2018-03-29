@@ -9,6 +9,7 @@ import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.SingleUseMissed;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateListener;
 
@@ -256,7 +257,14 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		for(int i = 0; i < hand.size(); i++){
 			Card card = (Card)hand.get(i);
 			String name = card.getName();
-			boolean canPlay = Card.CARDMISSED.equals(name) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
+			boolean canPlay = Card.CARDMISSED.equals(name) || Card.CARDDODGE.equals(name) || Figure.ELENAFUENTE.equals(player.getAbility()) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
+			handCards += name + "@" + canPlay + ", ";
+		}
+		InPlay inPlay = player.getInPlay();
+		for(int i = 0; i < inPlay.size(); i++){
+			Card card = (Card)inPlay.get(i);
+			String name = card.getName();
+			boolean canPlay = card instanceof SingleUseMissed;
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondMiss " + handCards);
