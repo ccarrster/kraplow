@@ -125,13 +125,68 @@ public class BangDeck {
 		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
 		cards.add(new PonyExpress(Card.CARDPONYEXPRESS, Card.DIAMONDS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
 
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
 		/*
 		
-		cards.add(new SingleUse(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDIRONPLATE, Card.DIAMONDS, Card.VALUEA, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDIRONPLATE, Card.SPADES, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-		cards.add(new SingleUse(Card.CARDTENGALLONHAT, Card.DIAMONDS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUseMissed(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUseMissed(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUseMissed(Card.CARDIRONPLATE, Card.DIAMONDS, Card.VALUEA, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUseMissed(Card.CARDIRONPLATE, Card.SPADES, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
+		cards.add(new SingleUseMissed(Card.CARDTENGALLONHAT, Card.DIAMONDS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
 		
 		*/
 

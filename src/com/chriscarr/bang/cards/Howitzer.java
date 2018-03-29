@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.Player;
@@ -27,37 +28,16 @@ public class Howitzer extends SingleUse implements Playable{
 	public boolean activate(Player currentPlayer, List<Player> players,
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 
+		discard.add(this);
+		removeFromInPlay(currentPlayer);
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
 			Player nextPlayer = Turn.getNextPlayer(gatlingPlayer, players);
-			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface, 1, currentPlayer) > 0){
-				gatlingPlayer = nextPlayer;
-				continue;
-			}
-			int missPlayed = Turn.validPlayMiss(gatlingPlayer, userInterface);
-			if(missPlayed == -1){
-				turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-				userInterface.printInfo(gatlingPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + this.getName());
-			} else {
-				Card missCard = (Card)gatlingPlayer.getHand().remove(missPlayed);
-				discard.add(missCard);
-				if(missCard.getName().equals(CARDDODGE)){
-					Hand otherHand = gatlingPlayer.getHand();
-					otherHand.add(deck.pull());
-					userInterface.printInfo(gatlingPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + this.getName() + " and draws a card");
-				} else {
-					userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + this.getName());	
-				}	
-				if(Figure.MOLLYSTARK.equals(gatlingPlayer.getAbility())){
-					Hand otherHand = gatlingPlayer.getHand();
-					otherHand.add(deck.pull());
-					userInterface.printInfo(gatlingPlayer.getName() + " draws a card");
-				}
-			}
+			ArrayList<Player> targetPlayer = new ArrayList<Player>();
+			targetPlayer.add(gatlingPlayer);
+			shoot(currentPlayer, targetPlayer, userInterface, deck, discard, turn, true);
 			gatlingPlayer = nextPlayer;
 		}
-		removeFromInPlay(currentPlayer);
-		discard.add(this);
 		return true;
 	}
 }

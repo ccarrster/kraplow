@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
@@ -37,30 +38,9 @@ public class Gatling extends Card implements Playable {
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
 			Player nextPlayer = Turn.getNextPlayer(gatlingPlayer, players);
-			if (Turn.isBarrelSave(gatlingPlayer, deck, discard, userInterface, 1, currentPlayer) > 0){
-				gatlingPlayer = nextPlayer;
-				continue;
-			}
-			int missPlayed = Turn.validPlayMiss(gatlingPlayer, userInterface);
-			if(missPlayed == -1){
-				turn.damagePlayer(gatlingPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-				userInterface.printInfo(gatlingPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + Card.CARDGATLING);
-			} else {
-				Card missCard = (Card)gatlingPlayer.getHand().remove(missPlayed);
-				discard.add(missCard);
-				if(missCard.getName().equals(CARDDODGE)){
-					Hand otherHand = gatlingPlayer.getHand();
-					otherHand.add(deck.pull());
-					userInterface.printInfo(gatlingPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDGATLING + " and draws a card");
-				} else {
-					userInterface.printInfo(gatlingPlayer.getName() + " is missed by " + currentPlayer.getName() + "'s " + Card.CARDGATLING);	
-				}	
-				if(Figure.MOLLYSTARK.equals(gatlingPlayer.getAbility())){
-					Hand otherHand = gatlingPlayer.getHand();
-					otherHand.add(deck.pull());
-					userInterface.printInfo(gatlingPlayer.getName() + " draws a card");
-				}
-			}
+			ArrayList<Player> targetPlayer = new ArrayList<Player>();
+			targetPlayer.add(gatlingPlayer);
+			shoot(currentPlayer, targetPlayer, userInterface, deck, discard, turn, true);
 			gatlingPlayer = nextPlayer;
 		}
 		return true;

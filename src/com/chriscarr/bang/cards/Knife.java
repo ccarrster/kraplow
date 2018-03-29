@@ -27,46 +27,12 @@ public class Knife extends SingleUse implements Playable{
 	public boolean activate(Player currentPlayer, List<Player> players,
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 
-		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-		if(!(otherPlayer instanceof CancelPlayer)){
-			
-			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName() + " with "+this.getName());
-			int missesRequired = 1;
-			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
-			missesRequired = missesRequired - barrelMisses;
-			if(missesRequired <= 0){
-				return true;
-			} else if(missesRequired == 1){
-				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface); 
-				if(missPlayed == -1){
-					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
-				} else {
-					for(int i = 0; i < missesRequired; i++){
-						Card missCard = (Card)otherPlayer.getHand().remove(missPlayed);
-						discard.add(missCard);
-						if(missCard.getName().equals(CARDDODGE)){
-							Hand otherHand = otherPlayer.getHand();
-							otherHand.add(deck.pull());
-							userInterface.printInfo(otherPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
-						} else {
-							userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
-						}
-						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
-							Hand otherHand = otherPlayer.getHand();
-							otherHand.add(deck.pull());
-							userInterface.printInfo(otherPlayer.getName() + " draws a card");
-						}
-					}
-				}
-			}
-
+		boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+		if(result){
 			removeFromInPlay(currentPlayer);
 			discard.add(this);
-			return true;
-		} else {
-			return false;
 		}
+		return result;
 	}
 
 }
