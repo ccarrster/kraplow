@@ -353,6 +353,28 @@ function copyToClipboard() {
 					}
 				}
 			}
+			if(playerNodes.length == 8){
+				if(row == 1){
+					if(column == 1){
+						result += '<td><div style="width:200px; height:200px;">';
+						var size = deckSize.childNodes[0].nodeValue;
+						if(size > 0){
+							result += '<img id="draw_pile" src="card.png" alt="Draw Pile ' + size + ' cards"  title="' + size + ' cards" width="90"> ';
+						}
+
+						var discardCard = responseXML.getElementsByTagName("discardtopcard")[0];
+						if(discardCard != null){
+							var discardName = discardCard.getElementsByTagName("name")[0];
+							var cardName = discardName.childNodes[0].nodeValue;
+							var description = " - " + getDescriptionForCard(cardName);
+							result += '<img id="discard_pile" src="' + getImageForCard(cardName) + '" alt="Discard Pile ' + cardName + '" title="' + cardName + description +'" width="90"> ';
+						}
+						result += '</div></td>';
+						column = column + 1;
+					}
+				}
+			}
+
 			result += '<td>';
 			if(playerNodes.length == 3){
 				if(playerIndex == 0){
@@ -412,6 +434,24 @@ function copyToClipboard() {
 				} else if(playerIndex == 5){
 					loopPlayer = playerNodes[5];
 				} else if(playerIndex == 6){
+					loopPlayer = playerNodes[4];
+				}
+			} else if(playerNodes.length == 8){
+				if(playerIndex == 0){
+					loopPlayer = playerNodes[0];
+				} else if(playerIndex == 1){
+					loopPlayer = playerNodes[1];
+				} else if(playerIndex == 2){
+					loopPlayer = playerNodes[2];
+				} else if(playerIndex == 3){
+					loopPlayer = playerNodes[7];
+				} else if(playerIndex == 4){
+					loopPlayer = playerNodes[3];
+				} else if(playerIndex == 5){
+					loopPlayer = playerNodes[6];
+				} else if(playerIndex == 6){
+					loopPlayer = playerNodes[5];
+				} else if(playerIndex == 7){
 					loopPlayer = playerNodes[4];
 				}
 			} else {
@@ -851,6 +891,8 @@ function copyToClipboard() {
    	joinAi(getServletUrl(), parseJoinAi, gameId, robotIndex, 'Robot ' + (robotIndex + 1));
    }
 
+   var isSidestep = false;
+
    function create(servletUrl, responseHandler) {
       	var visibility = "public";
    		if(document.getElementById("private").checked){
@@ -859,6 +901,7 @@ function copyToClipboard() {
    		var sidestep = "";
    		if(document.getElementById("sidestep").checked){
    			sidestep = "&sidestep=true";
+   			isSidestep = true;
    		}
       	sendXMLHttp(servletUrl + "?messageType=CREATE&visibility="+visibility+sidestep , responseHandler);
    }
@@ -962,7 +1005,11 @@ function copyToClipboard() {
 	}
    	canStart(getServletUrl(), parseCanStart, gameId);
    	setup();
-   	if(playerNodes.length < 7){
+   	var maxPlayers = 7;
+   	if(isSidestep){
+   		maxPlayers = 8;
+   	}
+   	if(playerNodes.length < maxPlayers){
    		newStyle = "block";
    	} else {
    		newStyle = "none";

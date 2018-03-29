@@ -119,6 +119,10 @@ public class Setup {
 			return roles;
 		}
 		roles.add(Player.DEPUTY);
+		if(countPlayers == 7){
+			return roles;
+		}
+		roles.add(Player.RENEGADE);
 		return roles;
 	}
 	

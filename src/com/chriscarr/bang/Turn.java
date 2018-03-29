@@ -669,7 +669,7 @@ public class Turn {
 					if(Figure.TEQUILAJOE.equals(player.getAbility())){
 						player.setHealth(player.getHealth() + 2);
 						discard.add(player.getHand().remove(playedBeer));
-						userInterface.printInfo(player.getName() + " plays a beer and gains two lifes.");
+						userInterface.printInfo(player.getName() + " plays a beer and gains two lives.");
 					} else {
 						player.setHealth(player.getHealth() + 1);
 						discard.add(player.getHand().remove(playedBeer));
@@ -851,11 +851,10 @@ public class Turn {
 	public static String getWinners(List<Player> players) {
 		if (isDead(Player.DEPUTY, players)
 				&& isDead(Player.OUTLAW, players)
-				&& isDead(Player.SHERIFF, players)) {
-			return "Renegades";
+				&& isDead(Player.SHERIFF, players) && players.size() == 1) {
+			return "Renegade";
 		} else if (isDead(Player.SHERIFF, players)
-				&& (!isDead(Player.DEPUTY, players) || !isDead(Player.OUTLAW,
-						players))) {
+				&& (!isDead(Player.DEPUTY, players) || !isDead(Player.OUTLAW, players) || !isDead(Player.RENEGADE, players))) {
 			return "Outlaws"; 
 		} else if (isDead(Player.OUTLAW, players) && isDead(Player.RENEGADE, players)) {
 			return "Sheriff and Deputies";

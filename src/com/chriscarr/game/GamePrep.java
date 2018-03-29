@@ -9,10 +9,16 @@ public class GamePrep {
 	private int counter;
 	private String visibility;
 	private boolean sidestep;
+	private int maxPlayers;
 	
 	public GamePrep(String visibility, boolean sidestep){
 		this.visibility = visibility;
 		this.sidestep = sidestep;
+		if(sidestep){
+			maxPlayers = 8;
+		} else {
+			maxPlayers = 7;
+		}
 		joinedPlayers = new ArrayList<String>();
 		lastUpdated = System.currentTimeMillis();
 	}
@@ -22,7 +28,7 @@ public class GamePrep {
 	}
 
 	public boolean canJoin(){
-		if(joinedPlayers.size() < 7){
+		if(joinedPlayers.size() < maxPlayers){
 			return true;
 		} else {
 			for(int i = 0; i < joinedPlayers.size(); i++) {
@@ -35,7 +41,7 @@ public class GamePrep {
 	}
 
 	public boolean canJoinAI(){
-		if(joinedPlayers.size() < 7){
+		if(joinedPlayers.size() < maxPlayers){
 			return true;
 		} else {
 			return false;
@@ -45,7 +51,7 @@ public class GamePrep {
 	public String join(String handle){
 		if(canJoin()){
 			lastUpdated = System.currentTimeMillis();
-			if(joinedPlayers.size() == 7){
+			if(joinedPlayers.size() == maxPlayers){
 				for(int i = 0; i < joinedPlayers.size(); i++) {
 					if(joinedPlayers.get(i).substring(joinedPlayers.get(i).length() - 2).equals("AI")){
 						joinedPlayers.remove(i);

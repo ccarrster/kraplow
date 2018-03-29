@@ -52,6 +52,7 @@ public class Brawl extends Card implements Playable {
 
 			if(brawlPlayer.getInPlay().count() == 0 && !brawlPlayer.getInPlay().hasGun() && brawlPlayer.getHand().size() == 0){
 				userInterface.printInfo(brawlPlayer.getName() + " has nothing to discard");
+				brawlPlayer = nextPlayer;
 				continue;
 			}
 
