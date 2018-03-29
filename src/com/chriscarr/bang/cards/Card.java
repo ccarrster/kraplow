@@ -256,7 +256,11 @@ public class Card implements Playable{
 			if(missesRequired <= 0){
 				return true;
 			} else if(missesRequired == 1){
-				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface); 
+				boolean canPlaySingleUse = true;
+				if(Figure.BELLESTAR.equals(currentPlayer.getAbility())){
+					canPlaySingleUse = false;
+				}
+				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse); 
 				if(missPlayed == -1){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
@@ -300,7 +304,7 @@ public class Card implements Playable{
 					for(Object card : cardsToDiscard){
 						hand.remove(card);
 						discard.add(card);
-						userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+						userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
 						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
 							Hand otherHand = otherPlayer.getHand();
 							otherHand.add(deck.pull());

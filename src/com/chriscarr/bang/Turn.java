@@ -279,6 +279,7 @@ public class Turn {
 		if (Figure.SEANMALLORY.equals(player.getAbility())) {
 			return;
 		}
+		//TODO move this to active play
 		discardTwoCardsForLife(player, discard, userInterface);
 		Hand hand = player.getHand();
 		String discardedCards = "";
@@ -430,9 +431,9 @@ public class Turn {
 		}
 	}
 
-	public static int validPlayMiss(Player player, UserInterface userInterface) {
+	public static int validPlayMiss(Player player, UserInterface userInterface, boolean canSingleUse) {
 		while (true) {
-			int playedMiss = userInterface.respondMiss(player);
+			int playedMiss = userInterface.respondMiss(player, canSingleUse);
 			if (playedMiss == -1) {
 				return playedMiss;
 			} else {

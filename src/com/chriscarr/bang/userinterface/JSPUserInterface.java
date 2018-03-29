@@ -251,7 +251,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int respondMiss(Player player) {
+	public int respondMiss(Player player, boolean canSingleUse) {
 		Hand hand = player.getHand();
 		String handCards = "";
 		for(int i = 0; i < hand.size(); i++){
@@ -264,7 +264,11 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		for(int i = 0; i < inPlay.size(); i++){
 			Card card = (Card)inPlay.get(i);
 			String name = card.getName();
-			boolean canPlay = card instanceof SingleUseMissed;
+			//BELLESTAR
+			boolean canPlay = false;
+			if(canSingleUse){
+				canPlay = card instanceof SingleUseMissed;
+			}
 			handCards += name + "@" + canPlay + ", ";
 		}
 		sendMessage(player.getName(), "respondMiss " + handCards);
@@ -297,6 +301,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			}
 			handCards += cardName + "@" + canPlay + ", ";
 		}
+		//TODO add InHand Green Cards and BELLESTAR's ability
 		sendMessage(player.getName(), "respondTwoMiss " + handCards);
 		waitForResponse(player.getName());
 		return makeCardList(removeResponse(player.getName()), player);

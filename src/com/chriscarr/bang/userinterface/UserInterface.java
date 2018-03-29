@@ -17,7 +17,7 @@ public interface UserInterface {
 
 	int respondBang(Player player);
 
-	int respondMiss(Player player);
+	int respondMiss(Player player, boolean canSingleUse);
 	
 	List<Object> respondTwoMiss(Player player);
 
