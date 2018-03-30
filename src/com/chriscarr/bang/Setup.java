@@ -17,15 +17,15 @@ public class Setup {
 	private List<Player> players;
 	
 	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener) {
-		new Setup(countPlayers, userInterface, gameStateListener, false);
+		new Setup(countPlayers, userInterface, gameStateListener, false, "random", "random");
 	}
 
-	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener, boolean sidestep) {
+	public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener, boolean sidestep, String pRole, String pChar) {
 		deck = setupDeck(sidestep);
 		deck.shuffle();
 		Discard discard = new Discard();
 		deck.setDiscard(discard);
-		players = getPlayers(countPlayers, deck, sidestep);
+		players = getPlayers(countPlayers, deck, sidestep, pRole, pChar);
 		drawHands(players, deck);
 		Turn turn = new Turn();
 		turn.setDeck(deck);
@@ -33,6 +33,7 @@ public class Setup {
 		turn.setPlayers(players);
 		turn.setUserInterface(userInterface);
 		gameStateListener.setTurn(turn);
+		//This starts the game loop
 		turn.setSheriff();
 	}
 
@@ -57,10 +58,10 @@ public class Setup {
 	}
 
 	public static List<Player> getPlayers(int countCharacters, Deck deck) {
-		return getPlayers(countCharacters, deck, false);
+		return getPlayers(countCharacters, deck, false, "random", "random");
 	}
 
-	public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep) {
+	public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep, String pRole, String pChar) {
 		ArrayList<Player> players = new ArrayList<Player>();
 		ArrayList<String> characterList = new ArrayList<String>();
 		characterList.addAll(Arrays.asList(Figure.CHARACTERS));
@@ -78,9 +79,18 @@ public class Setup {
 		for(int i = 0; i < countCharacters; i++){
 			Player player = new Player();
 			
-			Figure figure = new Figure();			
+			Figure figure = new Figure();
+			if(i == 0 && !pChar.equals("random") && characterList.contains(pChar)){
+				characterList.remove(pChar);
+				characterList.add(0, pChar);
+			}
 			figure.setName(characterList.get(i));
+			if(i == 0 && !pRole.equals("random") && roles.contains(Player.stringToRole(pRole))){
+				roles.remove(Player.stringToRole(pRole));
+				roles.add(0, Player.stringToRole(pRole));
+			}
 			int role = roles.get(i);
+			
 			player.setRole(role);
 			player.setFigure(figure);
 			int maxHealth = Figure.getStartingHealth(figure.getName());

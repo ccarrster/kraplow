@@ -91,14 +91,14 @@ public class WebGame {
 		return false;
 	}
 	
-	public static void start(int gameId, int aiSleepMs){
+	public static void start(int gameId, int aiSleepMs, String pRole, String pChar){
 		while(getJoinedPlayers(gameId).size() < 4){
 			joinAI(gameId, "ROBOT");
 		}
 		if(canStart(gameId)){
 			WebInit webInit = new WebInit();
 			WebGameUserInterface x = new WebGameUserInterface(gamePreps.get(gameId).getJoinedPlayers(), aiSleepMs);
-			webInit.setup(getCountPlayers(gameId), x, x, gameId, gamePreps.get(gameId).getSidestep());
+			webInit.setup(getCountPlayers(gameId), x, x, gameId, gamePreps.get(gameId).getSidestep(), pRole, pChar);
 			gamePreps.remove(gameId);
 		}
 	}

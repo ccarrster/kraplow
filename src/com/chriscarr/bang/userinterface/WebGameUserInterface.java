@@ -409,6 +409,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	public void sendMessage(String player, String message) {
+		//Game loop already started before maps are made
 		if (userFigureNames == null) {
 			setupMap();
 		}

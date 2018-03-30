@@ -38,6 +38,7 @@ function copyToClipboard() {
 <a href="legend.html" target="_blank">Show Legend</a> <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a>
 </div>
 <script language="javascript">
+
 	var randomAdjectives = ["Selective", "Tasty", "Furtive", "Pink", "Straight", "Shaggy", "Disgusting", "Cut", "Humorous", "Rightful", "Elated", "Rough", "Plucky", "Sophisticated", "Rude", "Fancy", "Noxious", "Drab", "Spicy", "Elastic", "Well-groomed", "Upset", "Fresh", "Voiceless", "Silent", "Sulky", "Cynical", "Stimulating", "Astonishing", "Blushing", "Well-made", "Picayune", "Flippant", "Lovely", "Political", "Ambitious", "Obese", "Freezing", "Maddening", "Hideous", "Lively", "Solid", "Taboo", "Fallacious", "Hysterical", "Magenta", "Gullible", "Abortive", "Permissible", "Successful", "Crazy", "Joyous", "Legal", "Flawless", "Boorish", "Eatable", "Literate", "Fantastic", "Gusty", "Faded", "Possible", "Rare", "Labored", "Equal", "Feeble", "Sparkling", "Thoughtless", "Green", "Even", "Puzzled", "Rigid", "Garrulous", "Paltry", "Difficult", "Nostalgic", "Uptight", "Habitual", "Woozy", "Quiet", "Thirsty", "Fearful", "Gleaming", "Happy", "Vagabond", "Ill", "Many", "Deeply", "Luxuriant", "Present", "Tall", "Swanky", "Clear", "Tired", "Fluffy", "Blue-eyed", "Average", "Obscene", "Parched", "Ten", "Uninterested", "Important", "Wooden", "Late", "Scattered", "Materialistic", "Alluring", "Square", "Sweltering", "Capable", "Gruesome", "Maniacal", "Periodic", "Dashing", "Whimsical", "Overwrought", "Future", "Aquatic", "Protective"];
 	var randomNames = ["Sachiko", "Walter", "Brittney", "Donnell", "Eufemia", "Clementina", "Erika", "Lauran", "Twanda", "Arianna", "Rema", "Monroe", "Herma", "Abigail", "Hattie", "Rick", "Adrianna", "Lesha", "Melida", "Izola", "Marquitta", "Savanna", "Ethelyn", "Leone", "Irwin", "Kristal", "Gonzalo", "Maryanne", "Abdul", "Nakia", "Rina", "Adrienne", "Bula", "Shane", "Avis", "Allegra", "Arlen", "Vaughn", "Pricilla", "Iesha", "Elidia", "Jeramy", "Caren", "Theodore", "Flavia", "Telma", "Barbra", "Will", "Lachelle", "Kate"];
 	var handleField = document.getElementById('handle');
@@ -1017,6 +1018,23 @@ function copyToClipboard() {
    	if(document.getElementById("addcomputer") != null){
    		document.getElementById("addcomputer").style.display = newStyle;
    	}
+
+   	var humans = 0;
+   	for(var j = 0; j < gamePlayerHandles.length; j++){
+   		var last2 = gamePlayerHandles[j].slice(-2);
+		if(last2 == "AI"){
+			continue;
+		} else {
+			humans += 1;
+		}
+   	}
+   	if(humans == 1){
+   		document.getElementById("proleWrapper").style.display = "block";
+   		document.getElementById("pcharWrapper").style.display = "block";
+   	} else {
+   		document.getElementById("proleWrapper").style.display = "none";
+   		document.getElementById("pcharWrapper").style.display = "none";
+   	}
    }
 
    function countPlayers(servletUrl, responseHandler, gameId) {
@@ -1082,7 +1100,24 @@ function copyToClipboard() {
    		} else if(document.getElementById("aiSpeedSlow").checked){
    			aiSpeed = document.getElementById("aiSpeedSlow").value;
    		}
-      	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId + "&aiSleepMs=" + aiSpeed, responseHandler);
+   		//We will let you chose a role and char if you are playing alone against AI
+   		var humans = 0;
+   		for(var j = 0; j < gamePlayerHandles.length; j++){
+   			var last2 = gamePlayerHandles[j].slice(-2);
+			if(last2 == "AI"){
+				continue;
+			} else {
+				humans += 1;
+			}
+   		}
+   		if(humans == 1){
+   			var pRole = document.getElementById("prole").value;
+   			var pChar = document.getElementById("pchar").value;
+   		} else {
+   			pRole = "random";
+   			pChar = "random";
+   		}
+      	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId + "&aiSleepMs=" + aiSpeed + "&pchar="+pChar+"&prole="+pRole, responseHandler);
    }
 
 
@@ -1289,6 +1324,20 @@ function copyToClipboard() {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
 			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar.</p><p><input type="text" readonly id="joinurl" value="http://chriscarr.name:8080/westerncardgame?join=' + gameId + '" style="width:350px"><input type="button" onclick="copyToClipboard()" value="Copy to Clipboard"></p>';
 			result += '<p id="addcomputer"><input type="button" value="Add Computer Player +" onclick="addRobot();"></p>';
+			result += '<p>Prefered options only work when playing alone against AI.</p>';
+			result += '<p id="pcharWrapper">Prefered Character <select id="pchar"><option value="random">Random</option>';
+			for (playerKey in playerInfo) {
+				if(playerInfo[playerKey].expansion == "base" || (isSidestep && playerInfo[playerKey].expansion == "sidestep")){
+  					result += "<option value='"+playerKey+"'>"+playerKey+" - "+playerInfo[playerKey].description+"</option>";
+				}
+			}
+			result += '</select></p>';
+			result += '<p id="proleWrapper">Prefered Role <select id="prole"><option value="random">Random</option>';
+			result += '<option value="Sheriff">Sheriff - Kill the Outlaws and Renegades</option>';
+			result += '<option value="Deputy">Deputy - Kill the Outlaws and Renegades - Protect the Sheriff</option>';
+			result += '<option value="Outlaw">Outlaw - Kill the Sheriff</option>';
+			result += '<option value="Renegade">Renegade - Kill everyone else, then the Sheriff</option>';
+			result += '</select></p>';
 		}
 		if(playerCount != null){
 			result += '<div style="float:left;">';
@@ -1527,137 +1576,51 @@ function copyToClipboard() {
 		}
 	}
 
-   function getImageForPlayer(playerName){
-   	if(playerName == "Bart Cassidy"){
-   		return "bartcassidy.png";
-   	} else if(playerName == "Black Jack"){
-   		return "blackjack.png";
-   	} else if(playerName == "Calamity Janet"){
-   		return "calamityjanet.png";
-   	} else if(playerName == "El Gringo"){
-   		return "elgringo.png";
-   	} else if(playerName == "Jesse Jones"){
-   		return "jessejones.png";
-   	} else if(playerName == "Jourdonnais"){
-   		return "jourdonnais.png";
-   	} else if(playerName == "Kit Carlson"){
-   		return "kitcarlson.png";
-   	} else if(playerName == "Lucky Duke"){
-   		return "luckyduke.png";
-   	} else if(playerName == "Paul Regret"){
-   		return "paulregret.png";
-   	} else if(playerName == "Pedro Ramirez"){
-   		return "pedroramierz.png";
-   	} else if(playerName == "Rose Doolan"){
-   		return "rosedoolan.png";
-   	} else if(playerName == "Sid Ketchum"){
-   		return "sidketchum.png";
-   	} else if(playerName == "Slab the Killer"){
-   		return "slabthekiller.png";
-   	} else if(playerName == "Suzy Lafayette"){
-   		return "suzylafayette.png";
-   	} else if(playerName == "Vulture Sam"){
-   		return "vulturesam.png";
-   	} else if(playerName == "Willy the Kid"){
-   		return "willythekid.png";
-   	} else if(playerName == "Chuck Wengam"){
-		return "chuckwengam.png";
-	} else if(playerName == "Elena Fuente"){
-		return "elenafuente.png";
-	} else if(playerName == "Belle Star"){
-		return "bellestar.png";
-	} else if(playerName == "Jose Delgado"){
-		return "josedelgado.png";
-	} else if(playerName == "Greg Digger"){
-		return "gregdigger.png";
-	} else if(playerName == "Doc Holyday"){
-		return "docholyday.png";
-	} else if(playerName == "Pixie Pete"){
-		return "pixiepete.png";
-	} else if(playerName == "Molly Stark"){
-		return "mollystark.png";
-	} else if(playerName == "Apache Kid"){
-		return "apachekid.png";
-	} else if(playerName == "Herb Hunter"){
-		return "herbhunter.png";
-	} else if(playerName == "Bill Noface"){
-		return "billnoface.png";
-	} else if(playerName == "Pat Brennan"){
-		return "patbrennan.png";
-	} else if(playerName == "Tequila Joe"){
-		return "tequilajoe.png";
-	} else if(playerName == "Vera Custer"){
-		return "veracuster.png";
-	} else if(playerName == "Sean Mallory"){
-		return "seanmallory.png";
-   	} else {
-   		return "cancel.png";
-   	}
-   }
+
+	var playerInfo = [];
+	playerInfo["Bart Cassidy"] = {image: "bartcassidy.png", description: "Lose health, draw a card.", expansion: "base"};
+	playerInfo["Black Jack"] = {image: "blackjack.png", description: "Show second draw, if red suit, draw another.", expansion: "base"};
+	playerInfo["Calamity Janet"] = {image: "calamityjanet.png", description: "Shoots can be played as Misses, and Misses as Shoots.", expansion: "base"};
+	playerInfo["El Gringo"] = {image: "elgringo.png", description: "Draws card from player damaged him.", expansion: "base"};
+	playerInfo["Jourdonnais"] = {image: "jourdonnais.png", description: "Has a barrel at all times.", expansion: "base"};
+	playerInfo["Jesse Jones"] = {image: "jessejones.png", description: "Can draw first card from other player.", expansion: "base"};
+	playerInfo["Kit Carlson"] = {image: "kitcarlson.png", description: "Draw 3, keep 2, put 1 back.", expansion: "base"};
+	playerInfo["Sean Mallory"] = {image: "seanmallory.png", description: "Has no handsize limit.", expansion: "sidestep"};
+	playerInfo["Vera Custer"] = {image: "veracuster.png", description: "Copies abilities of others.", expansion: "sidestep"};
+	playerInfo["Tequila Joe"] = {image: "tequilajoe.png", description: "Beer gives him 2 life.", expansion: "sidestep"};
+	playerInfo["Pat Brennan"] = {image: "patbrennan.png", description: "Can draw a card infront of another player.", expansion: "sidestep"};
+	playerInfo["Bill Noface"] = {image: "billnoface.png", description: "Draws 1 card and an extra for each missing health.", expansion: "sidestep"};
+	playerInfo["Herb Hunter"] = {image: "herbhunter.png", description: "When other dies, draw 2 cards.", expansion: "sidestep"};
+	playerInfo["Apache Kid"] = {image: "apachekid.png", description: "Others diamond cards do not work.", expansion: "sidestep"};
+	playerInfo["Molly Stark"] = {image: "mollystark.png", description: "When playing cards out of turn, draw 1.", expansion: "sidestep"};
+	playerInfo["Pixie Pete"] = {image: "pixiepete.png", description: "Draws 4 cards.", expansion: "sidestep"};
+	playerInfo["Doc Holyday"] = {image: "docholyday.png", description: "On his turn, discard 2 cards to Shoot.", expansion: "sidestep"};
+	playerInfo["Greg Digger"] = {image: "gregdigger.png", description: "When other player killed, get 2 life.", expansion: "sidestep"};
+	playerInfo["Jose Delgado"] = {image: "josedelgado.png", description: "On his turn discard blue card to draw 2.", expansion: "sidestep"};
+	playerInfo["Belle Star"] = {image: "bellestar.png", description: "On her turn others cards do not work.", expansion: "sidestep"};
+	playerInfo["Elena Fuente"] = {image: "elenafuente.png", description: "Any card can be a miss.", expansion: "sidestep"};
+	playerInfo["Chuck Wengam"] = {image: "chuckwengam.png", description: "Change one life for 2 cards.", expansion: "sidestep"};
+	playerInfo["Willy the Kid"] = {image: "willythekid.png", description: "No limit on Shoots per turn.", expansion: "base"};
+	playerInfo["Vulture Sam"] = {image: "vulturesam.png", description: "Takes all cards from dead players.", expansion: "base"};
+	playerInfo["Suzy Lafayette"] = {image: "suzylafayette.png", description: "Draw a card when hand is empty.", expansion: "base"};
+	playerInfo["Slab the Killer"] = {image: "slabthekiller.png", description: "Others need 2 misses to counter his Shoot.", expansion: "base"};
+	playerInfo["Sid Ketchum"] = {image: "sidketchum.png", description: "Can discard 2 cards for 1 life.", expansion: "base"};
+	playerInfo["Rose Doolan"] = {image: "rosedoolan.png", description: "Has an Scope at all times.", expansion: "base"};
+	playerInfo["Pedro Ramirez"] = {image: "pedroramierz.png", description: "Can draw from discard.", expansion: "base"};
+	playerInfo["Paul Regret"] = {image: "paulregret.png", description: "Has a Mustang at all times.", expansion: "base"};
+	playerInfo["Lucky Duke"] = {image: "luckyduke.png", description: "Flip 2 cards on a draw and choose 1.", expansion: "base"};
+
+	function getImageForPlayer(playerName){
+		if(playerInfo[playerName] != null){
+			return playerInfo[playerName].image;
+		} else {
+			return "cancel.png";
+		}
+	}
 
    function getDescriptionForPlayer(playerName){
-   	if(playerName == "Bart Cassidy"){
-   		return "Lose health, draw a card.";
-   	} else if(playerName == "Black Jack"){
-   		return "Show second draw, if red suit, draw another.";
-   	} else if(playerName == "Calamity Janet"){
-   		return "Shoots can be played as Misses, and Misses as Shoots.";
-   	} else if(playerName == "El Gringo"){
-   		return "Draws card from player damaged him.";
-   	} else if(playerName == "Jesse Jones"){
-   		return "Can draw first card from other player.";
-   	} else if(playerName == "Jourdonnais"){
-   		return "Has a barrel at all times.";
-   	} else if(playerName == "Kit Carlson"){
-   		return "Draw 3, keep 2, put 1 back.";
-   	} else if(playerName == "Lucky Duke"){
-   		return "Flip 2 cards on a draw and choose 1.";
-   	} else if(playerName == "Paul Regret"){
-   		return "Has a Mustang at all times.";
-   	} else if(playerName == "Pedro Ramirez"){
-   		return "Can draw from discard.";
-   	} else if(playerName == "Rose Doolan"){
-   		return "Has an Scope at all times.";
-   	} else if(playerName == "Sid Ketchum"){
-   		return "Can discard 2 cards for 1 life.";
-   	} else if(playerName == "Slab the Killer"){
-   		return "Others need 2 misses to counter his Shoot.";
-   	} else if(playerName == "Suzy Lafayette"){
-   		return "Draw a card when hand is empty.";
-   	} else if(playerName == "Vulture Sam"){
-   		return "Takes all cards from dead players.";
-   	} else if(playerName == "Willy the Kid"){
-   		return "No limit on Shoots per turn.";
-   	} else if(playerName == "Chuck Wengam"){
-		return "Change one life for 2 cards";
-	} else if(playerName == "Elena Fuente"){
-		return "Any card can be a miss";
-	} else if(playerName == "Belle Star"){
-		return "On her turn others cards do not work";
-	} else if(playerName == "Jose Delgado"){
-		return "On his turn discard blue card to draw 2";
-	} else if(playerName == "Greg Digger"){
-		return "When other player killed, get 2 life";
-	} else if(playerName == "Doc Holyday"){
-		return "On his turn, discard 2 cards to Shoot";
-	} else if(playerName == "Pixie Pete"){
-		return "Draws 4 cards";
-	} else if(playerName == "Molly Stark"){
-		return "When playing cards out of turn, draw 1";
-	} else if(playerName == "Apache Kid"){
-		return "Others diamond cards do not work";
-	} else if(playerName == "Herb Hunter"){
-		return "When other dies, draw 2 cards";
-	} else if(playerName == "Bill Noface"){
-		return "Draws 1 card and an extra for each missing health";
-	} else if(playerName == "Pat Brennan"){
-		return "Can draw a card infront of another player";
-	} else if(playerName == "Tequila Joe"){
-		return "Beer gives him 2 life";
-	} else if(playerName == "Vera Custer"){
-		return "Copies abilities of others";
-	} else if(playerName == "Sean Mallory"){
-		return "Has no handsize limit";
+   	if(playerInfo[playerName] != null){
+   		return playerInfo[playerName].description;
 	} else {
    		return "";
    	}
