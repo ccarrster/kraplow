@@ -642,16 +642,17 @@ public class Turn {
 			if(Figure.BELLESTAR.equals(shooter.getAbility())){
 				userInterface.printInfo(player.getName()
 						+ "'s barrel has no affect on " + Figure.BELLESTAR);
-			}
-			Card drawn = (Card) draw(player, deck, discard, userInterface);
-			if (drawn.getSuit() == Card.HEARTS) {
-				misses = misses + 1;
-				userInterface.printInfo(player.getName() + " drew a "
-						+ Card.suitToString(Card.HEARTS) + " and was saved by their barrel.");
 			} else {
-				userInterface.printInfo(player.getName() + " drew a "
-						+ Card.suitToString(drawn.getSuit())
-						+ " and was not saved by their barrel.");
+				Card drawn = (Card) draw(player, deck, discard, userInterface);
+				if (drawn.getSuit() == Card.HEARTS) {
+					misses = misses + 1;
+					userInterface.printInfo(player.getName() + " drew a "
+							+ Card.suitToString(Card.HEARTS) + " and was saved by their barrel.");
+				} else {
+					userInterface.printInfo(player.getName() + " drew a "
+							+ Card.suitToString(drawn.getSuit())
+							+ " and was not saved by their barrel.");
+				}
 			}
 		}
 		return misses;

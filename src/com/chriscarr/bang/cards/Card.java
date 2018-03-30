@@ -276,9 +276,13 @@ public class Card implements Playable{
 							if(missCard.getName().equals(CARDDODGE)){
 								Hand otherHand = otherPlayer.getHand();
 								otherHand.add(deck.pull());
-								userInterface.printInfo(otherPlayer.getName() + " dodged " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
+								userInterface.printInfo(otherPlayer.getName() + " plays a "+missCard.getName()+ " countering " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
 							} else {
-								userInterface.printInfo(otherPlayer.getName() + " plays a Missed!");
+								if(missCard.getName().equals(Card.CARDMISSED)){
+									userInterface.printInfo(otherPlayer.getName() + " plays a "+missCard.getName());
+								} else {
+									userInterface.printInfo(otherPlayer.getName() + " plays a "+missCard.getName() + " as a Missed!");
+								}
 							}
 							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
 								Hand otherHand = otherPlayer.getHand();

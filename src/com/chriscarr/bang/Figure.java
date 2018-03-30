@@ -37,7 +37,6 @@ public class Figure {
 	public static String VERACUSTER = "Vera Custer";
 	public static String SEANMALLORY = "Sean Mallory";
 	public static String[] CHARACTERSSIDESTEP = {CHUCKWENGAM, ELENAFUENTE, BELLESTAR, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, APACHEKID, HERBHUNTER, BILLNOFACE, PATBRENNAN, TEQUILAJOE, VERACUSTER, SEANMALLORY};
-	
 	public static int PLAYBANG = 0;
 	public static int PLAYMISSED = 1;
 	public static int GETSHOT = 2;
