@@ -19,7 +19,7 @@ function copyToClipboard() {
 <div id="gameInfo">
 	<p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
 	<p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
-	<p>Expansion Sidestep Township(Testing):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: All characters implemented, nothing else</p>
+	<p>Expansion Sidestep Township - 4-8 players (Beta):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: Everything Implemented, still needs some wording and images. I'm sure it has bugs.</p>
 	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
 	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
 </div>
@@ -1399,6 +1399,50 @@ function copyToClipboard() {
    		return "wellsfargo.png";
    	} else if(cardName.indexOf("Cat Balou") != -1){
    		return "catbalou.png";
+   	} else if(cardName.indexOf("Dodge") != -1){
+   		return "dodge.png";
+   	} else if(cardName.indexOf("Brawl") != -1){
+   		return "brawl.png";
+   	} else if(cardName.indexOf("Punch") != -1){
+   		return "punch.png";
+   	} else if(cardName.indexOf("Tequila") != -1){
+   		return "tequila.png";
+   	} else if(cardName.indexOf("Springfield") != -1){
+   		return "springfield.png";
+   	} else if(cardName.indexOf("Rag Time") != -1){
+   		return "ragtime.png";
+   	} else if(cardName.indexOf("Whisky") != -1){
+   		return "whisky.png";
+   	} else if(cardName.indexOf("Silver") != -1){
+   		return "silver.png";
+   	} else if(cardName.indexOf("Hideout") != -1){
+   		return "hideout.png";
+   	} else if(cardName.indexOf("Sombrero") != -1){
+   		return "sombrero.png";
+   	} else if(cardName.indexOf("Ten Gallon Hat") != -1){
+   		return "tengallonhat.png";
+   	} else if(cardName.indexOf("Iron Plate") != -1){
+   		return "ironplate.png";
+   	} else if(cardName.indexOf("Bible") != -1){
+   		return "bible.png";
+   	} else if(cardName.indexOf("Buffalo Rifle") != -1){
+   		return "buffalorifle.png";
+   	} else if(cardName.indexOf("Derringer") != -1){
+   		return "derringer.png";
+   	} else if(cardName.indexOf("Knife") != -1){
+   		return "knife.png";
+   	} else if(cardName.indexOf("Pepperbox") != -1){
+   		return "pepperbox.png";
+   	} else if(cardName.indexOf("Howitzer") != -1){
+   		return "howitzer.png";
+   	} else if(cardName.indexOf("Conestoga") != -1){
+   		return "conestoga.png";
+   	} else if(cardName.indexOf("Can Can") != -1){
+   		return "cancan.png";
+   	} else if(cardName.indexOf("Canteen") != -1){
+   		return "canteen.png";
+   	} else if(cardName.indexOf("Pony Express") != -1){
+   		return "ponyexpress.png";
    	} else {
    		return "cardface.png";
    	}
