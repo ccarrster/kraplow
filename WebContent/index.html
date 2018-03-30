@@ -19,7 +19,7 @@ function copyToClipboard() {
 <div id="gameInfo">
 	<p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
 	<p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio" id="aiSpeedSlow" name="aiSpeed" value="3500"/></p>
-	<p>Expansion Sidestep Township - 4-8 players (Beta):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: Everything Implemented, still needs some wording and images. I'm sure it has bugs.</p>
+	<p>Expansion Sidestep Township - 4-8 players (Beta):<input type="checkbox" id="sidestep" name="sidestep" value="sidestep"/> Status: Everything Implemented, still needs some wording. I'm sure it has bugs.</p>
 	<p>Kraplow! is a clone of western card game A Casual, Western Action Card Game with Secret Role, and Proximity elements. Kraplow! implements all rules and official FAQ answers of western card game No expansions are implemented.</p>
 	<div><form>Handle <input type="text" name="handle" id="handle"/></form></div>
 </div>
@@ -1496,7 +1496,7 @@ function copyToClipboard() {
    	} else if(cardName.indexOf("Cat Balou") != -1){
    		return "Other player discards a card from in play of your choosing or random from the hand.";
    	} else if(cardName.indexOf("Rag Time") != -1){
-   		return "Discard and anyone draws a card";
+   		return "Discard and take a card from any player";
    	} else if(cardName.indexOf("Dodge") != -1){
    		return "Miss and draw a card";
    	} else if(cardName.indexOf("Whisky") != -1){

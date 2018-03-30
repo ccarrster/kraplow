@@ -232,14 +232,18 @@ public class Card implements Playable{
 	}
 
 	public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard){
+		return shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard, null);
+	}
+
+	public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard, Player targetPlayer){
 		if(skipDiscard){
 			discard.add(this);
 		}
 		Player otherPlayer = null;
-		if(this.getName() != CARDGATLING && this.getName() != CARDHOWITZER){
+		if(targetPlayer == null){
 			otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		} else {
-			otherPlayer = players.get(0);
+			otherPlayer = targetPlayer;		
 		}
 		if(!(otherPlayer instanceof CancelPlayer)){
 			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());

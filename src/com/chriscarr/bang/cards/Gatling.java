@@ -38,9 +38,7 @@ public class Gatling extends Card implements Playable {
 		Player gatlingPlayer = Turn.getNextPlayer(currentPlayer, players);
 		while(gatlingPlayer != currentPlayer){
 			Player nextPlayer = Turn.getNextPlayer(gatlingPlayer, players);
-			ArrayList<Player> targetPlayer = new ArrayList<Player>();
-			targetPlayer.add(gatlingPlayer);
-			shoot(currentPlayer, targetPlayer, userInterface, deck, discard, turn, true);
+			shoot(currentPlayer, players, userInterface, deck, discard, turn, true, gatlingPlayer);
 			gatlingPlayer = nextPlayer;
 		}
 		return true;
