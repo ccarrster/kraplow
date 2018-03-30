@@ -465,10 +465,34 @@ public class WebGameUserInterface extends JSPUserInterface {
 		Iterator<String> userIter = keys.iterator();
 		userFigureNames = new ConcurrentHashMap<String, String>();
 		figureNamesUser = new ConcurrentHashMap<String, String>();
-		for (GameStatePlayer player : players) {
+		//If there is only one human put them first so they can get there prefered role and character if chosen
+		//More than one leave it mixed
+		int humanCount = 0;
+		ArrayList<String> humanFirstList = new ArrayList<String>();
+		ArrayList<String> sameOrderList = new ArrayList<String>();
+		while(userIter.hasNext()){
 			String user = userIter.next();
+			sameOrderList.add(user);
+			if(("AI".equals(user.substring(user.length() - 2)))){
+				humanFirstList.add(user);
+			} else {
+				humanFirstList.add(0, user);
+				humanCount += 1;
+			}
+		}
+		
+		ArrayList<String> usersList = null;
+		if(humanCount == 1){
+			usersList = humanFirstList;
+		} else {
+			usersList = sameOrderList;
+		}
+		int userIndex = 0;
+		for (GameStatePlayer player : players) {
+			String user = usersList.get(userIndex);
 			userFigureNames.put(player.name, user);
 			figureNamesUser.put(user, player.name);
+			userIndex += 1;
 		}
 	}
 
