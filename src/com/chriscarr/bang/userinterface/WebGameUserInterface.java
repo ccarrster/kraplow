@@ -473,7 +473,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		while(userIter.hasNext()){
 			String user = userIter.next();
 			sameOrderList.add(user);
-			if(("AI".equals(user.substring(user.length() - 2)))){
+			if(user.length() >= 2 && ("AI".equals(user.substring(user.length() - 2)))){
 				humanFirstList.add(user);
 			} else {
 				humanFirstList.add(0, user);

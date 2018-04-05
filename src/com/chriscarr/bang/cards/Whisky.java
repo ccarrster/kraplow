@@ -21,7 +21,7 @@ public class Whisky extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		return true;
+		return player.getHand().size() >= 2;
 	}
 	
 	@Override

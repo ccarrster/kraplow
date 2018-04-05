@@ -46,8 +46,6 @@ public class SingleUse extends Card implements Playable{
 
 	public boolean activate(Player currentPlayer, List<Player> players,
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
-		Logger logger = Logger.getLogger(SingleUse.class.getName());
-		logger.log(Level.SEVERE, "Single Use Activate");
 		return false;
 	}
 

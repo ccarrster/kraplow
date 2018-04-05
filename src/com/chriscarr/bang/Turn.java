@@ -7,6 +7,7 @@ import java.util.Collections;
 import com.chriscarr.bang.cards.Bang;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.SingleUse;
+import com.chriscarr.bang.cards.SingleUseMissed;
 import com.chriscarr.bang.cards.Missed;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
@@ -1098,9 +1099,16 @@ public class Turn {
 				validCards = true;
 				for (Object card : cards) {
 					Card missCard = (Card) card;
-					if (!(Card.CARDMISSED.equals(missCard.getName()) || (Card.CARDBANG
-							.equals(missCard.getName()) && Figure.CALAMITYJANET
-							.equals(player.getAbility())))) {
+					//TODO figure this out xxx its broken
+					boolean invalidCard = true;
+					if(missCard.getName().equals(Card.CARDMISSED) ||
+						missCard.getName().equals(Card.CARDDODGE) ||
+						(missCard.getName().equals(Card.CARDBANG) && Figure.CALAMITYJANET.equals(player.getAbility())) ||
+						Figure.ELENAFUENTE.equals(player.getAbility()) ||
+						missCard instanceof SingleUseMissed) {
+						invalidCard = false;
+					}
+					if(invalidCard){
 						validCards = false;
 					}
 				}

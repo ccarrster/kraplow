@@ -296,10 +296,18 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		for(int i = 0; i < hand.size(); i++){
 			boolean canPlay = false;
 			String cardName = ((Card)hand.get(i)).getName();
-			if(Card.CARDMISSED.equals(cardName) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getAbility()))){
+			if(Card.CARDMISSED.equals(cardName) || Card.CARDDODGE.equals(cardName) || Figure.ELENAFUENTE.equals(player.getAbility()) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getAbility()))){
 				canPlay = true;
 			}
 			handCards += cardName + "@" + canPlay + ", ";
+		}
+		InPlay inPlay = player.getInPlay();
+		for(int i = 0; i < inPlay.size(); i++){
+			Card card = (Card)inPlay.get(i);
+			String name = card.getName();
+			boolean canPlay = card instanceof SingleUseMissed;
+			
+			handCards += name + "@" + canPlay + ", ";
 		}
 		//TODO add InHand Green Cards and BELLESTAR's ability
 		sendMessage(player.getName(), "respondTwoMiss " + handCards);
