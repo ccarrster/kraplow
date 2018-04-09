@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
 
 import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
@@ -252,17 +253,18 @@ public class Card implements Playable{
 			}
 			int missesRequired = 1;
 			if(this.getName() == Card.CARDBANG && Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())){
-				missesRequired = 2;
+				//TODO fix slab
+				//missesRequired = 2;
 			}
 			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
 			missesRequired = missesRequired - barrelMisses;
+			boolean canPlaySingleUse = true;
+			if(Figure.BELLESTAR.equals(currentPlayer.getAbility())){
+				canPlaySingleUse = false;
+			}
 			if(missesRequired <= 0){
 				return true;
 			} else if(missesRequired == 1){
-				boolean canPlaySingleUse = true;
-				if(Figure.BELLESTAR.equals(currentPlayer.getAbility())){
-					canPlaySingleUse = false;
-				}
 				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse); 
 				if(missPlayed == -1){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
@@ -302,6 +304,7 @@ public class Card implements Playable{
 				}
 			} else if(missesRequired == 2){
 				Hand hand = otherPlayer.getHand();
+				InPlay inPlay = otherPlayer.getInPlay();
 				List<Object> cardsToDiscard = null;			
 				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);			
 				if(cardsToDiscard.size() == 0){
@@ -309,13 +312,28 @@ public class Card implements Playable{
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
 				} else {
 					for(Object card : cardsToDiscard){
-						hand.remove(card);
-						discard.add(card);
-						userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
-						if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
-							Hand otherHand = otherPlayer.getHand();
-							otherHand.add(deck.pull());
-							userInterface.printInfo(otherPlayer.getName() + " draws a card");
+						Logger logger = Logger.getLogger(Card.class.getName());
+						logger.log(Level.SEVERE, "TWO Misses "+ ((Card)card).getName());
+						if(inPlay.hasItem(((Card)card).getName())){
+							logger.log(Level.SEVERE, "Has Item");
+							for(int i = 0; i < inPlay.size(); i++){
+								Card gotCard = (Card)inPlay.get(i);
+								if(gotCard.getName().equals(((Card)card).getName())){
+									logger.log(Level.SEVERE, "Got Item");
+									discard.add(inPlay.remove(i));
+									logger.log(Level.SEVERE, "Removed Item");
+								}
+							}
+							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
+						} else {
+							hand.remove(card);
+							discard.add(card);
+							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
+							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
+								Hand otherHand = otherPlayer.getHand();
+								otherHand.add(deck.pull());
+								userInterface.printInfo(otherPlayer.getName() + " draws a card");
+							}
 						}
 					}
 				}	

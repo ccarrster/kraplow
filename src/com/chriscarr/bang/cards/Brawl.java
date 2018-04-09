@@ -17,7 +17,7 @@ public class Brawl extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
-	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
+	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){
 		return player.getHand().size() >= 2;
 	}
 	
