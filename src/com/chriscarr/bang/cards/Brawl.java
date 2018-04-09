@@ -2,13 +2,11 @@ package com.chriscarr.bang.cards;
 
 import java.util.List;
 
-import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Brawl extends Card implements Playable {
@@ -20,7 +18,7 @@ public class Brawl extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		return true;
+		return player.getHand().size() >= 2;
 	}
 	
 	/* (non-Javadoc)

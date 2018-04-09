@@ -2,17 +2,13 @@ package com.chriscarr.bang.cards;
 
 import java.util.List;
 
-import com.chriscarr.bang.Figure;
-import com.chriscarr.bang.Player;
+import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.InPlay;
-import com.chriscarr.bang.CancelPlayer;
-import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.userinterface.UserInterface;
-
-import java.util.logging.*;
 
 public class CanCan extends SingleUse implements Playable{
 
@@ -37,7 +33,6 @@ public class CanCan extends SingleUse implements Playable{
 			while(chosenCard < -2 || chosenCard > otherPlayer.getInPlay().size() - 1){
 				chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), otherPlayer.getHand().size() > 0);
 			}
-			Hand hand = currentPlayer.getHand();
 			if(chosenCard == -1){
 				Card discardedCard = (Card)otherPlayer.getHand().removeRandom();
 				discard.add(discardedCard);

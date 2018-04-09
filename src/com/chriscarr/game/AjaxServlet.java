@@ -36,7 +36,6 @@ public class AjaxServlet extends HttpServlet {
 	    		GameState gameState = userInterface.getGameState();
 	    		if(gameState != null){
 		    		response.getWriter().write("<gamestate>");
-		    			ArrayList<String> rolesAlive = new ArrayList<String>();
 			    		response.getWriter().write("<players>");
 			    		for(GameStatePlayer player : gameState.getPlayers()){
 			    			if (userInterface instanceof WebGameUserInterface){

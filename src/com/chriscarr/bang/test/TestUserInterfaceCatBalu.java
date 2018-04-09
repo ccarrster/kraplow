@@ -55,7 +55,7 @@ public class TestUserInterfaceCatBalu extends TestUserInterface implements
 	}
 
 	@Override
-	public int respondMiss(Player miss) {
+	public int respondMiss(Player miss, boolean canSingleUse) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

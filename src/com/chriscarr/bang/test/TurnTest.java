@@ -35,7 +35,7 @@ public class TurnTest extends TestCase{
 	public void testTurn(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setPlayers(players);
 		turn.setUserInterface(new TestUserInterface());
@@ -48,10 +48,10 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);		
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();		
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		UserInterface testUserInterface = new TestUserInterface();
 		turn.setUserInterface(testUserInterface);
@@ -64,7 +64,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();		
 		turn.nextTurn();
@@ -79,7 +79,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		assertFalse(turn.isBangPlayed());
@@ -93,14 +93,14 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();		
 		
 		Player player = turn.getCurrentPlayer();
-		turn.drawCards(player, Setup.setupDeck());
+		turn.drawCards(player, Setup.setupDeck(false));
 		assertEquals(turn.getCurrentPlayer().getHand().size(), 2);
-		turn.drawCards(player, Setup.setupDeck());
+		turn.drawCards(player, Setup.setupDeck(false));
 		assertEquals(turn.getCurrentPlayer().getHand().size(), 4);
 	}
 	
@@ -108,10 +108,10 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		Player player = turn.getCurrentPlayer();
 		turn.drawCards(player, deck);
 		turn.drawCards(player, deck);
@@ -128,7 +128,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		UserInterface testUserInterface = new TestUserInterface();
@@ -146,7 +146,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -162,7 +162,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -179,7 +179,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -201,7 +201,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -219,7 +219,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -238,7 +238,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -261,7 +261,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -280,7 +280,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -289,7 +289,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestPlayOneUserInterface();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();
 		assertEquals(sheriff.getHand().size(), 2);
 	}
@@ -298,7 +298,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -307,7 +307,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestPlayOneUserInterface();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();
 		assertEquals(sheriff.getHand().size(), 3);
 	}
@@ -316,7 +316,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -339,7 +339,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -358,7 +358,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -382,7 +382,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -409,7 +409,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -436,7 +436,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -462,7 +462,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -487,7 +487,7 @@ public class TurnTest extends TestCase{
 		turn.setPlayers(players);
 		Deck deck = new Deck();
 		deck.add(new Gatling(Card.CARDGATLING, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -511,7 +511,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -536,7 +536,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -562,7 +562,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -588,7 +588,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -596,7 +596,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();
 		assertEquals(players.get(0).getHand().size(), 1);
 		assertEquals(players.get(1).getHand().size(), 1);
@@ -608,7 +608,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -616,7 +616,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestPlayOneUserInterfaceChoosePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();
 		int otherPlayer = 0;
 		if(players.get(0).equals(sheriff)){
@@ -630,7 +630,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -641,7 +641,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackOnce();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();
 		assertEquals(sheriff.getMaxHealth() - 1, sheriff.getHealth());
 	}
@@ -650,7 +650,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -663,7 +663,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackOnce();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();
 		assertEquals(sheriff.getMaxHealth() - 1, sheriff.getHealth());
 	}
@@ -672,7 +672,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -680,7 +680,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		int otherPlayer = 0;
 		if(players.get(0).equals(sheriff)){
 			otherPlayer = 1;
@@ -700,7 +700,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -708,7 +708,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		int otherPlayer = 0;
 		if(players.get(0).equals(sheriff)){
 			otherPlayer = 1;
@@ -729,7 +729,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -737,7 +737,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceCatBalu();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		int otherPlayer = 0;
 		if(players.get(0).equals(sheriff)){
 			otherPlayer = 1;
@@ -753,7 +753,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -761,7 +761,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceAskPlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -783,7 +783,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -791,7 +791,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -810,7 +810,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -818,7 +818,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -839,7 +839,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -848,7 +848,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -867,7 +867,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -877,7 +877,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -896,7 +896,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -907,7 +907,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -921,7 +921,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -933,7 +933,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();		
@@ -944,7 +944,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -956,7 +956,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(7);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -988,7 +988,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(7);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -1005,7 +1005,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(7);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		turn.setUserInterface(new TestUserInterface());
@@ -1149,7 +1149,8 @@ public class TurnTest extends TestCase{
 		Player player = new Player();
 		player.setInPlay(new InPlay());
 		player.setFigure(new Figure());
-		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) != 0);
+		Player player2 = new Player();
+		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1, player2) != 0);
 	}
 	
 	public void testSavedByBarrel(){
@@ -1166,7 +1167,8 @@ public class TurnTest extends TestCase{
 		turn.setUserInterface(new TestUserInterface());
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
-		assertTrue(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface(), 1) != 0);
+		Player player2 = new Player();
+		assertTrue(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface(), 1, player2) != 0);
 	}
 	
 	public void testNotSavedByBarrel(){
@@ -1184,7 +1186,8 @@ public class TurnTest extends TestCase{
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
 		sheriff.setFigure(new Figure());
-		assertFalse(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface(), 1) != 0);
+		Player player2 = new Player();
+		assertFalse(Turn.isBarrelSave(sheriff, deck, discard, new TestUserInterface(), 1, player2) != 0);
 	}
 	
 	public void testNoBeerPlayer(){
@@ -1340,7 +1343,7 @@ public class TurnTest extends TestCase{
 		player.setRole(Player.SHERIFF);
 		player.setFigure(new Figure());
 		Turn turn = new Turn();
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		turn.setDeck(deck);
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
@@ -1371,7 +1374,7 @@ public class TurnTest extends TestCase{
 		player.setRole(Player.SHERIFF);
 		player.setFigure(new Figure());
 		Turn turn = new Turn();
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		turn.setDeck(deck);
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
@@ -1401,7 +1404,7 @@ public class TurnTest extends TestCase{
 		player.setRole(Player.OUTLAW);
 		player.setFigure(new Figure());
 		Turn turn = new Turn();
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		turn.setDeck(deck);
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
@@ -1566,7 +1569,7 @@ public class TurnTest extends TestCase{
 	
 	public void testBartCasidy(){
 		Turn turn = new Turn();
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		turn.setDeck(deck);
 		turn.setPlayers(new ArrayList<Player>());
 		Player player = new Player();
@@ -1594,7 +1597,7 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) != 0);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1, new Player()) != 0);
 	}
 	
 	public void testJourdonnaisFail(){
@@ -1612,7 +1615,8 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) != 0);
+		
+		assertFalse(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1, new Player()) != 0);
 	}
 	
 	public void testJourdonnaisFailBarrelFail(){
@@ -1634,7 +1638,7 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) == 0);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1, new Player()) == 0);
 		assertTrue(deck.size() == 0);
 	}
 	
@@ -1657,7 +1661,7 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) == 1);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1, new Player()) == 1);
 		assertTrue(deck.size() == 0);
 	}
 	
@@ -1680,7 +1684,7 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1) == 1);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 1, new Player()) == 1);
 		assertTrue(deck.size() == 1);
 	}
 	
@@ -1703,7 +1707,7 @@ public class TurnTest extends TestCase{
 		Discard discard = new Discard();
 		turn.setDeck(deck);
 		turn.setDiscard(discard);
-		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 2) == 2);
+		assertTrue(Turn.isBarrelSave(player, deck, discard, new TestUserInterface(), 2, new Player()) == 2);
 		assertTrue(deck.size() == 0);
 	}
 	
@@ -1711,7 +1715,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -1727,7 +1731,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -1739,7 +1743,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -1749,7 +1753,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -1786,7 +1790,8 @@ public class TurnTest extends TestCase{
 		players.add(player);	
 		Turn turn = new Turn();
 		turn.setUserInterface(new TestUserInterface());
-		turn.deadDiscardAll(other, players, discard);
+		Deck deck = new Deck();
+		turn.deadDiscardAll(other, players, discard, deck);
 		assertEquals(3, player.getHand().size());
 	}
 	
@@ -2033,7 +2038,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -2042,7 +2047,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -2061,7 +2066,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -2069,7 +2074,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -2150,7 +2155,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		turn.setDeck(deck);
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
@@ -2224,7 +2229,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -2235,7 +2240,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -2257,7 +2262,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -2266,7 +2271,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
@@ -2290,7 +2295,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
@@ -2298,7 +2303,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceBangBackTwice();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();		
 		assertEquals(1, sheriff.getHand().size());
 	}
@@ -2307,7 +2312,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -2318,7 +2323,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
@@ -2337,7 +2342,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -2347,7 +2352,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();				
 		assertEquals(1, sheriff.getHand().size());
 		turn.play();
@@ -2358,7 +2363,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -2366,7 +2371,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		for(Player player : players){
 			player.getInPlay().add(new Card(Card.CARDMUSTANG, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
 		}
@@ -2378,7 +2383,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -2386,7 +2391,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		for(Player player : players){
 			player.getInPlay().add(new Card(Card.CARDMUSTANG, Card.CLUBS, Card.VALUEQ, Card.TYPEITEM));
 		}
@@ -2398,7 +2403,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -2406,7 +2411,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();				
 		assertEquals(1, sheriff.getHand().size());				
 	}
@@ -2415,13 +2420,13 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();		
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();				
 		assertTrue(turn.isDonePlaying());
 	}
@@ -2430,7 +2435,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
 		turn.setPlayers(players);
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();	
@@ -2438,7 +2443,7 @@ public class TurnTest extends TestCase{
 		UserInterface testUserInterface = new TestUserInterfaceDonePlaying();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.setDeck(Setup.setupDeck());
+		turn.setDeck(Setup.setupDeck(false));
 		turn.play();				
 		assertTrue(turn.isDonePlaying());
 	}

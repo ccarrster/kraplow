@@ -2,17 +2,14 @@ package com.chriscarr.bang.cards;
 
 import java.util.List;
 
-import com.chriscarr.bang.Figure;
-import com.chriscarr.bang.Player;
+import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.InPlay;
-import com.chriscarr.bang.CancelPlayer;
+import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Player;
+import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
-
-import java.util.logging.*;
 
 public class Conestoga extends SingleUse implements Playable{
 

@@ -29,6 +29,17 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		System.out.println(info);
 	}
 	
+	@Override
+	public List<Object> chooseTwoDiscardForShoot(Player player) {
+		// TODO Auto-generated method stub
+		return new ArrayList<Object>();
+	}
+
+	@Override
+	public int askBlueDiscard(Player player) {
+		return -1;
+	}
+	
 	public int askDiscard(Player player) {
 		System.out.println(player.getFigure().getName());
 		System.out.println("Discard");
@@ -304,7 +315,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int respondMiss(Player player) {
+	public int respondMiss(Player player, boolean canSingleUse) {
 		printPrivateInfo(player);
 		System.out.println("Respond Miss");
 		Hand hand = player.getHand();

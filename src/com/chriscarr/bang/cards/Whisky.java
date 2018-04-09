@@ -1,15 +1,13 @@
 package com.chriscarr.bang.cards;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Whisky extends Card implements Playable {
@@ -20,8 +18,8 @@ public class Whisky extends Card implements Playable {
 	/* (non-Javadoc)
 	 * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
 	 */
-	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		return true;
+	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){		
+		return player.getHand().size() >= 2;
 	}
 	
 	@Override

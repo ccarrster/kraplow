@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 
 public class SetupTest extends TestCase {
 	public void testDeck(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		Card pulled = null;
 		for(int i = 0; i < 80; i++){
 			pulled = (Card) deck.pull();
@@ -24,20 +24,20 @@ public class SetupTest extends TestCase {
 	}
 	
 	public void testSetupPlayers(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(7, deck);
 		assertEquals(players.size(), 7);
 	}
 	
 	public void testSetupPlayersHealth(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(7, deck);
 		int health = players.get(6).getHealth();
 		assertTrue(health == 3 || health == 4 || health == 5);
 	}
 	
 	public void testSetupPlayersRoles(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(7, deck);
 		int sheriff = 0;
 		int outlaw = 0;
@@ -61,7 +61,7 @@ public class SetupTest extends TestCase {
 	}
 	
 	public void testSetupPlayersRoles4(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(4, deck);
 		int sheriff = 0;
 		int outlaw = 0;
@@ -85,7 +85,7 @@ public class SetupTest extends TestCase {
 	}
 	
 	public void testSetupPlayersRoles5(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(5, deck);
 		int sheriff = 0;
 		int outlaw = 0;
@@ -109,7 +109,7 @@ public class SetupTest extends TestCase {
 	}
 	
 	public void testSetupPlayersRoles6(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(6, deck);
 		int sheriff = 0;
 		int outlaw = 0;
@@ -133,7 +133,7 @@ public class SetupTest extends TestCase {
 	}
 	
 	public void testHands(){
-		Deck deck = Setup.setupDeck();
+		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(4, deck);
 		Setup.drawHands(players, deck);
 		int maxHealth = players.get(3).getMaxHealth();

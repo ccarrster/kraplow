@@ -55,7 +55,7 @@ public class TestUserInterfaceBangBackTwicePlayer1 extends TestUserInterface imp
 	}
 
 	@Override
-	public int respondMiss(Player miss) {
+	public int respondMiss(Player miss, boolean canSingleUse) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -23,8 +23,18 @@ public class TestUserInterface implements UserInterface {
 		// TODO Auto-generated method stub
 		return -1;
 	}
+	
+	@Override
+	public List<Object> chooseTwoDiscardForShoot(Player player) {
+		// TODO Auto-generated method stub
+		return new ArrayList<Object>();
+	}
 
-
+	@Override
+	public int askBlueDiscard(Player player) {
+		return -1;
+	}
+	
 	@Override
 	public int chooseGeneralStoreCard(Player generalPlayer,
 			List<Object> generalStoreCards) {
@@ -69,7 +79,7 @@ public class TestUserInterface implements UserInterface {
 	}
 
 	@Override
-	public int respondMiss(Player miss) {
+	public int respondMiss(Player miss, boolean canSingleUse) {
 		// TODO Auto-generated method stub
 		return -1;
 	}
