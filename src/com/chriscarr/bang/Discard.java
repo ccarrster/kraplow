@@ -22,5 +22,9 @@ public class Discard {
 	public boolean isEmpty() {
 		return cards.isEmpty();
 	}
+	
+	public int size() {
+		return cards.size();
+	}
 
 }

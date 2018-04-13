@@ -79,6 +79,30 @@ public class Turn {
 	}
 
 	public void nextTurn() {
+		//Log of all cards
+		/*
+		int cardTotal = 0;
+		cardTotal += deck.size();
+		cardTotal += discard.size();
+		int handTotal = 0;
+		int inPlayTotal = 0;
+		for(int i = 0; i < players.size(); i++) {
+			Player countPlayer = players.get(i);
+			Hand testHand = countPlayer.getHand();
+			cardTotal += testHand.size();
+			handTotal += testHand.size();
+			InPlay testInPlay = countPlayer.getInPlay();
+			cardTotal += testInPlay.size();
+			inPlayTotal += testInPlay.size();
+			if(testInPlay.hasGun()) {
+				cardTotal += 1;
+				inPlayTotal += 1;
+			}
+		}
+		userInterface.printInfo("Card Total: "+cardTotal + " deck: "+deck.size()+" discard: "+discard.size()+" hands: "+ handTotal+" inplays: "+inPlayTotal);
+		*/
+		//End log all cards
+		
 		currentPlayer = getNextPlayer(currentPlayer, players);
 		donePlaying = false;
 		bangsPlayed = 0;
@@ -374,7 +398,6 @@ public class Turn {
 				}
 				
 			}
-			System.out.println("Turn askPlay card: " + card);
 		}
 		if (hand.size() + singleUseInPlay.size() == 0 || card == -1) {
 			donePlaying = true;
@@ -423,8 +446,6 @@ public class Turn {
 					userInterface.printInfo(currentPlayer.getName() + " played a "
 							+ playedCard.getName() + ".");
 				}
-			} else {
-				System.out.println("**Turn - Weirdo can not play**");
 			}
 		}
 	}
