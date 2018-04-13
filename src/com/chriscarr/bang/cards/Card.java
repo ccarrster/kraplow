@@ -234,9 +234,6 @@ public class Card implements Playable{
 	}
 
 	public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard, Player targetPlayer){
-		if(skipDiscard){
-			discard.add(this);
-		}
 		Player otherPlayer = null;
 		if(targetPlayer == null){
 			otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
@@ -329,6 +326,9 @@ public class Card implements Playable{
 						}
 					}
 				}	
+			}
+			if(!skipDiscard){
+				discard.add(this);
 			}
 			return true;
 		} else {
