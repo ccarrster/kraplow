@@ -450,22 +450,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
 	@Override
 	public List<Object> respondTwoMiss(Player player) {
-		System.out.println(player.getFigure().getName());
-		System.out.println("Two misses or get shot");
 		Hand hand = player.getHand();
 		int handSize = hand.size();
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
 		List<Object> chosenCards = new ArrayList<Object>();
 		while (true){
-			System.out.println("-1) done choosing");
-			for(int i = 0; i < handSize; i++){
-				String chosen = " not chosen";
-				if(chosenCards.contains(hand.get(i))){
-					chosen = " chosen";
-				}
-				System.out.println(i + ") " + ((Card)hand.get(i)).getName() + chosen);
-			}
 			try {
 				String line = in.readLine();
 				int cardNumber = Integer.parseInt(line);

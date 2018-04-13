@@ -281,8 +281,6 @@ public class AjaxServlet extends HttpServlet {
 		    		if(!"".equals(responseMessage)){
 		    			((WebGameUserInterface)userInterface).addResponse(user, responseMessage);
 		    		}
-	    		} else {
-	    			System.out.println("**Weirdo Ajax Servlet sent response to empty messages " + user + " " + responseMessage + "**");
 	    		}
     		}
     		response.getWriter().write("<ok/>");

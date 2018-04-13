@@ -41,7 +41,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 
 	//This is the AI logic
 	public String somethingAI(String player, String message) {
-		String lastMessage = infoHistory.get(infoHistory.size() - 1);
+		String lastMessage = "";
+		if(infoHistory.size() > 0) {
+			lastMessage = infoHistory.get(infoHistory.size() - 1);
+		}
+		
 		try {
 			Thread.sleep(this.aiSleepMs);
 		} catch (InterruptedException e) {
@@ -430,9 +434,6 @@ public class WebGameUserInterface extends JSPUserInterface {
 		System.out.println("Response " + user + " " + message);
 		if (!getMessages(user).isEmpty()) {
 			System.out.println("Response " + getMessages(user).get(0));
-		} else {
-			System.out
-					.println("**Weirdo response to empty message queue in WebGameUserInterface**");
 		}
 		List<Message> playerResponses = responses.get(user);
 		playerResponses.add(new MessageImpl(message));

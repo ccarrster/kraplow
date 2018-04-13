@@ -15,7 +15,6 @@ import com.chriscarr.bang.gamestate.GameStateImpl;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
 import com.chriscarr.bang.userinterface.UserInterface;
 
-import java.util.logging.*;
 
 public class Turn {
 
@@ -391,8 +390,6 @@ public class Turn {
 			}
 			return;
 		}
-		Logger logger = Logger.getLogger(Turn.class.getName());
-		logger.log(Level.SEVERE, "Chosen Card " + card + " handSize "+hand.size() + " singleUseInPlay Size "+singleUseInPlay.size());
 		if(card >= hand.size()){
 			int chosen = card - hand.size();
 			singleUseInPlay.get(chosen).play(currentPlayer, players, userInterface, deck,

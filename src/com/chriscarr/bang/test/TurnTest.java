@@ -393,7 +393,9 @@ public class TurnTest extends TestCase{
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
 			others.add(otherPlayer);
-			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+			Figure figure = new Figure();
+			figure.setName(Figure.CALAMITYJANET);
+			otherPlayer.setFigure(figure);
 			otherPlayer.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		}
 		others.remove(turn.getCurrentPlayer());
@@ -572,7 +574,9 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
-			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+			Figure otherFigure = new Figure();
+			otherFigure.setName(Figure.CALAMITYJANET);
+			otherPlayer.setFigure(otherFigure);
 			otherPlayer.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 			others.add(otherPlayer);
 		}
@@ -656,7 +660,9 @@ public class TurnTest extends TestCase{
 		Player sheriff = turn.getCurrentPlayer();
 		sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		for(Player player: players){
-			player.getFigure().setName(Figure.CALAMITYJANET);
+			Figure figure = new Figure();
+			figure.setName(Figure.CALAMITYJANET);
+			player.setFigure(figure);
 			player.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		}
 		sheriff.getFigure().setName("Joe Average");
@@ -716,7 +722,9 @@ public class TurnTest extends TestCase{
 		Player enemy = players.get(otherPlayer);
 		enemy.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		sheriff.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		sheriff.getFigure().setName(Figure.CALAMITYJANET);
+		Figure figure = new Figure();
+		figure.setName(Figure.CALAMITYJANET);
+		sheriff.setFigure(figure);
 		assertEquals(enemy.getHand().size(), 1);
 		assertEquals(sheriff.getHand().size(), 2);
 		turn.play();
@@ -1446,7 +1454,7 @@ public class TurnTest extends TestCase{
 		Turn turn = new Turn();
 		turn.setPlayers(players);
 		assertTrue(Turn.isGameOver(players));
-		assertEquals("Renegades", Turn.getWinners(players));
+		assertEquals("Renegade", Turn.getWinners(players));
 	}
 	
 	public void testOutlawWin(){
@@ -1735,7 +1743,9 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getFigure().setName(Figure.ROSEDOOLAN);
+		Figure figure = new Figure();
+		figure.setName(Figure.ROSEDOOLAN);
+		sheriff.setFigure(figure);
 		assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 4);
 	}
 	
@@ -1749,7 +1759,9 @@ public class TurnTest extends TestCase{
 		Player sheriff = turn.getCurrentPlayer();	
 		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-		sheriff.getFigure().setName(Figure.WILLYTHEKID);
+		Figure figure = new Figure();
+		figure.setName(Figure.WILLYTHEKID);
+		sheriff.setFigure(figure);
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
@@ -2042,7 +2054,9 @@ public class TurnTest extends TestCase{
 		turn.setDiscard(new Discard());
 		turn.setSheriffManualTest();
 		Player sheriff = turn.getCurrentPlayer();
-		sheriff.getFigure().setName(Figure.CALAMITYJANET);
+		Figure figure = new Figure();
+		figure.setName(Figure.CALAMITYJANET);
+		sheriff.setFigure(figure);
 		sheriff.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		UserInterface testUserInterface = new TestUserInterfaceNoMiss();
 		turn.setUserInterface(testUserInterface);
@@ -2085,7 +2099,9 @@ public class TurnTest extends TestCase{
 		others.remove(sheriff);
 		
 		Player enemy = others.get(0);
-		enemy.getFigure().setName(Figure.CALAMITYJANET);
+		Figure enemyFigure = new Figure();
+		enemyFigure.setName(Figure.CALAMITYJANET);
+		enemy.setFigure(enemyFigure);
 		enemy.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		turn.play();
 		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
@@ -2274,7 +2290,10 @@ public class TurnTest extends TestCase{
 		turn.setDeck(Setup.setupDeck(false));
 		List<Player> others = new ArrayList<Player>();
 		for(Player otherPlayer : players){
-			otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+			
+			Figure otherFigure = new Figure();
+			otherFigure.setName(Figure.CALAMITYJANET);
+			otherPlayer.setFigure(otherFigure);
 			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
 			if(distance <= 1){
 				others.add(otherPlayer);
