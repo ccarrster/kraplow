@@ -803,16 +803,13 @@ public class Turn {
 		while (inPlay.count() > 0) {
 			discardCards.add(inPlay.remove(0));
 		}
-		Player vultureSam = null;
+		ArrayList<Player> vultureSamPlayers = new ArrayList<Player>();
 		for (Player alivePlayer : players) {
 			if (Figure.VULTURESAM.equals(alivePlayer.getAbility())) {
-				vultureSam = alivePlayer;
+				vultureSamPlayers.add(alivePlayer);
 			}
 		}
-		if (vultureSam == null) {
-			for (Object discardCard : discardCards) {
-				hand.add(discardCard);
-			}
+		if (vultureSamPlayers.size() == 0) {
 			String discardedCards = "";
 			while (hand.size() != 0) {
 				Object discardedCard = hand.remove(0);
@@ -821,11 +818,25 @@ public class Turn {
 			if(!discardedCards.equals("")){
 				userInterface.printInfo(player.getName() + " discarded " + discardedCards.substring(0, discardedCards.length() - 2) + ".");
 			}
-		} else {
+		} else if (vultureSamPlayers.size() == 1) {
+			Player vultureSam = vultureSamPlayers.get(0);
 			for (Object card : discardCards) {
 				vultureSam.getHand().add(card);
 			}
-			userInterface.printInfo(Figure.VULTURESAM + " takes "
+			userInterface.printInfo(vultureSam.getName() + " takes "
+					+ player.getName() + "'s cards.");
+		} else {
+			Player vultureSam = vultureSamPlayers.get(0);
+			while(!discardCards.isEmpty()){
+				int chosenCard = -1;
+				while(chosenCard < 0 || chosenCard > discardCards.size() - 1){
+					chosenCard = userInterface.chooseGeneralStoreCard(vultureSam, discardCards);
+				}
+				Object card = discardCards.remove(chosenCard);
+				vultureSam.getHand().add(card);
+				vultureSam = Turn.getNextPlayer(vultureSam, vultureSamPlayers);
+			}
+			userInterface.printInfo(Figure.VULTURESAM + " and " + Figure.VERACUSTER + " take "
 					+ player.getName() + "'s cards.");
 		}
 		for (Player alivePlayer : players) {
