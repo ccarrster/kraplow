@@ -113,19 +113,7 @@ public class Turn {
 		boolean inJail = false;
 		try {
 			userInterface.printInfo(currentPlayer.getName() + "'s turn.");
-			if (Figure.VERACUSTER.equals(currentPlayer.getName())) {
-				List<Player> otherPlayers = new ArrayList<Player>();
-				for (Player other : players) {
-					if (!other.equals(currentPlayer)) {
-						otherPlayers.add(other);
-					}
-				}
-				Player chosenPlayer = getValidChosenPlayer(currentPlayer,
-						otherPlayers, userInterface);
-				currentPlayer.setAbility(chosenPlayer.getName());
-				userInterface.printInfo(Figure.VERACUSTER
-						+ " chose the abilities of "+chosenPlayer.getName());
-			}	
+			currentPlayer.setAbility(currentPlayer.getName());	
 			if (isDynamiteExplode()) {
 				discardDynamite();
 				userInterface.printInfo("Dynamite Exploded on "
@@ -141,6 +129,19 @@ public class Turn {
 			}
 			inJail = isInJail();
 			if (!inJail && players.contains(currentPlayer)) {
+				if (Figure.VERACUSTER.equals(currentPlayer.getName())) {
+					List<Player> otherPlayers = new ArrayList<Player>();
+					for (Player other : players) {
+						if (!other.equals(currentPlayer)) {
+							otherPlayers.add(other);
+						}
+					}
+					Player chosenPlayer = getValidChosenPlayer(currentPlayer,
+						otherPlayers, userInterface);
+					currentPlayer.setAbility(chosenPlayer.getName());
+					userInterface.printInfo(Figure.VERACUSTER
+						+ " chose the abilities of "+chosenPlayer.getName());
+				}
 				this.drawCards(currentPlayer, deck);
 				while (!donePlaying && players.contains(currentPlayer)) {
 					play();
