@@ -190,7 +190,7 @@ public class Turn {
 			for (Object card : cards) {
 				hand.add(card);
 			}
-			userInterface.printInfo(Figure.KITCARLSON
+			userInterface.printInfo(player.getName()
 					+ " put a card back on the draw pile");
 		} else if (Figure.JESSEJONES.equals(player.getAbility())) {
 			List<Player> otherPlayers = new ArrayList<Player>();
@@ -208,18 +208,15 @@ public class Turn {
 						otherPlayers, userInterface);
 				Object randomCard = chosenPlayer.removeRandom();
 				hand.add(randomCard);
-				userInterface.printInfo(Figure.JESSEJONES
+				userInterface.printInfo(player.getName()
 						+ " drew a card from " + chosenPlayer.getName()
 						+ " hand.");
 			} else {
-				if(deck.size() == 0){
-					userInterface.printInfo("Shuffling the deck");
-				}
-				hand.add(deck.pull());
-				userInterface.printInfo(Figure.JESSEJONES
+				deckToHand(player.getHand(), deck, 1, userInterface);
+				userInterface.printInfo(player.getName()
 						+ " drew a card from the deck.");
 			}
-			hand.add(deck.pull());
+			deckToHand(player.getHand(), deck, 1, userInterface);
 		} else if (Figure.PATBRENNAN.equals(player.getAbility())) {
 			boolean chosenFromPlayer = userInterface.chooseFromPlayer(player);
 			if (chosenFromPlayer) {
@@ -245,8 +242,7 @@ public class Turn {
 					userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + chosenPlayer.getName());
 				}
 			} else {
-				hand.add(deck.pull());
-				hand.add(deck.pull());
+				deckToHand(player.getHand(), deck, 2, userInterface);
 			}
 		} else if (Figure.PEDRORAMIREZ.equals(player.getAbility())) {
 			if (!discard.isEmpty()) {
@@ -254,46 +250,39 @@ public class Turn {
 				if (chosenDiscard) {
 					Object discardCard = discard.remove();
 					hand.add(discardCard);
-					userInterface.printInfo(Figure.PEDRORAMIREZ + " drew a "
+					userInterface.printInfo(player.getName() + " drew a "
 							+ ((Card) discardCard).getName()
 							+ " from the discard pile.");
 				} else {
-					hand.add(deck.pull());
-					userInterface.printInfo(Figure.PEDRORAMIREZ
+					deckToHand(player.getHand(), deck, 1, userInterface);
+					userInterface.printInfo(player.getName()
 							+ " drew a card from the deck.");
 				}
 			} else {
-				hand.add(deck.pull());
-				userInterface.printInfo(Figure.PEDRORAMIREZ
+				deckToHand(player.getHand(), deck, 1, userInterface);
+				userInterface.printInfo(player.getName()
 						+ " drew a card from the deck.");
 			}
-			hand.add(deck.pull());
+			deckToHand(player.getHand(), deck, 1, userInterface);
 		} else if (Figure.PIXIEPETE.equals(player.getAbility())) {
-			hand.add(deck.pull());
-			hand.add(deck.pull());
-			hand.add(deck.pull());
-			hand.add(deck.pull());
+			deckToHand(player.getHand(), deck, 4, userInterface);
 		} else if (Figure.BILLNOFACE.equals(player.getAbility())) {
-			hand.add(deck.pull());
-			int cardsToDraw = player.getMaxHealth() - player.getHealth();
-			while(cardsToDraw < 0){
-				hand.add(deck.pull());
-				cardsToDraw -= 1;
-			}
+			int cardsToDraw = player.getMaxHealth() - player.getHealth() + 1;
+			deckToHand(player.getHand(), deck, cardsToDraw, userInterface);
 			userInterface.printInfo(player.getName()
-						+ " drew "+(player.getMaxHealth() - player.getHealth() + 1)+" card(s) from the deck.");
+						+ " drew "+cardsToDraw+" card(s) from the deck.");
 		} else {
-			hand.add(deck.pull());
-			Object secondCard = deck.pull();
-			hand.add(secondCard);
+			deckToHand(player.getHand(), deck, 1, userInterface);
+			Object secondCard = pullCards(deck, 1, userInterface).get(0);
+			player.getHand().add(secondCard);
 			if (Figure.BLACKJACK.equals(player.getAbility())) {
 				int suit = ((Card) secondCard).getSuit();
-				userInterface.printInfo(Figure.BLACKJACK + " drew a "
+				userInterface.printInfo(player.getName() + " drew a "
 						+ Card.suitToString(suit) + " "
 						+ ((Card) secondCard).getName());
 				if (suit == Card.HEARTS || suit == Card.DIAMONDS) {
-					hand.add(deck.pull());
-					userInterface.printInfo(Figure.BLACKJACK
+					deckToHand(player.getHand(), deck, 1, userInterface);
+					userInterface.printInfo(player.getName()
 							+ " drew a third card from the deck.");
 				}
 			}
@@ -333,16 +322,10 @@ public class Turn {
 
 	public void play() {
 		for (Player player : players) {
-			if (Figure.SUZYLAFAYETTE.equals(player.getAbility())) {
-				Hand playerHand = player.getHand();
-				if (playerHand.isEmpty()) {
-					if(deck.size() == 0){
-						userInterface.printInfo("Shuffling the deck");
-					}
-					playerHand.add(deck.pull());
-					userInterface.printInfo(player.getName()
-							+ " ran out of cards and drew a card.");
-				}
+			if (Figure.SUZYLAFAYETTE.equals(player.getAbility()) && player.getHand().isEmpty()) {
+				deckToHand(player.getHand(), deck, 1, userInterface);
+				userInterface.printInfo(player.getName()
+						+ " ran out of cards and drew a card.");
 			}
 		}
 		Hand hand = currentPlayer.getHand();
@@ -360,9 +343,7 @@ public class Turn {
 			if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.CHUCKWENGAM.equals(currentPlayer.getAbility())){
 				if(currentPlayer.getHealth() > 1){
 					currentPlayer.setHealth(currentPlayer.getHealth() - 1);
-					Hand playerHand = currentPlayer.getHand();
-					playerHand.add(deck.pull());
-					playerHand.add(deck.pull());
+					deckToHand(currentPlayer.getHand(), deck, 2, userInterface);
 					userInterface.printInfo(currentPlayer.getName()
 							+ " traded one life for 2 cards.");
 					return;
@@ -373,8 +354,7 @@ public class Turn {
 				if(playedCard.getType() == Card.TYPEGUN || playedCard.getType() == Card.TYPEITEM){
 					hand.remove(cardIndex);
 					discard.add(playedCard);
-					hand.add(deck.pull());
-					hand.add(deck.pull());
+					deckToHand(currentPlayer.getHand(), deck, 2, userInterface);
 					userInterface.printInfo(currentPlayer.getName()
 							+ " traded one blue card for 2 cards.");
 					return;
@@ -385,7 +365,7 @@ public class Turn {
 					for (Object discardcard : cardsToDiscard) {
 						hand.remove(discardcard);
 						discard.add(discardcard);
-						userInterface.printInfo(Figure.SIDKETCHUM
+						userInterface.printInfo(currentPlayer.getName()
 								+ " discards " + ((Card) discardcard).getName()
 								+ " for shoot.");
 					}
@@ -608,7 +588,7 @@ public class Turn {
 			if(deck.size() == 0){
 				userInterface.printInfo("Shuffling the deck");
 			}
-			Object card = deck.pull();
+			Object card = pullCards(deck, 1, userInterface).get(0);
 			Card drawnCard = (Card) card;
 			userInterface.printInfo(player.getName() + " drew a "
 					+ Card.valueToString(drawnCard.getValue()) + " of "
@@ -646,10 +626,10 @@ public class Turn {
 			Card drawn = (Card) draw(player, deck, discard, userInterface);
 			if (drawn.getSuit() == Card.HEARTS) {
 				misses = misses + 1;
-				userInterface.printInfo(Figure.JOURDONNAIS + " drew a "
+				userInterface.printInfo(player.getName() + " drew a "
 						+ Card.suitToString(Card.HEARTS) + " and was saved by his ability.");
 			} else {
-				userInterface.printInfo(Figure.JOURDONNAIS + " drew a "
+				userInterface.printInfo(player.getName() + " drew a "
 						+ Card.suitToString(drawn.getSuit())
 						+ " and was not saved by his ability.");
 			}
@@ -715,12 +695,9 @@ public class Turn {
 		} else {
 			if (Figure.BARTCASSIDY.equals(player.getAbility())) {
 				for (int i = 0; i < damage; i++) {
-					if(deck.size() == 0){
-						userInterface.printInfo("Shuffling the deck");
-					}
-					player.getHand().add(deck.pull());
+					deckToHand(player.getHand(), deck, 1, userInterface);
 					userInterface
-							.printInfo(Figure.BARTCASSIDY
+							.printInfo(player.getName()
 									+ " draws a card from the deck because he was damaged.");
 				}
 			} else if (damager != null
@@ -729,7 +706,7 @@ public class Turn {
 				if (otherHand.size() != 0) {
 					Hand playerHand = player.getHand();
 					playerHand.add(otherHand.removeRandom());
-					userInterface.printInfo(Figure.ELGRINGO
+					userInterface.printInfo(player.getName()
 							+ " draws a card from " + damager.getName()
 							+ " because he was damaged.");
 				}
@@ -850,15 +827,13 @@ public class Turn {
 					alivePlayer.setHealth(alivePlayer.getHealth() + 1);
 					bonusHealth += 1;
 				}
-				userInterface.printInfo(Figure.GREGDIGGER + " gets "+bonusHealth+" health.");
+				userInterface.printInfo(alivePlayer.getName() + " gets "+bonusHealth+" health.");
 			}
 		}
 		for (Player alivePlayer : players) {
 			if (Figure.HERBHUNTER.equals(alivePlayer.getAbility())) {
-				Hand herbHand = alivePlayer.getHand();
-				herbHand.add(deck.pull());
-				herbHand.add(deck.pull());
-				userInterface.printInfo(Figure.HERBHUNTER + " draws 2 cards.");
+				deckToHand(alivePlayer.getHand(), deck, 2, userInterface);
+				userInterface.printInfo(alivePlayer.getName() + " draws 2 cards.");
 			}
 		}
 		
@@ -918,7 +893,7 @@ public class Turn {
 					for (Object card : cardsToDiscard) {
 						hand.remove(card);
 						discard.add(card);
-						userInterface.printInfo(Figure.SIDKETCHUM
+						userInterface.printInfo(player.getName()
 								+ " discards " + ((Card) card).getName()
 								+ " for life.");
 					}

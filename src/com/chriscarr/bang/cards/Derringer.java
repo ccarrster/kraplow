@@ -26,9 +26,8 @@ public class Derringer extends SingleUse implements Playable{
 		if(result){
 			removeFromInPlay(currentPlayer);
 			discard.add(this);
-			Hand currentHand = currentPlayer.getHand();
+			turn.deckToHand(currentPlayer.getHand(), deck, 2, userInterface);
 			userInterface.printInfo(currentPlayer.getName() + " draws a card");
-			currentHand.add(deck.pull());
 		}
 		return result;
 	}
