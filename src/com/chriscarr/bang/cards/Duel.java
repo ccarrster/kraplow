@@ -50,8 +50,8 @@ public class Duel extends Card implements Playable {
 			while(true){
 				int bangPlayed = Turn.validPlayBang(other, userInterface);
 				if(bangPlayed == -1){
-					turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(other.getName() + " loses a health");
+					turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
 					return true;
 				} else {
@@ -64,8 +64,8 @@ public class Duel extends Card implements Playable {
 				}		
 				int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
 				if(currentBangPlayed == -1){
-					turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
 					userInterface.printInfo(currentPlayer.getName() + " loses a health");
+					turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
 					giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
 					return true;						
 				} else {		
@@ -81,10 +81,9 @@ public class Duel extends Card implements Playable {
 	}
 
 	private void giveMollyStarkCards(Player player, Deck deck, int amountCards, UserInterface userInterface){
-		for(int i = 0; i < amountCards; i++){
-			Hand hand = player.getHand();
-			hand.add(deck.pull());
+		if(Figure.MOLLYSTARK.equals(player.getAbility()) && amountCards > 0){
+			Turn.deckToHand(player.getHand(), deck, amountCards, userInterface);
+			userInterface.printInfo(player.getName() + " draws "+amountCards+" card(s)");
 		}
-		userInterface.printInfo(player.getName() + " draws "+amountCards+" card(s)");
 	}
 }

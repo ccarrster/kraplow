@@ -261,16 +261,15 @@ public class Card implements Playable{
 			} else if(missesRequired == 1){
 				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse); 
 				if(missPlayed == -1){
-					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
+					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				} else {
 					for(int i = 0; i < missesRequired; i++){
 						if(missPlayed < otherPlayer.getHand().size()){
 							Card missCard = (Card)otherPlayer.getHand().remove(missPlayed);
 							discard.add(missCard);
 							if(missCard.getName().equals(CARDDODGE)){
-								Hand otherHand = otherPlayer.getHand();
-								otherHand.add(deck.pull());
+								turn.deckToHand(otherPlayer.getHand(), deck, 1, userInterface);
 								userInterface.printInfo(otherPlayer.getName() + " plays a "+missCard.getName()+ " countering " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
 							} else {
 								if(missCard.getName().equals(Card.CARDMISSED)){
@@ -280,8 +279,7 @@ public class Card implements Playable{
 								}
 							}
 							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
-								Hand otherHand = otherPlayer.getHand();
-								otherHand.add(deck.pull());
+								turn.deckToHand(otherPlayer.getHand(), deck, 1, userInterface);
 								userInterface.printInfo(otherPlayer.getName() + " draws a card");
 							}
 						} else {
@@ -289,7 +287,7 @@ public class Card implements Playable{
 							InPlay inPlay = otherPlayer.getInPlay();
 							SingleUseMissed sum = (SingleUseMissed)inPlay.remove(missPlayed);
 							if(sum.getName().equals(Card.CARDBIBLE)){
-								otherPlayer.getHand().add(deck.pull());
+								turn.deckToHand(otherPlayer.getHand(), deck, 1, userInterface);
 							}
 							userInterface.printInfo(otherPlayer.getName() + " plays a "+sum.getName());
 							discard.add(sum);
@@ -302,8 +300,8 @@ public class Card implements Playable{
 				List<Object> cardsToDiscard = null;			
 				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);			
 				if(cardsToDiscard.size() == 0){
-					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
+					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				} else {
 					for(Object card : cardsToDiscard){
 						if(inPlay.hasItem(((Card)card).getName())){
@@ -319,8 +317,7 @@ public class Card implements Playable{
 							discard.add(card);
 							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
 							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
-								Hand otherHand = otherPlayer.getHand();
-								otherHand.add(deck.pull());
+								turn.deckToHand(otherPlayer.getHand(), deck, 1, userInterface);
 								userInterface.printInfo(otherPlayer.getName() + " draws a card");
 							}
 						}

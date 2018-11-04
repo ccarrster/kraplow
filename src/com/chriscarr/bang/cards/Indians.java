@@ -44,14 +44,13 @@ public class Indians extends Card implements Playable {
 			}
 			int bangPlayed = Turn.validPlayBang(indianPlayer, userInterface);
 			if(bangPlayed == -1){
-				turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 				userInterface.printInfo(indianPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
+				turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 			} else {
 				discard.add(indianPlayer.getHand().remove(bangPlayed));
 				userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
 				if(Figure.MOLLYSTARK.equals(indianPlayer.getAbility())){
-					Hand otherHand = indianPlayer.getHand();
-					otherHand.add(deck.pull());
+					turn.deckToHand(indianPlayer.getHand(), deck, 1, userInterface);
 					userInterface.printInfo(indianPlayer.getName() + " draws a card");
 				}
 			}

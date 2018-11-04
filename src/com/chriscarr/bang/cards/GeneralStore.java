@@ -33,13 +33,7 @@ public class GeneralStore extends Card implements Playable {
 	 */
 	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		discard.add(this);
-		List<Object> generalStoreCards = new ArrayList<Object>();
-		for(int i = 0; i < players.size(); i++){
-			if(deck.size() == 0){
-				userInterface.printInfo("Shuffling the deck");
-			}
-			generalStoreCards.add(deck.pull());
-		}
+		List<Object> generalStoreCards = turn.pullCards(deck, players.size(), userInterface);
 		Player generalPlayer = currentPlayer;
 		while(!generalStoreCards.isEmpty()){
 			int chosenCard = -1;

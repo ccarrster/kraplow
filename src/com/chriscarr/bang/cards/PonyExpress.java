@@ -22,10 +22,7 @@ public class PonyExpress extends SingleUse implements Playable{
 	public boolean activate(Player currentPlayer, List<Player> players,
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 
-		Hand currentHand = currentPlayer.getHand();
-		currentHand.add(deck.pull());
-		currentHand.add(deck.pull());
-		currentHand.add(deck.pull());
+		turn.deckToHand(currentPlayer.getHand(), deck, 3, userInterface);
 		userInterface.printInfo(currentPlayer.getName() + " draws 3 cards");
 		removeFromInPlay(currentPlayer);
 		discard.add(this);
