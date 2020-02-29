@@ -98,7 +98,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			for(String otherName : targets){
 				targetString += otherName + "$";
 			}
-			handCards += name + "@" + canPlay + "@" + targetString + ", ";
+			handCards += name + "^" + Card.suitToString(((Card)card).getSuit()) + "^" + Card.valueToString(((Card)card).getValue()) + "@" + canPlay + "@" + targetString + ", ";
 		}
 		InPlay inPlay = player.getInPlay();
 		for(int i = 0; i < inPlay.size(); i++){
@@ -111,7 +111,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 				for(String otherName : targets){
 					targetString += otherName + "$";
 				}
-				handCards += name + "@" + canPlay + "@" + targetString + ", ";
+				handCards += name + "^" + Card.suitToString(((Card)card).getSuit()) + "^" + Card.valueToString(((Card)card).getValue()) + "@" + canPlay + "@" + targetString + ", ";
 			}
 		}
 		if(Figure.CHUCKWENGAM.equals(player.getAbility())){
