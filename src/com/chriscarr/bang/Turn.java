@@ -120,6 +120,8 @@ public class Turn {
 						otherPlayers.add(other);
 					}
 				}
+				userInterface.printInfo(Figure.VERACUSTER
+						+ " will choose the abilities of another player");
 				Player chosenPlayer = getValidChosenPlayer(currentPlayer,
 						otherPlayers, userInterface);
 				currentPlayer.setAbility(chosenPlayer.getName());
