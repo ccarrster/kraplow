@@ -277,7 +277,7 @@ public class Turn {
 		} else if (Figure.BILLNOFACE.equals(player.getAbility())) {
 			hand.add(deck.pull());
 			int cardsToDraw = player.getMaxHealth() - player.getHealth();
-			while(cardsToDraw < 0){
+			while(cardsToDraw > 0){
 				hand.add(deck.pull());
 				cardsToDraw -= 1;
 			}
