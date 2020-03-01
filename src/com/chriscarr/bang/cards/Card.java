@@ -238,12 +238,15 @@ public class Card implements Playable{
 		if(targetPlayer == null){
 			otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		} else {
-			otherPlayer = targetPlayer;		
+			otherPlayer = targetPlayer;
 		}
 		if(!(otherPlayer instanceof CancelPlayer)){
 			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
 			if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
 				userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond "+this.getName());
+				if(!skipDiscard){
+					discard.add(this);
+				}
 				return true;
 			}
 			int missesRequired = 1;
@@ -257,6 +260,9 @@ public class Card implements Playable{
 				canPlaySingleUse = false;
 			}
 			if(missesRequired <= 0){
+				if(!skipDiscard){
+					discard.add(this);
+				}
 				return true;
 			} else if(missesRequired == 1){
 				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse); 
@@ -299,8 +305,8 @@ public class Card implements Playable{
 			} else if(missesRequired == 2){
 				Hand hand = otherPlayer.getHand();
 				InPlay inPlay = otherPlayer.getInPlay();
-				List<Object> cardsToDiscard = null;			
-				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);			
+				List<Object> cardsToDiscard = null;	
+				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
 				if(cardsToDiscard.size() == 0){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
@@ -336,6 +342,6 @@ public class Card implements Playable{
 				currentPlayer.getHand().add(this);
 			}
 			return false;
-		}		
+		}
 	}
 }
