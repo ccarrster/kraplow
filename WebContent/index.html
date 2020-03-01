@@ -1325,6 +1325,7 @@ function copyToClipboard() {
 			result += '<a href="" onClick="leave(getServletUrl(), parseLeave, user, gameId); return false;"><div><img src="leave.png" alt="Leave" width="90"></div></a><input type="button" href="" onClick="leave(getServletUrl(), parseLeave, user, gameId);" value="Leave Game">';
 			result += '<p>Invite friends to join this game by getting them to put this link in their browsers address bar.</p><p><input type="text" readonly id="joinurl" value="http://chriscarr.name:8080/westerncardgame?join=' + gameId + '" style="width:350px"><input type="button" onclick="copyToClipboard()" value="Copy to Clipboard"></p>';
 			result += '<p id="addcomputer"><input type="button" value="Add Computer Player +" onclick="addRobot();"></p>';
+			result += '<p>Expansions: (Side Step - '+isSidestep+')</p>';
 			result += '<p>Prefered options only work when playing alone against AI.</p>';
 			result += '<p id="pcharWrapper">Prefered Character <select id="pchar"><option value="random">Random</option>';
 			for (playerKey in playerInfo) {
