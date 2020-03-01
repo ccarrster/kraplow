@@ -305,8 +305,6 @@ public class Turn {
 		if (Figure.SEANMALLORY.equals(player.getAbility())) {
 			return;
 		}
-		//TODO move this to active play
-		discardTwoCardsForLife(player, discard, userInterface);
 		Hand hand = player.getHand();
 		String discardedCards = "";
 		while (hand.size() > player.getHealth()) {
@@ -368,6 +366,8 @@ public class Turn {
 							+ " traded one life for 2 cards.");
 					return;
 				}
+			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.SIDKETCHUM.equals(currentPlayer.getAbility())){
+				discardTwoCardsForLife(currentPlayer, discard, userInterface);
 			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())){
 				int cardIndex = userInterface.askBlueDiscard(currentPlayer);
 				Card playedCard = (Card) hand.get(cardIndex);
@@ -386,7 +386,7 @@ public class Turn {
 					for (Object discardcard : cardsToDiscard) {
 						hand.remove(discardcard);
 						discard.add(discardcard);
-						userInterface.printInfo(Figure.SIDKETCHUM
+						userInterface.printInfo(currentPlayer.getName()
 								+ " discards " + ((Card) discardcard).getName()
 								+ " for shoot.");
 					}
@@ -561,6 +561,8 @@ public class Turn {
 	public boolean isDynamiteExplode() {
 		InPlay currentInPlay = currentPlayer.getInPlay();
 		if (currentInPlay.hasItem(Card.CARDDYNAMITE)) {
+			userInterface.printInfo(currentPlayer.getName()
+						+ " is drawing to see if the dynamite explodes");
 			Card drawnCard = (Card) draw(currentPlayer, deck, discard,
 					userInterface);
 			return Card.isExplode(drawnCard);
@@ -625,6 +627,8 @@ public class Turn {
 		if (currentInPlay.hasItem(Card.CARDJAIL)) {
 			Object jailCard = currentInPlay.removeJail();
 			discard.add(jailCard);
+			userInterface.printInfo(currentPlayer.getName()
+						+ " is drawing to break out of jail");
 			Card drawn = (Card) draw(currentPlayer, deck, discard,
 					userInterface);
 			boolean inJail = drawn.getSuit() != Card.HEARTS;
@@ -644,6 +648,8 @@ public class Turn {
 			UserInterface userInterface, int missesRequired, Player shooter) {
 		int misses = 0;
 		if (Figure.JOURDONNAIS.equals(player.getAbility())) {
+			userInterface.printInfo(player.getName()
+						+ " is drawing to be saved by a barrel");
 			Card drawn = (Card) draw(player, deck, discard, userInterface);
 			if (drawn.getSuit() == Card.HEARTS) {
 				misses = misses + 1;
@@ -664,6 +670,8 @@ public class Turn {
 				userInterface.printInfo(player.getName()
 						+ "'s barrel has no affect on " + Figure.BELLESTAR);
 			} else {
+				userInterface.printInfo(player.getName()
+						+ " is drawing to be saved by a barrel");
 				Card drawn = (Card) draw(player, deck, discard, userInterface);
 				if (drawn.getSuit() == Card.HEARTS) {
 					misses = misses + 1;
@@ -706,9 +714,6 @@ public class Turn {
 					doNotPlayBeer = true;
 				}
 			}
-		}
-		if (player.getHealth() <= 0){
-			discardTwoCardsForLife(player, discard, userInterface);
 		}
 		if (player.getHealth() <= 0) {
 			handleDeath(player, damager, currentPlayer, players, userInterface,

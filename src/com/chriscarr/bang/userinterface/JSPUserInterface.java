@@ -123,6 +123,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		if(Figure.DOCHOLYDAY.equals(player.getAbility())){
 			handCards += "discardtwotoshoot" + "@true@" + player.getName() + "$" + ", ";
 		}
+		if(Figure.SIDKETCHUM.equals(player.getAbility())){
+			handCards += "discardtwoforlife" + "@true@" + player.getName() + "$" + ", ";
+		}
 		sendMessage(player.getName(), "askPlay " + handCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
