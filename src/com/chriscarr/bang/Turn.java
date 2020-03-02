@@ -576,9 +576,17 @@ public class Turn {
 			Object dynamiteCard = currentInPlay.removeDynamite();
 			Player nextPlayer = getNextPlayer(currentPlayer, players);
 			InPlay nextInPlay = nextPlayer.getInPlay();
-			userInterface.printInfo("Dynamite Passed to "
+			if(!nextInPlay.hasItem(Card.CARDDYNAMITE)){
+				userInterface.printInfo("Dynamite Passed to "
 					+ nextPlayer.getName());
-			nextInPlay.add(dynamiteCard);
+				nextInPlay.add(dynamiteCard);
+			} else {
+				nextPlayer = getNextPlayer(nextPlayer, players);
+				nextInPlay = nextPlayer.getInPlay();
+				userInterface.printInfo("Dynamite Passed to "
+					+ nextPlayer.getName());
+				nextInPlay.add(dynamiteCard);
+			}
 		}
 	}
 
@@ -809,10 +817,12 @@ public class Turn {
 		while (inPlay.count() > 0) {
 			discardCards.add(inPlay.remove(0));
 		}
+		List<Player> vultureSams = new ArrayList<Player>();
 		Player vultureSam = null;
 		for (Player alivePlayer : players) {
 			if (Figure.VULTURESAM.equals(alivePlayer.getAbility())) {
 				vultureSam = alivePlayer;
+				vultureSams.add(alivePlayer);
 			}
 		}
 		if (vultureSam == null) {
@@ -828,11 +838,35 @@ public class Turn {
 				userInterface.printInfo(player.getName() + " discarded " + discardedCards.substring(0, discardedCards.length() - 2) + ".");
 			}
 		} else {
-			for (Object card : discardCards) {
-				vultureSam.getHand().add(card);
-			}
-			userInterface.printInfo(Figure.VULTURESAM + " takes "
+			if(vultureSams.size() == 1){
+				//One vulture sams
+				for (Object card : discardCards) {
+					vultureSam.getHand().add(card);
+				}
+				userInterface.printInfo(Figure.VULTURESAM + " takes "
 					+ player.getName() + "'s cards.");
+			} else {
+				//Two vulture sams
+				int playerIndex = 0;
+				Player vultureSamPlayer = vultureSams.get(playerIndex);
+				while(!discardCards.isEmpty()){
+					int chosenCard = -1;
+					while(chosenCard < 0 || chosenCard > discardCards.size() - 1){
+						userInterface.printInfo(vultureSamPlayer.getName() + " choose a card from dead player.");
+						chosenCard = userInterface.chooseGeneralStoreCard(vultureSamPlayer, discardCards);
+					}
+					Object card = discardCards.remove(chosenCard);
+					userInterface.printInfo(vultureSamPlayer.getName() + " chooses a card from dead player.");
+					vultureSamPlayer.getHand().add(card);
+					if(playerIndex == 0){
+						playerIndex = 1;
+					} else {
+						playerIndex = 0;
+					}
+					vultureSamPlayer = vultureSams.get(playerIndex);
+				}
+			}
+			
 		}
 		for (Player alivePlayer : players) {
 			if (Figure.GREGDIGGER.equals(alivePlayer.getAbility())) {
