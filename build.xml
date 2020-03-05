@@ -1,5 +1,11 @@
 <?xml version="1.0" ?> 
 <project name="Kraplow" default="war">
+
+	<!-- Exposing environmental variables to Ant -->
+	<property environment="env"/>
+	<!-- Stick configurable properties in this file instead of hard coding them -->
+	<property file = "build.properties"/>
+
 	<path id="compile.classpath">
 		<fileset dir="WebContent/WEB-INF/lib">
 			<include name="*.jar"/>
@@ -24,7 +30,24 @@
 			<classes dir="build/classes"/>
 		</war>
 	</target>
-	
+
+	<target name = "deploy" depends = "war" description = "Deploy application .war to the appserver">
+		<copy todir = "${deploy.path}" preservelastmodified = "true">
+			<fileset dir = "dist">
+				<include name = "*.war"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name = "test">
+		<junit haltonfailure = "true" printsummary = "true">
+			<classpath location="${junit.home}/junit-${junit.version}.jar" />
+			<formatter type="plain" usefile="false" />
+
+			<test name = "com.chriscarr.bang.test.AllTests"/>
+		</junit>
+	</target>
+
 	<target name="clean">
 		<delete dir="dist" />
 		<delete dir="build" />
