@@ -368,8 +368,11 @@ public class Turn {
 				}
 			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.SIDKETCHUM.equals(currentPlayer.getAbility())){
 				discardTwoCardsForLife(currentPlayer, discard, userInterface);
-			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())){
+			} else if(card > (hand.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())){
 				int cardIndex = userInterface.askBlueDiscard(currentPlayer);
+				if(cardIndex == -1){
+					return;
+				}
 				Card playedCard = (Card) hand.get(cardIndex);
 				if(playedCard.getType() == Card.TYPEGUN || playedCard.getType() == Card.TYPEITEM){
 					hand.remove(cardIndex);
