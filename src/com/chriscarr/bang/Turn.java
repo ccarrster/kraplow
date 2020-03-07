@@ -394,14 +394,18 @@ public class Turn {
 			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.DOCHOLYDAY.equals(currentPlayer.getAbility())){
 				List<Object> cardsToDiscard = userInterface.chooseTwoDiscardForShoot(currentPlayer);
 				if(cardsToDiscard.size() == 2){
+					int discardSuit = Card.DIAMONDS;
 					for (Object discardcard : cardsToDiscard) {
+						if(((Card) discardcard).getSuit() != Card.DIAMONDS){
+							discardSuit = ((Card) discardcard).getSuit();
+						}
 						hand.remove(discardcard);
 						discard.add(discardcard);
 						userInterface.printInfo(currentPlayer.getName()
 								+ " discards " + ((Card) discardcard).getName()
 								+ " for shoot.");
 					}
-					Bang tempBang = new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE7, Card.TYPEPLAY);
+					Bang tempBang = new Bang(Card.CARDBANG, discardSuit, Card.VALUE7, Card.TYPEPLAY);
 					boolean success = tempBang.play(currentPlayer, players, userInterface, deck, discard, this, true);
 					if(!success){
 						hand.add(discard.remove());
