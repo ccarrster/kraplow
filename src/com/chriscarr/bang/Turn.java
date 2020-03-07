@@ -25,6 +25,7 @@ public class Turn {
 	private Discard discard;
 	private Deck deck;
 	private int bangsPlayed = 0;
+	private int joseActions = 0;
 
 	public ArrayList<String> getRoles(){
 		ArrayList<String> roles = new ArrayList<String>();
@@ -110,6 +111,7 @@ public class Turn {
 	}
 
 	private void turnLoop(Player currentPlayer) {
+		this.joseActions = 0;
 		boolean inJail = false;
 		try {
 			userInterface.printInfo(currentPlayer.getName() + "'s turn.");
@@ -125,9 +127,10 @@ public class Turn {
 				Player chosenPlayer = getValidChosenPlayer(currentPlayer,
 						otherPlayers, userInterface);
 				currentPlayer.setAbility(chosenPlayer.getName());
-				userInterface.printInfo(Figure.VERACUSTER
+				userInterface.printInfo(currentPlayer.getFigure().getName()
 						+ " chose the abilities of "+chosenPlayer.getName());
-			}	
+			}
+			
 			if (isDynamiteExplode()) {
 				discardDynamite();
 				userInterface.printInfo("Dynamite Exploded on "
@@ -191,7 +194,7 @@ public class Turn {
 			for (Object card : cards) {
 				hand.add(card);
 			}
-			userInterface.printInfo(Figure.KITCARLSON
+			userInterface.printInfo(player.getFigure().getName()
 					+ " put a card back on the draw pile");
 		} else if (Figure.JESSEJONES.equals(player.getAbility())) {
 			List<Player> otherPlayers = new ArrayList<Player>();
@@ -209,7 +212,7 @@ public class Turn {
 						otherPlayers, userInterface);
 				Object randomCard = chosenPlayer.removeRandom();
 				hand.add(randomCard);
-				userInterface.printInfo(Figure.JESSEJONES
+				userInterface.printInfo(player.getFigure().getName()
 						+ " drew a card from " + chosenPlayer.getName()
 						+ " hand.");
 			} else {
@@ -217,7 +220,7 @@ public class Turn {
 					userInterface.printInfo("Shuffling the deck");
 				}
 				hand.add(deck.pull());
-				userInterface.printInfo(Figure.JESSEJONES
+				userInterface.printInfo(player.getFigure().getName()
 						+ " drew a card from the deck.");
 			}
 			hand.add(deck.pull());
@@ -255,22 +258,21 @@ public class Turn {
 				if (chosenDiscard) {
 					Object discardCard = discard.remove();
 					hand.add(discardCard);
-					userInterface.printInfo(Figure.PEDRORAMIREZ + " drew a "
+					userInterface.printInfo(player.getFigure().getName() + " drew a "
 							+ ((Card) discardCard).getName()
 							+ " from the discard pile.");
 				} else {
 					hand.add(deck.pull());
-					userInterface.printInfo(Figure.PEDRORAMIREZ
+					userInterface.printInfo(player.getFigure().getName()
 							+ " drew a card from the deck.");
 				}
 			} else {
 				hand.add(deck.pull());
-				userInterface.printInfo(Figure.PEDRORAMIREZ
+				userInterface.printInfo(player.getFigure().getName()
 						+ " drew a card from the deck.");
 			}
 			hand.add(deck.pull());
 		} else if (Figure.PIXIEPETE.equals(player.getAbility())) {
-			hand.add(deck.pull());
 			hand.add(deck.pull());
 			hand.add(deck.pull());
 			hand.add(deck.pull());
@@ -289,12 +291,12 @@ public class Turn {
 			hand.add(secondCard);
 			if (Figure.BLACKJACK.equals(player.getAbility())) {
 				int suit = ((Card) secondCard).getSuit();
-				userInterface.printInfo(Figure.BLACKJACK + " drew a "
+				userInterface.printInfo(player.getFigure().getName() + " drew a "
 						+ Card.suitToString(suit) + " "
 						+ ((Card) secondCard).getName());
 				if (suit == Card.HEARTS || suit == Card.DIAMONDS) {
 					hand.add(deck.pull());
-					userInterface.printInfo(Figure.BLACKJACK
+					userInterface.printInfo(player.getFigure().getName()
 							+ " drew a third card from the deck.");
 				}
 			}
@@ -302,12 +304,13 @@ public class Turn {
 	}
 
 	public void discard(Player player) {
+		int maxHandSize = player.getHealth();
 		if (Figure.SEANMALLORY.equals(player.getAbility())) {
-			return;
+			maxHandSize = 10;
 		}
 		Hand hand = player.getHand();
 		String discardedCards = "";
-		while (hand.size() > player.getHealth()) {
+		while (hand.size() > maxHandSize) {
 			Object discardedCard = askPlayerToDiscard(player, discard);
 			discardedCards += ((Card)discardedCard).getName() + ", ";
 		}
@@ -369,12 +372,17 @@ public class Turn {
 			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.SIDKETCHUM.equals(currentPlayer.getAbility())){
 				discardTwoCardsForLife(currentPlayer, discard, userInterface);
 			} else if(card > (hand.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())){
+				if(this.joseActions >= 2){
+					userInterface.printInfo("Already used special abilitity twice this turn.");
+					return;
+				}
 				int cardIndex = userInterface.askBlueDiscard(currentPlayer);
 				if(cardIndex == -1){
 					return;
 				}
 				Card playedCard = (Card) hand.get(cardIndex);
 				if(playedCard.getType() == Card.TYPEGUN || playedCard.getType() == Card.TYPEITEM){
+					this.joseActions += 1;
 					hand.remove(cardIndex);
 					discard.add(playedCard);
 					hand.add(deck.pull());
@@ -664,10 +672,10 @@ public class Turn {
 			Card drawn = (Card) draw(player, deck, discard, userInterface);
 			if (drawn.getSuit() == Card.HEARTS) {
 				misses = misses + 1;
-				userInterface.printInfo(Figure.JOURDONNAIS + " drew a "
+				userInterface.printInfo(player.getFigure().getName() + " drew a "
 						+ Card.suitToString(Card.HEARTS) + " and was saved by his ability.");
 			} else {
-				userInterface.printInfo(Figure.JOURDONNAIS + " drew a "
+				userInterface.printInfo(player.getFigure().getName() + " drew a "
 						+ Card.suitToString(drawn.getSuit())
 						+ " and was not saved by his ability.");
 			}
@@ -679,7 +687,7 @@ public class Turn {
 		if (currentInPlay.hasItem(Card.CARDBARREL)) {
 			if(Figure.BELLESTAR.equals(shooter.getAbility())){
 				userInterface.printInfo(player.getName()
-						+ "'s barrel has no affect on " + Figure.BELLESTAR);
+						+ "'s barrel has no affect on " + shooter.getFigure().getName());
 			} else {
 				userInterface.printInfo(player.getName()
 						+ " is drawing to be saved by a barrel");
@@ -737,7 +745,7 @@ public class Turn {
 					}
 					player.getHand().add(deck.pull());
 					userInterface
-							.printInfo(Figure.BARTCASSIDY
+							.printInfo(player.getFigure().getName()
 									+ " draws a card from the deck because he was damaged.");
 				}
 			} else if (damager != null
@@ -746,7 +754,7 @@ public class Turn {
 				if (otherHand.size() != 0) {
 					Hand playerHand = player.getHand();
 					playerHand.add(otherHand.removeRandom());
-					userInterface.printInfo(Figure.ELGRINGO
+					userInterface.printInfo(player.getFigure().getName()
 							+ " draws a card from " + damager.getName()
 							+ " because he was damaged.");
 				}
@@ -846,7 +854,7 @@ public class Turn {
 				for (Object card : discardCards) {
 					vultureSam.getHand().add(card);
 				}
-				userInterface.printInfo(Figure.VULTURESAM + " takes "
+				userInterface.printInfo(vultureSams.get(0).getFigure().getName() + " takes "
 					+ player.getName() + "'s cards.");
 			} else {
 				//Two vulture sams
@@ -882,7 +890,7 @@ public class Turn {
 					alivePlayer.setHealth(alivePlayer.getHealth() + 1);
 					bonusHealth += 1;
 				}
-				userInterface.printInfo(Figure.GREGDIGGER + " gets "+bonusHealth+" health.");
+				userInterface.printInfo(alivePlayer.getFigure().getName() + " gets "+bonusHealth+" health.");
 			}
 		}
 		for (Player alivePlayer : players) {
@@ -890,7 +898,7 @@ public class Turn {
 				Hand herbHand = alivePlayer.getHand();
 				herbHand.add(deck.pull());
 				herbHand.add(deck.pull());
-				userInterface.printInfo(Figure.HERBHUNTER + " draws 2 cards.");
+				userInterface.printInfo(alivePlayer.getFigure().getName() + " draws 2 cards.");
 			}
 		}
 		
@@ -950,7 +958,7 @@ public class Turn {
 					for (Object card : cardsToDiscard) {
 						hand.remove(card);
 						discard.add(card);
-						userInterface.printInfo(Figure.SIDKETCHUM
+						userInterface.printInfo(player.getFigure().getName()
 								+ " discards " + ((Card) card).getName()
 								+ " for life.");
 					}

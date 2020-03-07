@@ -106,7 +106,7 @@ public class Figure {
 		} else if(name.equals(DOCHOLYDAY)){
 			return "On his turn, discard 2 cards to Shoot";
 		} else if(name.equals(PIXIEPETE)){
-			return "Draws 4 cards";
+			return "Draws 3 cards";
 		} else if(name.equals(MOLLYSTARK)){
 			return "When playing cards out of turn, draw 1";
 		} else if(name.equals(APACHEKID)){
@@ -122,7 +122,7 @@ public class Figure {
 		} else if(name.equals(VERACUSTER)){
 			return "Copies abilities of others";
 		} else if(name.equals(SEANMALLORY)){
-			return "Has no handsize limit";
+			return "Has handsize limit of 10";
 		} else {
 			throw new RuntimeException("Invalid player name");
 		}
