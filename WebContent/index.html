@@ -76,7 +76,7 @@ function copyToClipboard() {
 
 
    function getServletUrl(){
-       return "/westerncardgame/chat";
+       return "http://chriscarr.name:8080/westerncardgame/chat";
    }
 
    function initRequest() {
@@ -717,7 +717,7 @@ function copyToClipboard() {
 					flashBorder(names[i]);
 				}
 			}
-			
+
 			gameLogDiv.scrollTop = gameLogDiv.scrollHeight;
 			sendResponse("", messageId);
 		}
@@ -731,7 +731,7 @@ function copyToClipboard() {
 
 	function flashBorder(elmId, stopFlash)
 	{
-	    var elm = document.getElementById(elmId);  
+	    var elm = document.getElementById(elmId);
 	    if(stopFlash == "true")
 	    {
 	        elm.style.opacity = 1;
@@ -1384,7 +1384,7 @@ function copyToClipboard() {
 			guestCounter = cookieGuestCounter;
 		} else {
 			getGuestCounter(getServletUrl(), parseGetGuestCounter);
-		}	
+		}
    	}
    	if(gameOver == false){
    		if(gameId != null){
