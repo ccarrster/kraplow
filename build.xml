@@ -43,7 +43,7 @@
 		<junit haltonfailure = "true" printsummary = "true">
 			<classpath location="${junit.home}/junit-${junit.version}.jar" />
 			<formatter type="plain" usefile="false" />
-
+			<classpath location="build/classes"/>
 			<test name = "com.chriscarr.bang.test.AllTests"/>
 		</junit>
 	</target>
