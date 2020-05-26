@@ -268,7 +268,7 @@ public class Card implements Playable{
 				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse); 
 				if(missPlayed == -1){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
+					userInterface.printInfo(otherPlayer.getName() + " loses a health.");
 				} else {
 					for(int i = 0; i < missesRequired; i++){
 						if(missPlayed < otherPlayer.getHand().size()){
@@ -309,7 +309,7 @@ public class Card implements Playable{
 				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
 				if(cardsToDiscard.size() == 0){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
+					userInterface.printInfo(otherPlayer.getName() + " loses a health.");
 				} else {
                                     //TODO issue here, can select more than 2 cards. Green card and missed locks up game.
 					for(Object card : cardsToDiscard){
