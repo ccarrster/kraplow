@@ -717,7 +717,7 @@ function copyToClipboard() {
 					flashBorder(names[i]);
 				}
 			}
-			
+
 			gameLogDiv.scrollTop = gameLogDiv.scrollHeight;
 			sendResponse("", messageId);
 		}
@@ -731,7 +731,7 @@ function copyToClipboard() {
 
 	function flashBorder(elmId, stopFlash)
 	{
-	    var elm = document.getElementById(elmId);  
+	    var elm = document.getElementById(elmId);
 	    if(stopFlash == "true")
 	    {
 	        elm.style.opacity = 1;
@@ -1384,7 +1384,7 @@ function copyToClipboard() {
 			guestCounter = cookieGuestCounter;
 		} else {
 			getGuestCounter(getServletUrl(), parseGetGuestCounter);
-		}	
+		}
    	}
    	if(gameOver == false){
    		if(gameId != null){
@@ -1569,6 +1569,32 @@ function copyToClipboard() {
    		return "Discard and give anyone a beer";
    	} else if(cardName.indexOf("Springfield") != -1){
    		return "Discard and shoot anyone";
+	} else if(cardName.indexOf("Pony Express") != -1){
+		return "Draw 3 cards.";
+	} else if(cardName.indexOf("Ten Gallon Hat") != -1){
+		return "Counter to Shoot.";
+	} else if(cardName.indexOf("Sombrero") != -1){
+		return "Counter to Shoot.";
+	} else if(cardName.indexOf("Bible") != -1){
+		return "Counter to Shoot and draw a card.";
+	} else if(cardName.indexOf("Iron Plate") != -1){
+		return "Counter to Shoot.";
+	} else if(cardName.indexOf("Derringer") != -1){
+		return "Shoot a distance of one and draw a card.";
+	} else if(cardName.indexOf("Pepperbox") != -1){
+		return "Damage a player within range.";
+	} else if(cardName.indexOf("Knife") != -1){
+		return "Shoot a distance of one.";
+	} else if(cardName.indexOf("Canteen") != -1){
+		return "Regain a health.";
+	} else if(cardName.indexOf("Howitzer") != -1){
+		return "Shoot everyone else does not count towards Shoots per turn.";
+	} else if(cardName.indexOf("Can Can") != -1){
+		return "Other player discards a card from in play of your choosing or random from the hand.";
+	} else if(cardName.indexOf("Buffalo Rifle") != -1){
+		return "Discard and shoot anyone";
+	} else if(cardName.indexOf("Conestoga") != -1){
+		return "Take a card from any player.";
    	} else {
    		return "No description";
    	}
