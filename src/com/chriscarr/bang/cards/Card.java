@@ -311,13 +311,14 @@ public class Card implements Playable{
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " is loses a health.");
 				} else {
+                                    //TODO issue here, can select more than 2 cards. Green card and missed locks up game.
 					for(Object card : cardsToDiscard){
 						if(inPlay.hasItem(((Card)card).getName())){
 							for(int i = 0; i < inPlay.size(); i++){
-								Card gotCard = (Card)inPlay.get(i);
-								if(gotCard.getName().equals(((Card)card).getName())){
-									discard.add(inPlay.remove(i));
-								}
+                                                            Card gotCard = (Card)inPlay.get(i);
+                                                            if(gotCard.getName().equals(((Card)card).getName())){
+                                                                discard.add(inPlay.remove(i));
+                                                            }
 							}
 							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
 						} else {

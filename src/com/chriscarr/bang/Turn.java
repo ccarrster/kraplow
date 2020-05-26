@@ -1167,6 +1167,7 @@ public class Turn {
 		boolean validCards = false;
 		while (!validCards) {
 			cards = userInterface.respondTwoMiss(player);
+                        System.out.println(cards.size());
 			if (cards.size() == 0) {
 				validCards = true;
 			} else if (cards.size() == 2) {

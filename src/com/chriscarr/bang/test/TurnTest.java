@@ -25,6 +25,7 @@ import com.chriscarr.bang.cards.Jail;
 import com.chriscarr.bang.cards.Missed;
 import com.chriscarr.bang.cards.Panic;
 import com.chriscarr.bang.cards.Saloon;
+import com.chriscarr.bang.cards.SingleUseMissed;
 import com.chriscarr.bang.cards.Stagecoach;
 import com.chriscarr.bang.cards.WellsFargo;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -2260,6 +2261,115 @@ public class TurnTest extends TestCase{
 		turn.play();
 		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
 		assertEquals(0, enemy.getHand().size());
+	}
+        
+        public void testSlabTheKillerRespondGreen(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck(false));
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		Figure figure = new Figure();
+		figure.setName(Figure.SLABTHEKILLER);
+		sheriff.setFigure(figure);
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1green();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		turn.setDeck(Setup.setupDeck(false));
+		List<Player> others = new ArrayList<Player>();
+		for(Player otherPlayer : players){
+			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
+			if(distance <= 1){
+				others.add(otherPlayer);
+			}
+		}
+		others.remove(sheriff);
+		
+		Player enemy = others.get(0);
+		enemy.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+                enemy.getInPlay().add(new SingleUseMissed(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+                assertEquals(1, enemy.getHand().size());
+                assertEquals(1, enemy.getInPlay().size());
+		turn.play();
+		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
+		assertEquals(0, enemy.getHand().size());
+                assertEquals(0, enemy.getInPlay().size());
+	}
+        
+         public void testSlabTheKillerRespondGreen2(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck(false));
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		Figure figure = new Figure();
+		figure.setName(Figure.SLABTHEKILLER);
+		sheriff.setFigure(figure);
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1green2();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		turn.setDeck(Setup.setupDeck(false));
+		List<Player> others = new ArrayList<Player>();
+		for(Player otherPlayer : players){
+			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
+			if(distance <= 1){
+				others.add(otherPlayer);
+			}
+		}
+		others.remove(sheriff);
+		
+		Player enemy = others.get(0);
+		enemy.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+                enemy.getInPlay().add(new SingleUseMissed(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+                assertEquals(1, enemy.getHand().size());
+                assertEquals(1, enemy.getInPlay().size());
+		turn.play();
+		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
+		assertEquals(0, enemy.getHand().size());
+                assertEquals(0, enemy.getInPlay().size());
+	}
+         
+         public void testSlabTheKillerRespondGreen3(){
+		Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck(false));
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+		Figure figure = new Figure();
+		figure.setName(Figure.SLABTHEKILLER);
+		sheriff.setFigure(figure);
+		UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1green3();
+		turn.setUserInterface(testUserInterface);
+		turn.setDiscard(new Discard());
+		turn.setDeck(Setup.setupDeck(false));
+		List<Player> others = new ArrayList<Player>();
+		for(Player otherPlayer : players){
+			int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
+			if(distance <= 1){
+				others.add(otherPlayer);
+			}
+		}
+		others.remove(sheriff);
+		
+		Player enemy = others.get(0);
+		enemy.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+                enemy.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+                enemy.getInPlay().add(new SingleUseMissed(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
+                assertEquals(2, enemy.getHand().size());
+                assertEquals(1, enemy.getInPlay().size());
+		turn.play();
+		assertEquals(enemy.getHealth(), enemy.getMaxHealth());
+		assertEquals(1, enemy.getHand().size());
+                assertEquals(0, enemy.getInPlay().size());
 	}
 	
 	public void testSlabTheKillerJanetOneEach(){

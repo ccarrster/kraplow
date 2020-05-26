@@ -41,9 +41,16 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			Hand hand = player.getHand();
 			for(int i = 0; i < removed.length; i++){
 				if(!"".equals(removed[i])){
-					if(!cardsToDiscard.contains(hand.get(Integer.parseInt(removed[i])))){
-						cardsToDiscard.add(hand.get(Integer.parseInt(removed[i])));
-					}
+                                        if(Integer.parseInt(removed[i]) < hand.size()){
+                                            if(!cardsToDiscard.contains(hand.get(Integer.parseInt(removed[i])))){
+                                                    cardsToDiscard.add(hand.get(Integer.parseInt(removed[i])));
+                                            }
+                                        } else {
+                                            //In Play Cards
+                                            InPlay inPlay = player.getInPlay();
+                                            inPlay.get(Integer.parseInt(removed[i]) - hand.size());
+                                            cardsToDiscard.add(inPlay.get(Integer.parseInt(removed[i]) - hand.size()));
+                                        }
 				}
 			}
 		}
