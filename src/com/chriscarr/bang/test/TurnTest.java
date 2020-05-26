@@ -2200,49 +2200,35 @@ public class TurnTest extends TestCase{
 		}
 		assertEquals(0, hand.size());
 	}
-	/*
-	public void testSidKetchumHurt(){
-		Player sidKetchum = new Player();
-		Figure figure = new Figure();
-		figure.setName(Figure.SIDKETCHUM);
-		sidKetchum.setFigure(figure);
-		Hand hand = new Hand();
-		hand.add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
-		hand.add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
-		sidKetchum.setHand(hand);
-		UserInterface userInterface = new TestUserInterface();
-		Turn turn = new Turn();
-		turn.setPlayers(new ArrayList<Player>());
-		turn.setUserInterface(userInterface);
-		sidKetchum.setMaxHealth(1);		
-		turn.damagePlayer(sidKetchum, new ArrayList<Player>(), sidKetchum, 1, null, null, new Discard(), userInterface);
-		assertEquals(1, sidKetchum.getHealth());
-		assertEquals(0, sidKetchum.getHand().size());
-	}
 	
-        //TODO test sit dektchum ability
+	
+       
         
 	public void testSidKetchumDiscard(){
-		Player sidKetchum = new Player();
+                Turn turn = new Turn();
+		List<Player> players = Setup.getNormalPlayers(4);
+		turn.setPlayers(players);
+		turn.setDeck(Setup.setupDeck(false));
+		turn.setDiscard(new Discard());
+		turn.setSheriffManualTest();
+		Player sheriff = turn.getCurrentPlayer();
+		sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
+                sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
 		Figure figure = new Figure();
 		figure.setName(Figure.SIDKETCHUM);
-		sidKetchum.setFigure(figure);
-		Hand hand = new Hand();
-		hand.add(new Card(Gun.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
-		hand.add(new Card(Gun.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
-		sidKetchum.setHand(hand);
-		UserInterface userInterface = new TestUserInterface();
-		Turn turn = new Turn();
-		turn.setPlayers(new ArrayList<Player>());
-		turn.setUserInterface(userInterface);
-		sidKetchum.setMaxHealth(2);
-		sidKetchum.setHealth(1);
+		sheriff.setFigure(figure);
+		UserInterface testUserInterface = new TestUserInterfaceSpecial();
+		turn.setUserInterface(testUserInterface);
 		turn.setDiscard(new Discard());
-		turn.discard(sidKetchum);
-		assertEquals(1, sidKetchum.getHealth());
-		assertEquals(0, sidKetchum.getHand().size());
+		turn.setDeck(Setup.setupDeck(false));
+                sheriff.setHealth(1);
+		assertEquals(1, sheriff.getHealth());
+                assertEquals(2, sheriff.getHand().size());
+		turn.play();
+		assertEquals(2, sheriff.getHealth());
+		assertEquals(0, sheriff.getHand().size());
 	}
-	*/
+	
 	public void testSlabTheKiller(){
 		Turn turn = new Turn();
 		List<Player> players = Setup.getNormalPlayers(4);
