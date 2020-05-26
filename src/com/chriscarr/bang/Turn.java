@@ -649,12 +649,12 @@ public class Turn {
 		InPlay currentInPlay = currentPlayer.getInPlay();
 		if (currentInPlay.hasItem(Card.CARDJAIL)) {
 			Object jailCard = currentInPlay.removeJail();
-			discard.add(jailCard);
 			userInterface.printInfo(currentPlayer.getName()
 						+ " is drawing to break out of jail");
 			Card drawn = (Card) draw(currentPlayer, deck, discard,
 					userInterface);
 			boolean inJail = drawn.getSuit() != Card.HEARTS;
+                        discard.add(jailCard);
 			if (inJail) {
 				userInterface.printInfo(currentPlayer.getName()
 						+ " stays in jail");
