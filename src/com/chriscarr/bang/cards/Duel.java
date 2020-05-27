@@ -52,7 +52,9 @@ public class Duel extends Card implements Playable {
 				if(bangPlayed == -1){
 					turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(other.getName() + " loses a health");
-					giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
+                                        if(Figure.MOLLYSTARK.equals(other.getAbility())){
+                                            giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
+                                        }
 					return true;
 				} else {
 					Object card = other.getHand().remove(bangPlayed);
@@ -66,7 +68,9 @@ public class Duel extends Card implements Playable {
 				if(currentBangPlayed == -1){
 					turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
 					userInterface.printInfo(currentPlayer.getName() + " loses a health");
-					giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
+                                        if(Figure.MOLLYSTARK.equals(other.getAbility())){
+                                            giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
+                                        }
 					return true;						
 				} else {		
 					Object card = currentPlayer.getHand().remove(currentBangPlayed);
