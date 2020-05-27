@@ -89,6 +89,8 @@ public class Duel extends Card implements Playable {
 			Hand hand = player.getHand();
 			hand.add(deck.pull());
 		}
-		userInterface.printInfo(player.getName() + " draws "+amountCards+" card(s)");
+                if(amountCards > 0){
+                    userInterface.printInfo(player.getName() + " draws "+amountCards+" card(s)");
+                }
 	}
 }
