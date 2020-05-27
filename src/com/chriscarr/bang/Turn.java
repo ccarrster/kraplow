@@ -769,9 +769,11 @@ public class Turn {
 	public void handleDeath(Player player, Player damager,
 			Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard) {
-		if (player.equals(currentPlayer)) {
-			currentPlayer = getPreviousPlayer(currentPlayer, players);
-		}
+                        //I think we can remove this
+		//if (player.equals(currentPlayer)) {
+                    //TODO is this the right way to handle all death... set it to last player?
+		//currentPlayer = getPreviousPlayer(currentPlayer, players);
+		//}
 		players.remove(player);
 		userInterface.printInfo(player.getName() + " is dead. Role was "
 				+ Player.roleToString(player.getRole()));
