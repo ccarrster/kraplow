@@ -80,20 +80,20 @@ public class Card implements Playable{
 	public static final String CARDTENGALLONHAT = "Ten Gallon Hat";
 	public static final String CARDPONYEXPRESS = "Pony Express";
 
-	
+
 	private String name;
 	private int suit;
 	private int value;
 	private int type;
-	
+
 	public Card(){
-		
+
 	}
-	
+
 	public Card(String name, int suit, int value, int type) {
 		this.name = name;
 		this.suit = suit;
-		this.value = value;		
+		this.value = value;
 		this.type = type;
 	}
 
@@ -128,7 +128,7 @@ public class Card implements Playable{
 	public int getType() {
 		return type;
 	}
-	
+
 	public static int getRange(String gunName){
 		if(gunName.equals(CARDREVCARBINE)){
 			return 5;
@@ -155,7 +155,7 @@ public class Card implements Playable{
 		}
 		return false;
 	}
-	
+
 	public static String suitToString(int suit){
 		if(suit == HEARTS){
 			return "Hearts";
@@ -169,7 +169,7 @@ public class Card implements Playable{
 			throw new RuntimeException("Invalid Suit");
 		}
 	}
-	
+
 	public static String valueToString(int value){
 		if(value == VALUE2){
 			return "2";
@@ -209,7 +209,20 @@ public class Card implements Playable{
 
 	@Override
 	public boolean play(Player currentPlayer, List<Player> players,
-			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+		UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+		if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
+			for (Player player : players) {
+				int inPlayCount = player.getInPlay().count();
+				for(int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++){
+					Card peeked = (Card)player.getInPlay().peek(inPlayIndex);
+					if(peeked.getName() == this.getName()){
+						Card removed = (Card)player.getInPlay().remove(inPlayIndex);
+						discard.add(removed);
+						userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
+					}
+				}
+			}
+		}
 		currentPlayer.addInPlay(this);
 		return true;
 	}
@@ -226,7 +239,7 @@ public class Card implements Playable{
 			return "Item";
 		} else {
 			return "Play";
-		}		
+		}
 	}
 
 	public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard){
@@ -265,7 +278,7 @@ public class Card implements Playable{
 				}
 				return true;
 			} else if(missesRequired == 1){
-				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse); 
+				int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse);
 				if(missPlayed == -1){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " loses a health.");
@@ -305,7 +318,7 @@ public class Card implements Playable{
 			} else if(missesRequired == 2){
 				Hand hand = otherPlayer.getHand();
 				InPlay inPlay = otherPlayer.getInPlay();
-				List<Object> cardsToDiscard = null;	
+				List<Object> cardsToDiscard = null;
 				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
 				if(cardsToDiscard.size() == 0){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
@@ -332,7 +345,7 @@ public class Card implements Playable{
 							}
 						}
 					}
-				}	
+				}
 			}
 			if(!skipDiscard){
 				discard.add(this);

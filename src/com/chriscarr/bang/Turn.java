@@ -26,6 +26,7 @@ public class Turn {
 	private Deck deck;
 	private int bangsPlayed = 0;
 	private int joseActions = 0;
+	private int uncleWillActions = 0;
 
 	public ArrayList<String> getRoles(){
 		ArrayList<String> roles = new ArrayList<String>();
@@ -44,11 +45,11 @@ public class Turn {
 	public Player getPlayersTurn() {
 		return currentPlayer;
 	}
-	
+
 	public int countPlayers(){
 		return players.size();
 	}
-	
+
 	public Player getPlayerForName(String name){
 		for(int i = 0; i < players.size(); i++){
 			Player player = players.get(i);
@@ -103,7 +104,7 @@ public class Turn {
 		userInterface.printInfo("Card Total: "+cardTotal + " deck: "+deck.size()+" discard: "+discard.size()+" hands: "+ handTotal+" inplays: "+inPlayTotal);
 		*/
 		//End log all cards
-		
+
 		currentPlayer = getNextPlayer(currentPlayer, players);
 		donePlaying = false;
 		bangsPlayed = 0;
@@ -112,6 +113,7 @@ public class Turn {
 
 	private void turnLoop(Player currentPlayer) {
 		this.joseActions = 0;
+		this.uncleWillActions = 0;
 		boolean inJail = false;
 		try {
 			userInterface.printInfo(currentPlayer.getName() + "'s turn.");
@@ -130,7 +132,7 @@ public class Turn {
 				userInterface.printInfo(currentPlayer.getFigure().getName()
 						+ " chose the abilities of "+chosenPlayer.getName());
 			}
-			
+
 			if (isDynamiteExplode()) {
 				discardDynamite();
 				userInterface.printInfo("Dynamite Exploded on "
@@ -240,7 +242,7 @@ public class Turn {
 					chosenCard = userInterface.askOthersCard(player, chosenPlayer.getInPlay(), false);
 				}
 				if(chosenCard == -2){
-					Object card = chosenPlayer.getInPlay().removeGun(); 
+					Object card = chosenPlayer.getInPlay().removeGun();
 					hand.add(card);
 					userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + chosenPlayer.getName());
 				} else {
@@ -285,6 +287,20 @@ public class Turn {
 			}
 			userInterface.printInfo(player.getName()
 						+ " drew "+(player.getMaxHealth() - player.getHealth() + 1)+" card(s) from the deck.");
+		} else if (Figure.CLAUSTHESAINT.equals(player.getAbility())) {
+			List<Object> cards = pullCards(deck, players.size() + 1, userInterface);
+			Player generalPlayer = Turn.getNextPlayer(player, players);
+			while(!generalPlayer.equals(player)){
+				Object card = chooseValidCardToPutBack(player, cards,
+						userInterface);
+				cards.remove(card);
+				userInterface.printInfo(player.getName() + " gives " + generalPlayer.getName() + " a card.");
+				generalPlayer.getHand().add(card);
+				generalPlayer = Turn.getNextPlayer(generalPlayer, players);
+			}
+			for (Object card : cards) {
+				hand.add(card);
+			}
 		} else {
 			hand.add(deck.pull());
 			Object secondCard = deck.pull();
@@ -391,6 +407,41 @@ public class Turn {
 							+ " traded one blue card for 2 cards.");
 					return;
 				}
+			} else if(card > (hand.size() - 1) && Figure.UNCLEWILL.equals(currentPlayer.getAbility())){
+				if(this.uncleWillActions >= 1){
+					userInterface.printInfo("Already used special abilitity this turn.");
+					return;
+				}
+				int cardIndex = userInterface.askDiscard(currentPlayer);
+				if(cardIndex == -1){
+					return;
+				}
+
+				this.uncleWillActions += 1;
+				hand.remove(cardIndex);
+				Card playedCard = (Card) hand.get(cardIndex);
+				discard.add(playedCard);
+
+				List<Object> generalStoreCards = new ArrayList<Object>();
+				for(int i = 0; i < players.size(); i++){
+					if(deck.size() == 0){
+						userInterface.printInfo("Shuffling the deck");
+					}
+					generalStoreCards.add(deck.pull());
+				}
+				Player generalPlayer = currentPlayer;
+				while(!generalStoreCards.isEmpty()){
+					int chosenCard = -1;
+					while(chosenCard < 0 || chosenCard > generalStoreCards.size() - 1){
+						chosenCard = userInterface.chooseGeneralStoreCard(generalPlayer, generalStoreCards);
+					}
+					Object storeCard = generalStoreCards.remove(chosenCard);
+					userInterface.printInfo(generalPlayer.getName() + " chooses " + ((Card)storeCard).getName() + " from " + Card.CARDGENERALSTORE);
+					generalPlayer.getHand().add(storeCard);
+					generalPlayer = Turn.getNextPlayer(generalPlayer, players);
+				}
+				return;
+
 			} else if(card > (hand.size() + singleUseInPlay.size() - 1) && Figure.DOCHOLYDAY.equals(currentPlayer.getAbility())){
 				List<Object> cardsToDiscard = userInterface.chooseTwoDiscardForShoot(currentPlayer);
 				if(cardsToDiscard.size() == 2){
@@ -413,7 +464,7 @@ public class Turn {
 					}
 					return;
 				}
-				
+
 			}
 		}
 		if (hand.size() + singleUseInPlay.size() == 0 || card == -1) {
@@ -883,7 +934,7 @@ public class Turn {
 					vultureSamPlayer = vultureSams.get(playerIndex);
 				}
 			}
-			
+
 		}
 		for (Player alivePlayer : players) {
 			if (Figure.GREGDIGGER.equals(alivePlayer.getAbility())) {
@@ -907,8 +958,8 @@ public class Turn {
 				userInterface.printInfo(alivePlayer.getFigure().getName() + " draws 2 cards.");
 			}
 		}
-		
-		
+
+
 	}
 
 	public static boolean isGameOver(List<Player> players) {
@@ -933,19 +984,19 @@ public class Turn {
 			return "Renegade";
 		} else if (isDead(Player.SHERIFF, players)
 				&& (!isDead(Player.DEPUTY, players) || !isDead(Player.OUTLAW, players) || !isDead(Player.RENEGADE, players))) {
-			return "Outlaws"; 
+			return "Outlaws";
 		} else if (isDead(Player.OUTLAW, players) && isDead(Player.RENEGADE, players)) {
 			return "Sheriff and Deputies";
 		} else {
 			throw new RuntimeException("No Winner");
 		}
 	}
-	
+
 	public static String getRoles(List<Player> players) {
 		String result = "";
 		for(int i = 0; i < players.size(); i++){
 			Player player = players.get(i);
-			result += player.getFigure().getName() + " was a " + Player.roleToString(player.getRole()) + ". ";  
+			result += player.getFigure().getName() + " was a " + Player.roleToString(player.getRole()) + ". ";
 		}
 		return result;
 	}

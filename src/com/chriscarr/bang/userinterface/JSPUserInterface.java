@@ -18,7 +18,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public List<Message> messages;
 	public List<Message> responses;
 	protected Turn turn;
-	
+
 	public JSPUserInterface(){
 		messages = new ArrayList<Message>();
 		responses = new ArrayList<Message>();
@@ -27,13 +27,13 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public ArrayList<String> getRoles(){
 		return turn.getRoles();
 	}
-	
+
 	protected void waitForResponse(String player){
 		while(responses.isEmpty()){
 			Thread.yield();
 		}
 	}
-	
+
 	private List<Object> makeCardList(String remove, Player player) {
 		List<Object> cardsToDiscard = new ArrayList<Object>();
 		if(!"".equals(remove) && !"-1".equals(remove)){
@@ -57,7 +57,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		return cardsToDiscard;
 	}
 
-	
+
 	@Override
 	public int askDiscard(Player player) {
 		Hand hand = player.getHand();
@@ -85,7 +85,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		String inPlayCards = "";
 		for(int i = 0; i < inPlay.count(); i++){
 			inPlayCards += ((Card)inPlay.get(i)).getName() + ", ";
-		}		
+		}
 		boolean hasGun = inPlay.hasGun();
 		sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + inPlay.getGunName() + ", " + inPlayCards);
 		waitForResponse(player.getName());
@@ -132,6 +132,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		}
 		if(Figure.SIDKETCHUM.equals(player.getAbility())){
 			handCards += "discardtwoforlife" + "@true@" + player.getName() + "$" + ", ";
+		}
+		if(Figure.UNCLEWILL.equals(player.getAbility())){
+					handCards += "discardforgeneralstore" + "@true@" + player.getName() + "$" + ", ";
 		}
 		sendMessage(player.getName(), "askPlay " + handCards);
 		waitForResponse(player.getName());
@@ -290,11 +293,11 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public void setTurn(Turn turn) {
 		this.turn = turn;
 	}
-	
+
 	public GameState getGameState(){
 		return turn.getGameState();
 	}
-	
+
 	public void sendMessage(String player, String message){
 		messages.add(new MessageImpl(player + "-" + message));
 	}
@@ -316,7 +319,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 			Card card = (Card)inPlay.get(i);
 			String name = card.getName();
 			boolean canPlay = card instanceof SingleUseMissed;
-			
+
 			handCards += name + "@" + canPlay + ", ";
 		}
 		//TODO add InHand Green Cards and BELLESTAR's ability
@@ -324,7 +327,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		waitForResponse(player.getName());
 		return makeCardList(removeResponse(player.getName()), player);
 	}
-	
+
 	public String removeResponse(String playerName){
 		return responses.remove(0).getMessage();
 	}
@@ -333,7 +336,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public String getRoleForName(String name) {
 		return turn.getRoleForName(name);
 	}
-	
+
 	public String getGoalForName(String name){
 		return turn.roleToGoal(name);
 	}
@@ -348,7 +351,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public String getTimeout() {
 		return null;
 	}
-	
+
 	public Hand getHandForUser(String playerName){
 		return turn.getPlayerForName(playerName).getHand();
 	}

@@ -2,7 +2,7 @@ package com.chriscarr.bang;
 
 public class Figure {
 
-	
+
 	public static String CALAMITYJANET = "Calamity Janet";
 	public static String JOURDONNAIS = "Jourdonnais";
 	public static String PAULREGRET = "Paul Regret";
@@ -19,8 +19,11 @@ public class Figure {
 	public static String LUCKYDUKE = "Lucky Duke";
 	public static String VULTURESAM = "Vulture Sam";
 	public static String WILLYTHEKID = "Willy the Kid";
-	public static String[] CHARACTERS = {CALAMITYJANET, JOURDONNAIS, PAULREGRET, KITCARLSON, BARTCASSIDY, JESSEJONES, PEDRORAMIREZ, ELGRINGO, ROSEDOOLAN, SUZYLAFAYETTE, BLACKJACK, SIDKETCHUM, SLABTHEKILLER, LUCKYDUKE, VULTURESAM, WILLYTHEKID};
-	
+	public static String UNCLEWILL = "Uncle Will";
+	public static String JOHNNYKISCH = "Johnny Kisch";
+	public static String CLAUSTHESAINT = "Claus The Saint";
+	public static String[] CHARACTERS = {CALAMITYJANET, JOURDONNAIS, PAULREGRET, KITCARLSON, BARTCASSIDY, JESSEJONES, PEDRORAMIREZ, ELGRINGO, ROSEDOOLAN, SUZYLAFAYETTE, BLACKJACK, SIDKETCHUM, SLABTHEKILLER, LUCKYDUKE, VULTURESAM, WILLYTHEKID, UNCLEWILL, JOHNNYKISCH, CLAUSTHESAINT};
+
 	public static String CHUCKWENGAM = "Chuck Wengam";
 	public static String ELENAFUENTE = "Elena Fuente";
 	public static String BELLESTAR = "Belle Star";
@@ -41,9 +44,9 @@ public class Figure {
 	public static int PLAYMISSED = 1;
 	public static int GETSHOT = 2;
 	public static int PLAYONEEACH = 3;
-	
+
 	private String name;
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -51,15 +54,15 @@ public class Figure {
 	public String getName() {
 		return name;
 	}
-	
+
 	public static int getStartingHealth(String name) {
-		if(name.equals(PAULREGRET) || name.equals(ELGRINGO) || name.equals(VERACUSTER) || name.equals(APACHEKID) || name.equals(PIXIEPETE) || name.equals(ELENAFUENTE) || name.equals(SEANMALLORY)){
+		if(name.equals(PAULREGRET) || name.equals(ELGRINGO) || name.equals(VERACUSTER) || name.equals(APACHEKID) || name.equals(PIXIEPETE) || name.equals(ELENAFUENTE) || name.equals(SEANMALLORY) || name.equals(CLAUSTHESAINT)){
 			return 3;
 		} else {
 			return 4;
 		}
 	}
-	
+
 	public static String getSpecialAbilityText(String name){
 		if(name.equals(CALAMITYJANET)){
 			return "Shoots can be misses and misses can be shoots";
@@ -117,12 +120,18 @@ public class Figure {
 			return "Draws 1 card and an extra for each missing health";
 		} else if(name.equals(PATBRENNAN)){
 			return "Can draw a card infront of another player";
-		} else if(name.equals(TEQUILAJOE)){ 
+		} else if(name.equals(TEQUILAJOE)){
 			return "Beer gives him 2 life";
 		} else if(name.equals(VERACUSTER)){
 			return "Copies abilities of others";
 		} else if(name.equals(SEANMALLORY)){
 			return "Has handsize limit of 10";
+		} else if(name.equals(UNCLEWILL)){
+			return "Any card can be a general store, once in a turn";
+		} else if(name.equals(JOHNNYKISCH)){
+			return "When playing blue or green card, discard all cards in play with same name";
+		} else if(name.equals(CLAUSTHESAINT)){
+			return "Draw one card for every player plus one, everyone else gets 1";
 		} else {
 			throw new RuntimeException("Invalid player name");
 		}

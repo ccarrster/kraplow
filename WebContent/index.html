@@ -36,7 +36,9 @@ function copyToClipboard() {
 <div style="clear:both;"></div>
 <div id="handArea"></div>
 <a href="legend.html" target="_blank">Show Legend</a> <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a> <a href="http://kraplow.freeforums.net" target="_blank">Forum</a> <a target="_blank" href="https://github.com/ccarrster/kraplow">Github Project</a>
+<div>Thank you to <a href="https://www.instagram.com/valevidart/">Valentina Conte</a> for some beautiful artwork and Lestodante for the layout/editing pictures.</div>
 </div>
+
 <script language="javascript">
 
 	var randomAdjectives = ["Selective", "Tasty", "Furtive", "Pink", "Straight", "Shaggy", "Disgusting", "Cut", "Humorous", "Rightful", "Elated", "Rough", "Plucky", "Sophisticated", "Rude", "Fancy", "Noxious", "Drab", "Spicy", "Elastic", "Well-groomed", "Upset", "Fresh", "Voiceless", "Silent", "Sulky", "Cynical", "Stimulating", "Astonishing", "Blushing", "Well-made", "Picayune", "Flippant", "Lovely", "Political", "Ambitious", "Obese", "Freezing", "Maddening", "Hideous", "Lively", "Solid", "Taboo", "Fallacious", "Hysterical", "Magenta", "Gullible", "Abortive", "Permissible", "Successful", "Crazy", "Joyous", "Legal", "Flawless", "Boorish", "Eatable", "Literate", "Fantastic", "Gusty", "Faded", "Possible", "Rare", "Labored", "Equal", "Feeble", "Sparkling", "Thoughtless", "Green", "Even", "Puzzled", "Rigid", "Garrulous", "Paltry", "Difficult", "Nostalgic", "Uptight", "Habitual", "Woozy", "Quiet", "Thirsty", "Fearful", "Gleaming", "Happy", "Vagabond", "Ill", "Many", "Deeply", "Luxuriant", "Present", "Tall", "Swanky", "Clear", "Tired", "Fluffy", "Blue-eyed", "Average", "Obscene", "Parched", "Ten", "Uninterested", "Important", "Wooden", "Late", "Scattered", "Materialistic", "Alluring", "Square", "Sweltering", "Capable", "Gruesome", "Maniacal", "Periodic", "Dashing", "Whimsical", "Overwrought", "Future", "Aquatic", "Protective"];
@@ -479,6 +481,9 @@ function copyToClipboard() {
 			var description = " - " + getDescriptionForPlayer(loopPlayerName);
 			result += '<img src="' + getImageForPlayer(loopPlayerName) + '" alt="' + altPlayerText + '" id="' + loopPlayerName + '" title="' + loopPlayerName + description +'" style="border:4px solid transparent; position:absolute; top:0px; left:0px;" height="150px">';
 			result += '<div style="position:relative; top:152px; width:125px; background-color:white; border: 1px solid black;">' + loopPlayerHandle + '</div>';
+			var handSize = loopPlayer.getElementsByTagName("handsize")[0].childNodes[0].nodeValue;
+			result += '<div style="position:relative; top:152px; width:125px; background-color:white; border: 1px solid black;"><img src="card.png" alt="hand" title="'+handSize+' cards in hand" width="10" style="layout:inline-block;"> ' + handSize + ' cards in hand</div>';
+
 			var gunNode = loopPlayer.getElementsByTagName("gun")[0];
 			if(gunNode != null){
 				var gunName = gunNode.getElementsByTagName("name")[0].childNodes[0].nodeValue;
@@ -510,15 +515,12 @@ function copyToClipboard() {
 			var playerMaxHealth = loopPlayer.getElementsByTagName("maxhealth")[0].childNodes[0].nodeValue;
 			for(var healthIndex = 0; healthIndex < playerHealth; healthIndex++){
 				var top = (healthIndex * 10) + 40;
-				result += '<img src="borderbullet.png" alt="Health" title="'+playerHealth+'/'+playerMaxHealth+' Health" height="10" style="position:absolute; left:80px; top:' + top + 'px;"> ';
+				result += '<img src="borderbullet.png" alt="Health" title="'+playerHealth+'/'+playerMaxHealth+' Health" height="10" style="position:absolute; left:100px; top:' + top + 'px;"> ';
 			}
 			for(var maxHealthIndex = healthIndex; maxHealthIndex < playerMaxHealth; maxHealthIndex++){
 				var top = (maxHealthIndex * 10) + 40;
-				result += '<img src="emptyborderbullet.png" alt="Damage" title="'+playerHealth+'/'+playerMaxHealth+' Health" height="10" style="position:absolute; left:80px; top:' + top + 'px;"> ';
+				result += '<img src="emptyborderbullet.png" alt="Damage" title="'+playerHealth+'/'+playerMaxHealth+' Health" height="10" style="position:absolute; left:100px; top:' + top + 'px;"> ';
 			}
-			var handSize = loopPlayer.getElementsByTagName("handsize")[0].childNodes[0].nodeValue;
-			result += '<img src="hand.png" alt="hand" title="'+handSize+' cards in hand" width="40" style="position:absolute; top:30px; left:10px;">';
-			result += '<div title="'+handSize+' cards in hand" style="position:absolute; top:35px; left:15px; width:40px;" ><span style="font-size:28px;">' + handSize + '</span></div>';
 			result += '</div>';
 			result += '</td>'
 			column = column + 1;
@@ -705,7 +707,7 @@ function copyToClipboard() {
 			info = info + '\n' + message;
 			gameLogDiv.innerHTML = info;
 			var splitInfo = info.split("\n");
-			var names = ["Calamity Janet", "Jourdonnais", "Paul Regret", "Kit Carlson", "Bart Cassidy", "Jesse Jones", "Pedro Ramirez", "El Gringo", "Rose Doolan", "Suzy Lafayette", "Black Jack", "Sid Ketchum", "Slab the Killer", "Lucky Duke", "Vulture Sam", "Willy the Kid"];
+			var names = ["Calamity Janet", "Jourdonnais", "Paul Regret", "Kit Carlson", "Bart Cassidy", "Jesse Jones", "Pedro Ramirez", "El Gringo", "Rose Doolan", "Suzy Lafayette", "Black Jack", "Sid Ketchum", "Slab the Killer", "Lucky Duke", "Vulture Sam", "Willy the Kid", "Uncle Will", "Johnny Kisch", "Claus The Saint"];
 			var lastInfo = splitInfo[splitInfo.length - 1];
 			for(i = 0; i < names.length; i++){
 				if(lastInfo.includes(names[i])){
@@ -1642,6 +1644,9 @@ function copyToClipboard() {
 	playerInfo["Pedro Ramirez"] = {image: "pedroramierz.png", description: "Can draw from discard.", expansion: "base"};
 	playerInfo["Paul Regret"] = {image: "paulregret.png", description: "Has a Mustang at all times.", expansion: "base"};
 	playerInfo["Lucky Duke"] = {image: "luckyduke.png", description: "Flip 2 cards on a draw and choose 1.", expansion: "base"};
+	playerInfo["Uncle Will"] = {image: "unclewill.png", description: "Any card can be a general store, once in a turn.", expansion: "base"};
+	playerInfo["Johnny Kisch"] = {image: "johnnykisch.png", description: "When playing blue/green card, discard all cards in play with same name.", expansion: "base"};
+	playerInfo["Claus The Saint"] = {image: "clausthesaint.png", description: "Draw one card for every player plus one, everyone else gets 1.", expansion: "base"};
 
 	function getImageForPlayer(playerName){
 		if(playerInfo[playerName] != null){
