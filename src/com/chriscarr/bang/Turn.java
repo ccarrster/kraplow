@@ -235,20 +235,25 @@ public class Turn {
 						otherPlayers.add(other);
 					}
 				}
-				Player chosenPlayer = getValidChosenPlayer(player,
-						otherPlayers, userInterface);
-				int chosenCard = -3;
-				while(chosenCard < -2 || chosenCard > chosenPlayer.getInPlay().size() - 1){
-					chosenCard = userInterface.askOthersCard(player, chosenPlayer.getInPlay(), false);
-				}
-				if(chosenCard == -2){
-					Object card = chosenPlayer.getInPlay().removeGun();
-					hand.add(card);
-					userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + chosenPlayer.getName());
+				if(otherPlayers.size() != 0){
+					Player chosenPlayer = getValidChosenPlayer(player,
+							otherPlayers, userInterface);
+					int chosenCard = -3;
+					while(chosenCard < -2 || chosenCard > chosenPlayer.getInPlay().size() - 1){
+						chosenCard = userInterface.askOthersCard(player, chosenPlayer.getInPlay(), false);
+					}
+					if(chosenCard == -2){
+						Object card = chosenPlayer.getInPlay().removeGun();
+						hand.add(card);
+						userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + chosenPlayer.getName());
+					} else {
+						Object card = chosenPlayer.getInPlay().remove(chosenCard);
+						hand.add(card);
+						userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + chosenPlayer.getName());
+					}
 				} else {
-					Object card = chosenPlayer.getInPlay().remove(chosenCard);
-					hand.add(card);
-					userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + chosenPlayer.getName());
+					hand.add(deck.pull());
+					hand.add(deck.pull());
 				}
 			} else {
 				hand.add(deck.pull());
@@ -416,11 +421,9 @@ public class Turn {
 				if(cardIndex == -1){
 					return;
 				}
-
+				Object removedCard = (Card) currentPlayer.getHand().remove(cardIndex);
+				discard.add(removedCard);
 				this.uncleWillActions += 1;
-				hand.remove(cardIndex);
-				Card playedCard = (Card) hand.get(cardIndex);
-				discard.add(playedCard);
 
 				List<Object> generalStoreCards = new ArrayList<Object>();
 				for(int i = 0; i < players.size(); i++){
