@@ -1679,15 +1679,16 @@ function copyToClipboard() {
 </script>
 <audio id="myAudio" src="sounds/Clay Pigeons Instrumental Demo.mp3" controls="controls">
 </audio>
+<div>Try out the new music, credits to follow.</div>
 <script>
 	//One loop
 	var music = ["sounds/Clay Pigeons Instrumental Demo.mp3", "sounds/Kraplow Soundscape.mp3", "sounds/Kraplow1.mp3", "sounds/Renegade Demo.mp3", "sounds/Saloon Demo.mp3"];
-	window.onload = function(){ 	
+	(function() {	
 		myAudio = document.getElementById("myAudio");
 		//myAudio.play();
 		//Auto play does not work
 		myAudio.addEventListener('ended', playEnded, false);
-	}
+	})();
 	function playEnded(){
 		var nextSong = music.pop();
 		myAudio.src = nextSong;
