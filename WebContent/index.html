@@ -36,7 +36,7 @@ function copyToClipboard() {
 <div style="clear:both;"></div>
 <div id="handArea"></div>
 <a href="legend.html" target="_blank">Show Legend</a> <a href="mailto:ccarrster@gmail.com">ccarrster@gmail.com</a> <a href="http://kraplow.freeforums.net" target="_blank">Forum</a> <a target="_blank" href="https://github.com/ccarrster/kraplow">Github Project</a>
-<div>Thank you to <a target="_blank" href="https://www.instagram.com/valevidart/">Valentina Conte</a> and <a href="https://www.instagram.com/myriam_art_designs">Myriam Salvado</a> for some beautiful artwork and Lestodante for the layout/editing pictures.</div>
+<div>Thank you to <a target="_blank" href="https://www.instagram.com/valevidart/">Valentina Conte</a> and <a href="https://www.instagram.com/myriam_art_designs"  target="_blank">Myriam Salvado</a> for some beautiful artwork and Lestodante for the layout/editing pictures.</div>
 </div>
 
 <script language="javascript">
@@ -1676,6 +1676,24 @@ function copyToClipboard() {
 	}
    }
 
+</script>
+<audio id="myAudio" src="sounds/Clay Pigeons Instrumental Demo.mp3" controls="controls">
+</audio>
+<script>
+	//One loop
+	var music = ["sounds/Clay Pigeons Instrumental Demo.mp3", "sounds/Kraplow Soundscape.mp3", "sounds/Kraplow1.mp3", "sounds/Renegade Demo.mp3", "sounds/Saloon Demo.mp3"];
+	window.onload = function(){ 	
+		myAudio = document.getElementById("myAudio");
+		//myAudio.play();
+		//Auto play does not work
+		myAudio.addEventListener('ended', playEnded, false);
+	}
+	function playEnded(){
+		var nextSong = music.pop();
+		myAudio.src = nextSong;
+		music.unshift(nextSong);
+		myAudio.play();
+	}
 </script>
 </body>
 </html>
