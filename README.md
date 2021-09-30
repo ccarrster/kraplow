@@ -26,7 +26,7 @@ Go to url `http://localhost:8080/westerncardgame`.
 Port may be different depending on your tomcat setup (80?).
 
 Most of the UI is in `index.html` and is driven from the API.
-The `index.html` file has a `getServletUrl` function. If you
+The `index.html` file has a `getServletUrl()` function. If you
 name your project something other than "westerncardgame" in
 the `build.xml/war` file you will need to change that function.
 
@@ -38,7 +38,7 @@ sudo chown -R tomcat:tomcat kraplow
 The code uses an API.
 I called mine /chat - you can edit this in `web.xml`.
 All of the code depends on `/chat` being there.
-You will need to change this in the getServletUrl function.
+You will need to change this in the `getServletUrl()` function.
 Messages are sent as XML or strings.
 
 The main code for the AI is a function named `somethingAI()`.
@@ -46,7 +46,7 @@ From there the AI choose how to respond to actions.
 
 The main frontend loops poll on what action to do next and chat.
 
-There is no database, everything is stored in session memmory.
+There is no database, everything is stored in session memory.
 
 Working on Sidestep Township expansion.
 Need to add images for new blue, brown, green cards.
