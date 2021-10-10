@@ -35,6 +35,22 @@ When deploying I change the owner group to `tomcat:tomcat` with
 sudo chown -R tomcat:tomcat kraplow
 ```
 
+### Deployment via Docker
+There is also a `Dockerfile` for building an image that is based
+on the official [`tomcat:9.0`](https://hub.docker.com/_/tomcat) docker image
+and contains all dependencies. During the building process all configured
+tests are run with ant. To build the image run
+```
+docker build -t kraplow:latest .
+```
+
+To run the image:
+```
+docker run -it --rm -p 8888:8080 kraplow
+```
+This will expose port 8080 from the container to `localhost:8888`.
+
+## Miscellaneous
 The code uses an API.
 I called mine /chat - you can edit this in `web.xml`.
 All of the code depends on `/chat` being there.
@@ -48,7 +64,8 @@ The main frontend loops poll on what action to do next and chat.
 
 There is no database, everything is stored in session memory.
 
-Working on Sidestep Township expansion.
-Need to add images for new blue, brown, green cards.
-Need to show card suits for Apache Kid.
-Need to fix bugs I created.
+## TODO
+Working on Sidestep Township expansion.  
+Need to add images for new blue, brown, green cards.  
+Need to show card suits for Apache Kid.  
+Need to fix bugs I created.  
